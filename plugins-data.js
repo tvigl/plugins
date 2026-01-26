@@ -201,18 +201,5 @@ const plugins = [
 		badge: "Онлайн",
 		image: "",
 		githubLink: "https://ipavlin98.github.io/lmp-plugins/"
-	},
-	{
-		name: "Тестовый",
-		author: "",
-		version: "v1.0",
-		date: "2025-01-19",
-		file: "https://levende.github.io/lampa-plugins/random-scheduled.js",
-		description: "Краткое описание тестового плагина для демонстрации работы блока автора",
-		badge: "Торренты",
-		image: "",
-		githubLink: "https://github.com/testauthor",
-		telegramLink: "https://t.me/testauthor",
-		websiteLink: "https://testauthor.com"
 	}
 ];
