@@ -1,0 +1,1356 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+		/>
+		<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data:; font-src *; connect-src * data:; media-src *; object-src *; child-src *; frame-src *;">
+		<title>Lampa Plugins</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			:root {
+				--background: #000000;
+				--foreground: #fafafa;
+				--muted-foreground: #71717a;
+				--success: #22c55e;
+				--success-muted: rgba(34, 197, 94, 0.12);
+				--border: #1a1a1a;
+				--input: #0a0a0a;
+				--radius: 0.5rem;
+			}
+
+			[data-theme="light"] {
+				--background: #ffffff;
+				--foreground: #0a0a0a;
+				--muted-foreground: #6b7280;
+				--success: #16a34a;
+				--success-muted: rgba(22, 163, 74, 0.12);
+				--border: #e5e7eb;
+				--input: #f9fafb;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			html {
+				scroll-behavior: smooth;
+				overflow-y: scroll;
+			}
+
+			::-webkit-scrollbar {
+				width: 4px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: var(--border);
+				border-radius: 2px;
+			}
+
+			body {
+				background-color: var(--background);
+				color: var(--foreground);
+				font-family:
+					"Inter",
+					-apple-system,
+					BlinkMacSystemFont,
+					sans-serif;
+				margin: 0;
+				padding: 0;
+				min-height: 100vh;
+				font-size: 0.875rem;
+				line-height: 1.5;
+				-webkit-font-smoothing: antialiased;
+				touch-action: manipulation;
+			}
+
+			.container {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 3rem 1.5rem;
+			}
+
+			.header {
+				margin-bottom: 2rem;
+			}
+
+			.header h1 {
+				font-size: 1.5rem;
+				font-weight: 500;
+				letter-spacing: -0.02em;
+				margin: 0 0 0.5rem 0;
+				color: var(--foreground);
+			}
+
+			.header p {
+				color: var(--muted-foreground);
+				font-size: 0.875rem;
+				margin: 0;
+			}
+
+			.search-container {
+				margin-top: 1rem;
+			}
+
+			.search-input {
+				width: 100%;
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 0.75rem;
+				font-family: "Inter", sans-serif;
+				font-size: 0.875rem;
+				color: var(--foreground);
+				outline: none;
+				transition: border-color 0.2s ease;
+			}
+
+			.search-input:focus {
+				border-color: var(--muted-foreground);
+			}
+
+			.search-input::placeholder {
+				color: var(--muted-foreground);
+				opacity: 0.7;
+			}
+
+			.filters {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+				margin-bottom: 1.5rem;
+			}
+
+			.categories-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				align-items: center;
+			}
+
+			.controls-row {
+				display: flex;
+				gap: 0.75rem;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+
+			#categoryFilters {
+				display: contents;
+			}
+
+			#categoryFilters .filter-btn {
+				margin: 0;
+			}
+
+			.filter-btn {
+				padding: 0.45rem 0.6rem;
+				background: transparent;
+				border: 1px solid transparent;
+				border-radius: 3px;
+				color: var(--muted-foreground);
+				font-size: 0.625rem;
+				font-weight: 500;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				touch-action: manipulation;
+			}
+
+			.filter-btn[data-filter="all"] {
+				background: rgba(107, 114, 128, 0.12);
+				color: #6b7280;
+			}
+
+			.filter-btn[data-filter="design"] {
+				background: rgba(99, 102, 241, 0.12);
+				color: #818cf8;
+			}
+
+			.filter-btn[data-filter="themes"] {
+				background: rgba(168, 85, 247, 0.12);
+				color: #a78bfa;
+			}
+
+			.filter-btn[data-filter="collections"] {
+				background: rgba(236, 72, 153, 0.12);
+				color: #f472b6;
+			}
+
+			.filter-btn[data-filter="torrents"] {
+				background: rgba(245, 158, 11, 0.12);
+				color: #f59e0b;
+			}
+
+			.filter-btn[data-filter="online"] {
+				background: rgba(34, 197, 94, 0.12);
+				color: #22c55e;
+			}
+
+			.filter-btn[data-filter="other"] {
+				background: rgba(107, 114, 128, 0.12);
+				color: #6b7280;
+			}
+
+			.filter-btn.active[data-filter="all"] {
+				border-color: rgba(107, 114, 128, 0.7);
+			}
+
+			.filter-btn.active[data-filter="design"] {
+				border-color: rgba(99, 102, 241, 0.7);
+			}
+
+			.filter-btn.active[data-filter="themes"] {
+				border-color: rgba(168, 85, 247, 0.7);
+			}
+
+			.filter-btn.active[data-filter="collections"] {
+				border-color: rgba(236, 72, 153, 0.7);
+			}
+
+			.filter-btn.active[data-filter="torrents"] {
+				border-color: rgba(245, 158, 11, 0.7);
+			}
+
+			.filter-btn.active[data-filter="online"] {
+				border-color: rgba(34, 197, 94, 0.7);
+			}
+
+			.filter-btn.active[data-filter="other"] {
+				border-color: rgba(107, 114, 128, 0.7);
+			}
+
+			a {
+				color: var(--foreground);
+				text-decoration: none;
+				border-bottom: 1px solid var(--border);
+				transition: border-color 0.2s ease;
+			}
+
+			a:hover {
+				border-color: var(--foreground);
+			}
+
+			.plugins-list {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+
+			.pagination {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 0.5rem;
+				margin-top: 2rem;
+				width: 100%;
+			}
+
+			.pagination-btn {
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 0.45rem 0.6rem;
+				font-size: 0.625rem;
+				font-weight: 500;
+				color: var(--foreground);
+				cursor: pointer;
+				transition: all 0.2s ease;
+				min-width: 32px;
+				height: 32px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.pagination-btn:hover:not(:disabled) {
+				border-color: var(--muted-foreground);
+				background: var(--background);
+			}
+
+			.pagination-btn.active {
+				background: var(--background);
+				border-color: var(--muted-foreground);
+				color: var(--foreground);
+			}
+
+			.pagination-btn:disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
+
+			.pagination-info {
+				color: var(--muted-foreground);
+				font-size: 0.75rem;
+				padding: 0 0.5rem;
+			}
+
+			.plugin-item {
+				background: var(--background);
+				padding: 1.25rem;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 1rem;
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+			}
+
+			/*
+			.plugin-item:hover {
+				background: #050505;
+				transition: background 0.2s ease;
+			}
+			*/
+
+			.plugin-item.hidden {
+				display: none;
+			}
+
+			.plugin-info {
+				flex: 1;
+				min-width: 0;
+			}
+
+			.plugin-top {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				margin-bottom: 0.25rem;
+			}
+
+			.plugin-name {
+				font-size: 0.9375rem;
+				font-weight: 500;
+				color: var(--foreground);
+				margin: 0;
+			}
+
+			.plugin-version {
+				font-size: 0.625rem;
+				color: #4ade80;
+				font-weight: 500;
+				margin-left: 0.15rem;
+				padding: 0.1rem 0.4rem;
+				border: 1px solid #22c55e;
+				border-radius: 12px;
+				background-color: rgba(34, 197, 94, 0.1);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.plugin-badge {
+				font-size: 0.625rem;
+				font-weight: 500;
+				padding: 0.2rem 0.4rem;
+				border-radius: 3px;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.plugin-badge[data-type="design"] {
+				background: rgba(99, 102, 241, 0.12);
+				color: #818cf8;
+			}
+
+			.plugin-badge[data-type="themes"] {
+				background: rgba(168, 85, 247, 0.12);
+				color: #a78bfa;
+			}
+
+			.plugin-badge[data-type="collections"] {
+				background: rgba(236, 72, 153, 0.12);
+				color: #f472b6;
+			}
+
+			.plugin-badge[data-type="torrents"] {
+				background: rgba(245, 158, 11, 0.12);
+				color: #f59e0b;
+			}
+
+			.plugin-badge[data-type="online"] {
+				background: rgba(34, 197, 94, 0.12);
+				color: #22c55e;
+			}
+
+			.plugin-badge[data-type="other"] {
+				background: rgba(107, 114, 128, 0.12);
+				color: #6b7280;
+			}
+
+			.plugin-description {
+				color: var(--muted-foreground);
+				font-size: 0.8125rem;
+				margin: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.plugin-description.collapsed {
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+				position: relative;
+				line-height: 1.4;
+				max-height: 2.8rem;
+				line-clamp: 2;
+			}
+
+			.plugin-description.expanded {
+				max-height: none;
+				overflow: visible;
+			}
+
+			.spoiler-toggle {
+				color: var(--foreground);
+				font-size: 0.75rem;
+				cursor: pointer;
+				user-select: none;
+				margin-top: 0.25rem;
+				opacity: 0.7;
+				transition: opacity 0.2s ease;
+			}
+
+			.spoiler-toggle:hover {
+				opacity: 1;
+			}
+
+			.plugin-actions {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				flex-shrink: 0;
+				width: 100%;
+			}
+
+			.plugin-theme-btn {
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 50%;
+				width: 1.75rem;
+				height: 1.75rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			.plugin-theme-btn:hover {
+				border-color: var(--muted-foreground);
+			}
+
+			.plugin-url {
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				padding: 0 0.75rem;
+				height: 2rem;
+				font-family: "JetBrains Mono", monospace;
+				font-size: 0.6875rem;
+				color: var(--muted-foreground);
+				flex: 1;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				outline: none;
+				cursor: text;
+				width: 100%;
+				touch-action: manipulation;
+			}
+
+			.copy-btn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 2rem;
+				height: 2rem;
+				background: transparent;
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				touch-action: manipulation;
+			}
+
+			.copy-btn:hover {
+				border-color: var(--muted-foreground);
+			}
+
+			.copy-btn svg {
+				width: 14px;
+				height: 14px;
+				color: var(--muted-foreground);
+				transition: color 0.2s ease;
+			}
+
+			.copy-btn:hover svg {
+				color: var(--foreground);
+			}
+
+			.copy-btn.copied {
+				border-color: var(--success);
+			}
+
+			.copy-btn.copied svg {
+				color: var(--success);
+			}
+
+			.image-preview {
+				width: 2rem;
+				height: 2rem;
+				border-radius: 4px;
+				object-fit: cover;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				border: 1px solid var(--border);
+			}
+
+			.image-preview:hover {
+				border-color: var(--muted-foreground);
+				transform: scale(1.05);
+			}
+
+			.modal {
+				display: none;
+				position: fixed;
+				z-index: 9999;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.8);
+				justify-content: center;
+				align-items: center;
+			}
+
+			.modal.active {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.modal-content {
+				position: relative;
+				max-width: 95%;
+				max-height: 95%;
+				background: var(--background);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			.modal-image {
+				max-width: 100%;
+				max-height: 80vh;
+				border-radius: 4px;
+				object-fit: contain;
+			}
+
+			.modal-title {
+				color: var(--foreground);
+				font-size: 1rem;
+				font-weight: 500;
+				margin: 0;
+				text-align: center;
+			}
+
+			.modal-close {
+				position: absolute;
+				top: 0.25rem;
+				right: 0.25rem;
+				width: 1.5rem;
+				height: 1.5rem;
+				background: var(--background);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: all 0.2s ease;
+				z-index: 1000;
+			}
+
+			.modal-close:hover {
+				border-color: var(--muted-foreground);
+				background: var(--input);
+				transform: scale(1.05);
+			}
+
+			.modal-close svg {
+				width: 12px;
+				height: 12px;
+				color: var(--muted-foreground);
+				transition: all 0.2s ease;
+			}
+
+			.modal-close:hover svg {
+				color: var(--foreground);
+			}
+
+			.author-filter {
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 6px;
+				padding: 0.45rem 0.6rem;
+				font-size: 0.625rem;
+				font-weight: 500;
+				color: var(--foreground);
+				outline: none;
+				cursor: pointer;
+				transition: border-color 0.2s ease;
+				appearance: none;
+				background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3e%3c/svg%3e");
+				background-position: right 0.6rem center;
+				background-repeat: no-repeat;
+				background-size: 1em;
+				padding-right: 2rem;
+			}
+
+			.author-filter:hover {
+				border-color: var(--muted-foreground);
+			}
+
+			.author-filter option {
+				background: var(--input);
+				color: var(--foreground);
+				padding: 0.45rem 0.6rem;
+				font-size: 0.625rem;
+				font-weight: 500;
+				border: none;
+			}
+
+			.author-filter option:hover {
+				background: var(--background);
+			}
+
+			.sort-controls {
+				display: flex;
+				gap: 0.5rem;
+			}
+
+			.sort-btn {
+				padding: 0.4rem 0.5rem;
+				font-size: 0.625rem;
+				font-weight: 500;
+				color: var(--foreground);
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 6px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			.sort-btn:hover {
+				border-color: var(--muted-foreground);
+			}
+
+			.sort-btn.active {
+				background: var(--success);
+				border-color: var(--success);
+				color: white;
+			}
+
+			.copy-btn.copied svg {
+				color: var(--success);
+			}
+
+			.footer {
+				margin-top: 2rem;
+				padding-top: 2rem;
+				border-top: 1px solid var(--border);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				color: var(--muted-foreground);
+				font-size: 0.75rem;
+			}
+
+			.support-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				color: var(--foreground);
+				border: 1px solid var(--border);
+				padding: 0.4rem 0.8rem;
+				border-radius: 4px;
+				text-decoration: none;
+				font-weight: 500;
+				transition: all 0.2s ease;
+			}
+
+			.support-link:hover {
+				background: var(--input);
+				border-color: var(--muted-foreground);
+			}
+
+			.support-link svg {
+				width: 14px;
+				height: 14px;
+				fill: #ef4444;
+			}
+
+			.theme-toggle {
+				position: relative;
+				display: inline-block;
+				margin-left: 1rem;
+				vertical-align: middle;
+			}
+
+			.theme-toggle-header {
+				display: inline-flex;
+				align-items: center;
+			}
+
+			.theme-btn {
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 50%;
+				width: 2rem;
+				height: 2rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			.theme-btn:hover {
+				border-color: var(--muted-foreground);
+			}
+
+			.theme-icon {
+				color: var(--muted-foreground);
+				transition: all 0.2s ease;
+			}
+
+			.sun-icon {
+				display: block;
+			}
+
+			.moon-icon {
+				display: none;
+			}
+
+			[data-theme="light"] .sun-icon {
+				display: none;
+			}
+
+			[data-theme="light"] .moon-icon {
+				display: block;
+			}
+
+			@media (max-width: 800px) {
+				.container {
+					padding: 2rem 1.5rem;
+				}
+
+				.theme-toggle {
+					margin-left: 0.5rem;
+				}
+
+				.theme-btn {
+					width: 1.75rem;
+					height: 1.75rem;
+				}
+
+				.theme-icon {
+					width: 0.75rem;
+					height: 0.75rem;
+				}
+
+				.categories-row {
+					gap: 0.25rem;
+				}
+
+				.controls-row {
+					gap: 0.5rem;
+				}
+
+				.pagination {
+					gap: 0.25rem;
+				}
+
+				.pagination-btn {
+					padding: 0.4rem 0.5rem;
+					font-size: 0.5625rem;
+					min-width: 28px;
+					height: 28px;
+				}
+
+				.footer {
+					flex-direction: row;
+					flex-wrap: wrap;
+					justify-content: space-between;
+					align-items: center;
+					gap: 1rem;
+				}
+
+				.footer-right {
+					display: flex;
+					gap: 0.5rem;
+				}
+
+				.plugin-item {
+					padding: 1rem;
+				}
+
+				.plugin-description {
+					white-space: normal;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Подключение данных -->
+		<script src="categories-data.js"></script>
+		<script src="plugins-data.js"></script>
+		
+		<div class="container">
+			<header class="header">
+				<h1>
+					Коллекция плагинов
+					<div class="theme-toggle theme-toggle-header">
+						<button id="themeToggle" class="theme-btn">
+							<svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<circle cx="12" cy="12" r="5"></circle>
+								<path d="M12 1v2m0 16v2m4.22-13.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2m16 0h2M4.22 4.22l1.42 1.42M18.36 5.64l1.42-1.42M4.22 19.78l1.42-1.42M18.36 18.36l1.42 1.42"></path>
+							</svg>
+							<svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+							</svg>
+						</button>
+					</div>
+				</h1>
+				<div class="search-container">
+					<input type="text" id="searchInput" class="search-input" placeholder="Поиск плагинов..." />
+				</div>
+			</header>
+
+			<div class="filters">
+				<div class="categories-row">
+					<button class="filter-btn active" data-filter="all">Все</button>
+					<button class="filter-btn" data-filter="design">Оформления</button>
+					<button class="filter-btn" data-filter="themes">Темы</button>
+					<button class="filter-btn" data-filter="collections">Подборки</button>
+					<button class="filter-btn" data-filter="torrents">Торренты</button>
+					<button class="filter-btn" data-filter="online">Онлайн</button>
+					<button class="filter-btn" data-filter="other">Разное</button>
+				</div>
+				<div class="controls-row">
+					<select id="authorFilter" class="author-filter">
+						<option value="">Все авторы</option>
+					</select>
+					<div class="sort-controls">
+						<button class="sort-btn" data-sort="newest">От новых</button>
+						<button class="sort-btn" data-sort="oldest">От старых</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="plugins-list" id="pluginsList"></div>
+
+			<div class="pagination" id="pagination"></div>
+
+			<div class="modal" id="imageModal">
+				<div class="modal-content">
+					<button class="modal-close" onclick="closeModal()">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg>
+					</button>
+					<h3 class="modal-title" id="modalTitle"></h3>
+					<img class="modal-image" id="modalImage" src="" alt="" style="display: none;">
+					<iframe class="modal-video" id="modalVideo" style="display: none; width: 100%; height: 100%; max-width: 560px; max-height: 315px; border-radius: 4px; border: none;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+				</div>
+			</div>
+
+			<footer class="footer">
+				Сделано для Ламполюбов.
+				<div class="footer-right">
+					<a href="https://tvigl.info" target="_blank" class="support-link" title="Сайт">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="12" cy="12" r="10"></circle>
+							<polygon points="10 8 16 12 10 16 10 8"></polygon>
+						</svg>
+					</a>
+					<a href="https://www.youtube.com/@BelberiTV" target="_blank" class="support-link" title="YouTube">
+						<svg viewBox="0 0 24 24" fill="currentColor">
+							<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+						</svg>
+					</a>
+					<a href="https://t.me/your_username" target="_blank" class="support-link" title="Telegram">
+						<svg viewBox="0 0 24 24" fill="currentColor">
+							<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.56c-.21 2.21-1.12 7.57-1.58 10.05-.2 1.06-.58 1.41-.95 1.44-.81.07-1.42-.53-2.21-1.04-1.22-.8-1.92-1.31-3.11-2.09-1.38-.87-.49-1.35.3-2.13.21-.2 3.83-3.51 3.91-3.81.01-.04.01-.19-.07-.27s-.2-.04-.29-.02c-.12.03-2.09 1.33-5.91 3.9-.56.38-1.06.57-1.52.56-.5-.01-1.46-.28-2.18-.51-.88-.28-1.57-.43-1.51-.91.03-.25.38-.51 1.04-.78 4.07-1.77 6.78-2.94 8.13-3.51 3.88-1.66 4.68-1.95 5.2-1.96.12 0 .37.03.53.16.14.12.18.28.2.44-.01.06.01.24 0 .36z"/>
+						</svg>
+					</a>
+				</div>
+			</footer>
+
+		<script>
+			document.addEventListener('dblclick', (e) => {
+				e.preventDefault();
+			}, { passive: false });
+
+			const BASE_URL = "https://tvigl.github.io/";
+			const PLUGINS_PER_PAGE = 10;
+			let currentPage = 1;
+			let filteredPlugins = [];
+
+			function copyToClipboard(text, btn) {
+				navigator.clipboard.writeText(text).then(() => {
+					btn.classList.add("copied");
+					btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+					setTimeout(() => {
+						btn.classList.remove("copied");
+						btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+					}, 2000);
+				});
+			}
+
+			function showImage(pluginName, mediaUrl) {
+				console.log('showImage called with:', pluginName, mediaUrl);
+				
+				const modal = document.getElementById('imageModal');
+				const modalImage = document.getElementById('modalImage');
+				const modalVideo = document.getElementById('modalVideo');
+				const modalTitle = document.getElementById('modalTitle');
+				
+				modalTitle.textContent = '';
+				
+				// Проверяем, является ли URL YouTube видео
+				const isYouTube = mediaUrl.includes('youtu.be') || mediaUrl.includes('youtube.com/watch') || mediaUrl.includes('youtube.com/embed');
+				
+				// Проверяем, является ли URL видео
+				const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+				const isVideo = videoExtensions.some(ext => mediaUrl.toLowerCase().includes(ext));
+				
+				if (isYouTube) {
+					// Показываем YouTube видео
+					modalImage.style.display = 'none';
+					modalVideo.style.display = 'block';
+					
+					// Самый простой вариант - только video ID
+					let embedUrl = mediaUrl;
+					if (mediaUrl.includes('youtu.be/')) {
+						const videoId = mediaUrl.split('youtu.be/')[1].split('?')[0];
+						embedUrl = `https://www.youtube.com/embed/${videoId}`;
+					} else if (mediaUrl.includes('youtube.com/watch')) {
+						const urlParams = new URLSearchParams(mediaUrl.split('?')[1]);
+						const videoId = urlParams.get('v');
+						embedUrl = `https://www.youtube.com/embed/${videoId}`;
+					}
+					
+					// Отладка
+					console.log('Original URL:', mediaUrl);
+					console.log('Embed URL:', embedUrl);
+					
+					modalVideo.src = embedUrl;
+					modalVideo.alt = `Видео плагина ${pluginName}`;
+				} else if (isVideo) {
+					// Показываем обычное видео
+					modalImage.style.display = 'none';
+					modalVideo.style.display = 'block';
+					modalVideo.src = mediaUrl;
+					modalVideo.alt = `Видео плагина ${pluginName}`;
+				} else {
+					// Показываем изображение
+					modalVideo.style.display = 'none';
+					modalImage.style.display = 'block';
+					modalImage.src = mediaUrl;
+					modalImage.alt = `Скриншот плагина ${pluginName}`;
+				}
+				
+				modal.classList.add('active');
+				console.log('Modal opened, classes:', modal.className);
+				
+				// Закрытие модального окна при клике на фон
+				modal.addEventListener('click', (e) => {
+					if (e.target === modal) {
+						closeModal();
+					}
+				});
+				
+				// Закрытие модального окна по клавише Escape
+				document.addEventListener('keydown', (e) => {
+					if (e.key === 'Escape') {
+						closeModal();
+					}
+				});
+			}
+
+			function closeModal() {
+				const modal = document.getElementById('imageModal');
+				const modalVideo = document.getElementById('modalVideo');
+				
+				// Очищаем src у iframe чтобы остановить видео
+				if (modalVideo) {
+					modalVideo.src = '';
+				}
+				
+				modal.classList.remove('active');
+			}
+
+			function createPluginItem(plugin) {
+				const url = plugin.file.startsWith('http') ? plugin.file : BASE_URL + plugin.file;
+
+				const item = document.createElement("div");
+				item.className = "plugin-item";
+				item.dataset.category = badgeTypes[plugin.badge] || "ui";
+
+				item.innerHTML = `
+					<div class="plugin-info">
+						<div class="plugin-top">
+							<h3 class="plugin-name">${plugin.name}</h3>
+							<span class="plugin-version">${plugin.version}</span>
+							<span class="plugin-badge" data-type="${badgeTypes[plugin.badge] || "ui"}">${plugin.badge}</span>
+						</div>
+						<div class="plugin-description-container">
+							<p class="plugin-description">${plugin.description}</p>
+						</div>
+					</div>
+					<div class="plugin-actions">
+						<input type="text" class="plugin-url" value="${url}" readonly />
+						${plugin.image && plugin.image.trim() !== '' ? `<img class="image-preview" src="${plugin.image.includes('youtu.be') || plugin.image.includes('youtube.com') ? 'data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\'%3e%3crect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'3\' ry=\'3\' stroke=\'%236b7280\' stroke-width=\'1.5\'/%3e%3cpolygon points=\'10 8 16 12 10 16 10 8\' stroke=\'%236b7280\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/%3e%3c/svg%3e' : 'data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\'%3e%3crect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'3\' ry=\'3\' stroke=\'%236b7280\' stroke-width=\'1.5\'/%3e%3ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.2\' fill=\'%236b7280\'/%3e%3cpath d=\'m21 15-5.5-5.5L5 21\' stroke=\'%236b7280\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/%3e%3c/svg%3e'}" alt="${plugin.name}" onclick="showImage('${plugin.name}', '${plugin.image}')" title="Нажмите для увеличения">` : ''}
+						<button class="copy-btn" title="Копировать ссылку">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+								<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+							</svg>
+						</button>
+					</div>
+				`;
+
+				// Добавляем спойлер для длинных описаний
+				const descriptionContainer = item.querySelector('.plugin-description-container');
+				const description = item.querySelector('.plugin-description');
+				
+				if (plugin.description.length > 150) {
+					description.classList.add('collapsed');
+					
+					const toggleBtn = document.createElement('div');
+					toggleBtn.className = 'spoiler-toggle';
+					toggleBtn.textContent = 'Показать больше';
+					
+					toggleBtn.addEventListener('click', function() {
+						if (description.classList.contains('collapsed')) {
+							description.classList.remove('collapsed');
+							description.classList.add('expanded');
+							toggleBtn.textContent = 'Показать меньше';
+						} else {
+							description.classList.remove('expanded');
+							description.classList.add('collapsed');
+							toggleBtn.textContent = 'Показать больше';
+						}
+					});
+					
+					descriptionContainer.appendChild(toggleBtn);
+				}
+
+				const copyBtn = item.querySelector(".copy-btn");
+				copyBtn.addEventListener("click", () => copyToClipboard(url, copyBtn));
+
+				const urlInput = item.querySelector(".plugin-url");
+				urlInput.addEventListener("click", (e) => {
+					e.target.select();
+					e.target.setSelectionRange(0, e.target.value.length);
+				});
+
+				return item;
+			}
+
+			function renderPagination() {
+				const pagination = document.getElementById("pagination");
+				const totalPages = Math.ceil(filteredPlugins.length / PLUGINS_PER_PAGE);
+				
+				if (totalPages <= 1) {
+					pagination.innerHTML = "";
+					return;
+				}
+				
+				let paginationHTML = "";
+				
+				// Previous button
+				paginationHTML += `<button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">←</button>`;
+				
+				// Page numbers
+				for (let i = 1; i <= totalPages; i++) {
+					if (i === currentPage) {
+						paginationHTML += `<span class="pagination-btn active">${i}</span>`;
+					} else {
+						paginationHTML += `<button class="pagination-btn" onclick="changePage(${i})">${i}</button>`;
+					}
+				}
+				
+				// Next button
+				paginationHTML += `<button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">→</button>`;
+				
+				pagination.innerHTML = paginationHTML;
+			}
+
+			function changePage(page) {
+				currentPage = page;
+				renderPlugins();
+				renderPagination();
+			}
+
+			function renderPlugins() {
+				const list = document.getElementById("pluginsList");
+				const startIndex = (currentPage - 1) * PLUGINS_PER_PAGE;
+				const endIndex = Math.min(startIndex + PLUGINS_PER_PAGE, filteredPlugins.length);
+				const pagePlugins = filteredPlugins.slice(startIndex, endIndex);
+				
+				list.innerHTML = "";
+				pagePlugins.forEach((plugin) => {
+					list.appendChild(createPluginItem(plugin));
+				});
+			}
+
+			function filterPlugins(category) {
+				currentPage = 1;
+				
+				// Фильтруем плагины по категории
+				if (category === "all") {
+					filteredPlugins = [...plugins];
+				} else {
+					filteredPlugins = plugins.filter(p => {
+						const categoryName = categoryFilterMap[category];
+						return p.badge === categoryName;
+					});
+				}
+				
+				// Сбрасываем сортировку при смене категории
+				document.querySelectorAll('.sort-btn').forEach(btn => {
+					btn.classList.remove('active');
+				});
+				
+				renderPlugins();
+				renderPagination();
+			}
+
+			function filterByAuthor(author) {
+				currentPage = 1;
+				
+				// Фильтруем плагины по автору
+				if (author === "") {
+					filteredPlugins = [...plugins];
+				} else {
+					filteredPlugins = plugins.filter(p => p.author === author);
+				}
+				
+				// Сбрасываем сортировку при смене автора
+				document.querySelectorAll('.sort-btn').forEach(btn => {
+					btn.classList.remove('active');
+				});
+				
+				renderPlugins();
+				renderPagination();
+			}
+
+			function searchPlugins(query) {
+				currentPage = 1;
+				const q = query.trim().toLowerCase();
+				
+				// Фильтруем плагины по поиску
+				if (q === "") {
+					filteredPlugins = [...plugins];
+				} else {
+					filteredPlugins = plugins.filter(p => {
+						const name = p.name.toLowerCase();
+						// Убираем HTML-теги из описания перед поиском
+						const description = p.description.replace(/<[^>]*>/g, '').toLowerCase();
+						return name.includes(q) || description.includes(q);
+					});
+				}
+				
+				// Сбрасываем сортировку при поиске
+				document.querySelectorAll('.sort-btn').forEach(btn => {
+					btn.classList.remove('active');
+				});
+				
+				renderPlugins();
+				renderPagination();
+			}
+
+			function updateAuthorFilter() {
+				const authorFilter = document.getElementById("authorFilter");
+				const currentAuthors = [...new Set(plugins.map(p => p.author))].sort();
+				
+				// Сохраняем текущее выбранное значение
+				const currentValue = authorFilter.value;
+				
+				// Очищаем и заполняем заново
+				authorFilter.innerHTML = '<option value="">Все авторы</option>';
+				currentAuthors.forEach(author => {
+					const option = document.createElement("option");
+					option.value = author;
+					option.textContent = author;
+					authorFilter.appendChild(option);
+				});
+				
+				// Восстанавливаем выбранное значение
+				authorFilter.value = currentValue;
+			}
+
+			function sortPlugins(sortOrder) {
+				// Получаем текущую активную категорию
+				const activeCategoryBtn = document.querySelector('.filter-btn.active');
+				const currentCategory = activeCategoryBtn ? activeCategoryBtn.dataset.filter : 'all';
+				
+				// Получаем выбранного автора
+				const authorFilter = document.getElementById("authorFilter");
+				const selectedAuthor = authorFilter ? authorFilter.value : '';
+				
+				// Фильтруем плагины по категории и автору
+				let categoryPlugins = [];
+				if (currentCategory === "all") {
+					categoryPlugins = [...plugins];
+				} else {
+					categoryPlugins = plugins.filter(p => {
+						const categoryName = categoryFilterMap[currentCategory];
+						return p.badge === categoryName;
+					});
+				}
+				
+				// Дополнительная фильтрация по автору
+				if (selectedAuthor !== "") {
+					categoryPlugins = categoryPlugins.filter(p => p.author === selectedAuthor);
+				}
+				
+				// Сортируем отфильтрованные плагины
+				if (sortOrder === 'newest') {
+					categoryPlugins.sort((a, b) => {
+						const dateA = a.date || new Date().toISOString().split('T')[0];
+						const dateB = b.date || new Date().toISOString().split('T')[0];
+						return new Date(dateB) - new Date(dateA);
+					});
+				} else if (sortOrder === 'oldest') {
+					categoryPlugins.sort((a, b) => {
+						const dateA = a.date || new Date().toISOString().split('T')[0];
+						const dateB = b.date || new Date().toISOString().split('T')[0];
+						return new Date(dateA) - new Date(dateB);
+					});
+				}
+				
+				// Обновляем filteredPlugins
+				filteredPlugins = categoryPlugins;
+				
+				// Обновляем активную кнопку сортировки
+				document.querySelectorAll('.sort-btn').forEach(btn => {
+					btn.classList.remove('active');
+				});
+				
+				// Находим кнопку по тексту и делаем активной
+				const sortBtnText = sortOrder === 'newest' ? 'От новых' : 'От старых';
+				document.querySelectorAll('.sort-btn').forEach(btn => {
+					if (btn.textContent.trim() === sortBtnText) {
+						btn.classList.add('active');
+					}
+				});
+				
+				// Сбрасываем страницу и обновляем отображение
+				currentPage = 1;
+				renderPlugins();
+				renderPagination();
+			}
+
+			function refreshAuthorFilter() {
+				updateAuthorFilter();
+			}
+
+			function init() {
+				// Populate author filter
+				updateAuthorFilter();
+				
+				// Initialize with all plugins
+				filteredPlugins = [...plugins];
+				renderPlugins();
+				renderPagination();
+
+				const filterBtns = document.querySelectorAll(".filter-btn");
+				filterBtns.forEach((btn) => {
+					btn.addEventListener("click", () => {
+						filterBtns.forEach((b) => b.classList.remove("active"));
+						btn.classList.add("active");
+						filterPlugins(btn.dataset.filter);
+					});
+				});
+
+				const searchInput = document.getElementById("searchInput");
+				searchInput.addEventListener("input", (e) => {
+					const query = e.target.value;
+					if (query.trim() === "") {
+						filterBtns.forEach((b) => b.classList.remove("active"));
+						document.querySelector('[data-filter="all"]').classList.add("active");
+						filterPlugins("all");
+					} else {
+						filterBtns.forEach((b) => b.classList.remove("active"));
+						searchPlugins(query);
+					}
+				});
+
+				// Author filter functionality
+				const authorFilter = document.getElementById("authorFilter");
+				authorFilter.addEventListener("change", (e) => {
+					const selectedAuthor = e.target.value;
+					
+					// Reset category filters
+					filterBtns.forEach((b) => b.classList.remove("active"));
+					document.querySelector('[data-filter="all"]').classList.add("active");
+					
+					// Apply author filter
+					filterByAuthor(selectedAuthor);
+				});
+
+				// Sort buttons functionality
+				const sortBtns = document.querySelectorAll(".sort-btn");
+				sortBtns.forEach((btn) => {
+					btn.addEventListener("click", () => {
+						const sortOrder = btn.dataset.sort;
+						sortPlugins(sortOrder);
+					});
+				});
+
+				const themeToggle = document.getElementById("themeToggle");
+				const html = document.documentElement;
+				
+				// Load saved theme or default to dark
+				const savedTheme = localStorage.getItem("theme") || "dark";
+				html.setAttribute("data-theme", savedTheme);
+				
+				themeToggle.addEventListener("click", () => {
+					const currentTheme = html.getAttribute("data-theme");
+					
+					const newTheme = currentTheme === "dark" ? "light" : "dark";
+					html.setAttribute("data-theme", newTheme);
+					localStorage.setItem("theme", newTheme);
+				});
+			}
+
+			init();
+		</script>
+	</body>
+</html>
