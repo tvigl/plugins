@@ -7,19 +7,31 @@ const plugins = [
 		file: "https://arst113.github.io/log/NewPhoneMenu.js",
 		description: "Плагин под Мобильные телефон, добавляет пункт сериалы и фильмы в нижнее меню.",
 		badge: "Оформления",
-		image: "https://tvigl.github.io/plugins/img/NewPhoneMenu.jpg"
+		image: "https://tvigl.github.io/plugins/img/NewPhoneMenu.jpg",
+		githubLink: "https://github.com/navigatorAlex",
+		telegramLink: "https://t.me/navigatorAlex",
+		websiteLink: "https://navigatoralex.github.io"
 	},
 	{
 		name: "Тестовый",
-		author: "1111",
+		author: "TestAuthor",
 		version: "1",
 		date: "2025-01-19",
 		file: "https://levende.github.io/lampa-plugins/random-scheduled.js",
-		description: "Кратко",
+		description: "Краткое описание тестового плагина для демонстрации работы блока автора",
 		badge: "Торренты",
 		image: "",
-		authorLink: "https://t.me/your_username",
-		discordLink: "https://discord.gg/your_invite_link",
-		githubLink: "https://github.com/your_username"
+		githubLink: "https://github.com/testauthor",
+		telegramLink: "https://t.me/testauthor",
+		websiteLink: "https://testauthor.com"
+	},
+	{
+		name: "Плагин без автора",
+		version: "v2.0",
+		date: "2025-01-20",
+		file: "https://example.com/plugin.js",
+		description: "Этот плагин не имеет информации об авторе, поэтому блок автора не будет отображаться.",
+		badge: "Другое",
+		image: ""
 	}
 ];
