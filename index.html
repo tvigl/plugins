@@ -417,6 +417,62 @@
 				overflow: visible;
 			}
 
+			.plugin-author {
+				margin-top: 0.75rem;
+				padding-top: 0.75rem;
+				border-top: 1px solid var(--border);
+			}
+
+			.plugin-author-label {
+				font-size: 0.75rem;
+				font-weight: 500;
+				color: var(--muted-foreground);
+				margin-bottom: 0.5rem;
+			}
+
+			.plugin-author-info {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 0.5rem;
+			}
+
+			.plugin-author-name {
+				font-size: 0.8125rem;
+				color: var(--foreground);
+				font-weight: 500;
+			}
+
+			.plugin-author-links {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.author-link {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 1.5rem;
+				height: 1.5rem;
+				background: var(--input);
+				border: 1px solid var(--border);
+				border-radius: 4px;
+				color: var(--muted-foreground);
+				text-decoration: none;
+				transition: all 0.2s ease;
+			}
+
+			.author-link:hover {
+				border-color: var(--muted-foreground);
+				color: var(--foreground);
+			}
+
+			.author-link svg {
+				width: 12px;
+				height: 12px;
+			}
+
 			.spoiler-toggle {
 				color: var(--foreground);
 				font-size: 0.75rem;
