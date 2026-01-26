@@ -1,13 +1,13 @@
 // Данные плагинов
 const plugins = [
 	{
-		name: "Плагин для добавления рейтингов: Imdb, Tmdb, MetaCritic, Rotten Tomato",
-		author: "No author",
+		name: "Нижнее меню",
+		author: "navigatorAlex",
 		version: "v1.0",
-		file: "plugins/rating_omdb.js",
-		description: "Плагин rating_omdb.js предназначен для расширения функциональности Lampa, добавляя комплексный рейтинг к фильмам и сериалам на основе данных из нескольких источников, а также отображая информацию о наградах и возрастных ограничениях.​",
+		file: "https://arst113.github.io/log/NewPhoneMenu.js",
+		description: "Плагин под Мобильные телефон, добавляет пункт сериалы и фильмы в нижнее меню.",
 		badge: "Оформления",
-		image: "https://tvigl.github.io/plugins/img/rating_omdb.webp"
+		image: ""
 	},
 	{
 		name: "Рейтинга на картах фильмов",
