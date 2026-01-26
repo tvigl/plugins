@@ -7,7 +7,7 @@ const plugins = [
 		file: "https://arst113.github.io/log/NewPhoneMenu.js",
 		description: "Плагин под Мобильные телефон, добавляет пункт сериалы и фильмы в нижнее меню.",
 		badge: "Оформления",
-		image: ""
+		image: "https://tvigl.github.io/plugins/img/NewPhoneMenu.jpg"
 	},
 	{
 		name: "Тестовый",
