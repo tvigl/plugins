@@ -204,7 +204,7 @@ const plugins = [
 	},
 	{
 		name: "Тестовый",
-		author: "TestAuthor",
+		author: "",
 		version: "1",
 		date: "2025-01-19",
 		file: "https://levende.github.io/lampa-plugins/random-scheduled.js",
