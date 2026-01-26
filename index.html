@@ -1087,11 +1087,10 @@
 						<div class="plugin-description-container">
 							<p class="plugin-description">${plugin.description}</p>
 						</div>
-						${(plugin.author || plugin.githubLink || plugin.telegramLink || plugin.websiteLink) ? `
+						${(plugin.githubLink || plugin.telegramLink || plugin.websiteLink) ? `
 						<div class="plugin-author">
-							<div class="plugin-author-label">Автор:</div>
 							<div class="plugin-author-info">
-								${plugin.author ? `<div class="plugin-author-name">${plugin.author}</div>` : '<div></div>'}
+								<div class="plugin-author-label">Автор:</div>
 								<div class="plugin-author-links">
 									${plugin.githubLink ? `<a href="${plugin.githubLink}" target="_blank" class="author-link" title="GitHub">
 										<svg viewBox="0 0 24 24" fill="currentColor">
