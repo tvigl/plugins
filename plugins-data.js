@@ -8,9 +8,7 @@ const plugins = [
 		description: "Плагин под Мобильные телефон, добавляет пункт сериалы и фильмы в нижнее меню.",
 		badge: "Оформления",
 		image: "https://tvigl.github.io/plugins/img/NewPhoneMenu.jpg",
-		githubLink: "https://github.com/navigatorAlex",
-		telegramLink: "https://t.me/navigatorAlex",
-		websiteLink: "https://navigatoralex.github.io"
+		telegramLink: "https://t.me/navigatorAlex"
 	},
 	{
 		name: "LNUM",
