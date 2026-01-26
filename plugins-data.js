@@ -17,7 +17,7 @@ const plugins = [
 		file: "https://levende.github.io/lampa-plugins/lnum.js",
 		description: "Плагин добавляет в меню Лампы раздел или “подборку” от LNUM. Это каталог контента (фильмов / сериалов), который становится доступным прямо в Лампе.",
 		badge: "Подборки",
-		image: "https://youtu.be/y1ELYBtvKFQ?si=wBJdAzc63Z8ad3h3",
+		image: "",
 		githubLink: "https://levende.github.io/lampa-plugins/"
 	},
 	{
