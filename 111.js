@@ -73,10 +73,10 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       rchtype: Lampa.Platform.is('android') ? 'apk' : Lampa.Platform.is('tizen') ? 'cors' : (window.rch_nws[hostkey].type || 'web'),
       apkVersion: window.rch_nws[hostkey].apkVersion,
       player: Lampa.Storage.field('player'),
-	  account_email: Lampa.Storage.get('account_email', ''),
-	  unic_id: Lampa.Storage.get('lampac_unic_id', ''),
-	  profile_id: Lampa.Storage.get('lampac_profile_id', ''),
-	  token: ''
+    account_email: Lampa.Storage.get('account_email', ''),
+    unic_id: Lampa.Storage.get('lampac_unic_id', ''),
+    profile_id: Lampa.Storage.get('lampac_profile_id', ''),
+    token: ''
     });
 
     if (client._shouldReconnect && window.rch_nws[hostkey].rchRegistry) {
@@ -92,22 +92,22 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
 
     client.on("RchClient", function(rchId, url, data, headers, returnHeaders) {
       var network = new Lampa.Reguest();
-	  
-	  function sendResult(uri, html) {
-	    $.ajax({
-	      url: 'http://z01.online/rch/' + uri + '?id=' + rchId,
-	      type: 'POST',
-	      data: html,
-	      async: true,
-	      cache: false,
-	      contentType: false,
-	      processData: false,
-	      success: function(j) {},
-	      error: function() {
-	        client.invoke("RchResult", rchId, '');
-	      }
-	    });
-	  }
+    
+    function sendResult(uri, html) {
+      $.ajax({
+        url: 'http://z01.online/rch/' + uri + '?id=' + rchId,
+        type: 'POST',
+        data: html,
+        async: true,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(j) {},
+        error: function() {
+          client.invoke("RchResult", rchId, '');
+        }
+      });
+    }
 
       function result(html) {
         if (Lampa.Arrays.isObject(html) || Lampa.Arrays.isArray(html)) {
@@ -259,54 +259,54 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       season: [],
       voice: []
     };
-	
+  
     if (balansers_with_search == undefined) {
       network.timeout(10000);
       network.silent(account('http://z01.online/lite/withsearch'), function(json) {
         balansers_with_search = json;
       }, function() {
-		  balansers_with_search = [];
-	  });
+      balansers_with_search = [];
+    });
     }
-	
+  
     function balanserName(j) {
       var bals = j.balanser;
       var name = j.name.split(' ')[0];
       return (bals || name).toLowerCase();
     }
-	
-	function clarificationSearchAdd(value){
-		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
-		var all = Lampa.Storage.get('clarification_search','{}');
-		
-		all[id] = value;
-		
-		Lampa.Storage.set('clarification_search',all);
-	}
-	
-	function clarificationSearchDelete(){
-		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
-		var all = Lampa.Storage.get('clarification_search','{}');
-		
-		delete all[id];
-		
-		Lampa.Storage.set('clarification_search',all);
-	}
-	
-	function clarificationSearchGet(){
-		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
-		var all = Lampa.Storage.get('clarification_search','{}');
-		
-		return all[id];
-	}
-	
+  
+  function clarificationSearchAdd(value){
+    var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
+    var all = Lampa.Storage.get('clarification_search','{}');
+    
+    all[id] = value;
+    
+    Lampa.Storage.set('clarification_search',all);
+  }
+  
+  function clarificationSearchDelete(){
+    var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
+    var all = Lampa.Storage.get('clarification_search','{}');
+    
+    delete all[id];
+    
+    Lampa.Storage.set('clarification_search',all);
+  }
+  
+  function clarificationSearchGet(){
+    var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
+    var all = Lampa.Storage.get('clarification_search','{}');
+    
+    return all[id];
+  }
+  
     this.initialize = function() {
       var _this = this;
       this.loading(true);
       filter.onSearch = function(value) {
-		  
-		clarificationSearchAdd(value);
-		
+      
+    clarificationSearchAdd(value);
+    
         Lampa.Activity.replace({
           search: value,
           clarification: true,
@@ -323,8 +323,8 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       filter.onSelect = function(type, a, b) {
         if (type == 'filter') {
           if (a.reset) {
-			  clarificationSearchDelete();
-			  
+        clarificationSearchDelete();
+        
             _this.replaceChoice({
               season: 0,
               voice: 0,
@@ -334,9 +334,9 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
             setTimeout(function() {
               Lampa.Select.close();
               Lampa.Activity.replace({
-				  clarification: 0,
-				  similar: 0
-			  });
+          clarification: 0,
+          similar: 0
+        });
             }, 10);
           } else {
             var url = filter_find[a.stype][b.index].url;
@@ -366,21 +366,21 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       scroll.body().append(Lampa.Template.get('lampac_content_loading'));
       Lampa.Controller.enable('content');
       this.loading(false);
-	  if(object.balanser){
-		  files.render().find('.filter--search').remove();
-		  sources = {};
-		  sources[object.balanser] = {name: object.balanser};
-		  balanser = object.balanser;
-		  filter_sources = [];
-		  
-		  return network["native"](account(object.url.replace('rjson=','nojson=')), this.parse.bind(this), function(){
-			  files.render().find('.torrent-filter').remove();
-			  _this.empty();
-		  }, false, {
+    if(object.balanser){
+      files.render().find('.filter--search').remove();
+      sources = {};
+      sources[object.balanser] = {name: object.balanser};
+      balanser = object.balanser;
+      filter_sources = [];
+      
+      return network["native"](account(object.url.replace('rjson=','nojson=')), this.parse.bind(this), function(){
+        files.render().find('.torrent-filter').remove();
+        _this.empty();
+      }, false, {
             dataType: 'text',
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
-	  } 
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
+    } 
       this.externalids().then(function() {
         return _this.createSource();
       }).then(function(json) {
@@ -396,10 +396,10 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
     };
     this.rch = function(json, noreset) {
       var _this2 = this;
-	  rchRun(json, function() {
+    rchRun(json, function() {
         if (!noreset) _this2.find();
         else noreset();
-	  });
+    });
     };
     this.externalids = function() {
       return new Promise(function(resolve, reject) {
@@ -419,8 +419,8 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
           }, function() {
             resolve();
           }, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
         } else resolve();
       });
     };
@@ -444,7 +444,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       query.push('id=' + encodeURIComponent(object.movie.id));
       if (object.movie.imdb_id) query.push('imdb_id=' + (object.movie.imdb_id || ''));
       if (object.movie.kinopoisk_id) query.push('kinopoisk_id=' + (object.movie.kinopoisk_id || ''));
-	  if (object.movie.tmdb_id) query.push('tmdb_id=' + (object.movie.tmdb_id || ''));
+    if (object.movie.tmdb_id) query.push('tmdb_id=' + (object.movie.tmdb_id || ''));
       query.push('title=' + encodeURIComponent(object.clarification ? object.search : object.movie.title || object.movie.name));
       query.push('original_title=' + encodeURIComponent(object.movie.original_title || object.movie.original_name));
       query.push('serial=' + (object.movie.name ? 1 : 0));
@@ -558,8 +558,8 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
               life_wait_timer = setTimeout(fin, 1000);
             }
           }, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
         };
         fin();
       });
@@ -572,19 +572,19 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         network.silent(account(url), function(json) {
           if (json.accsdb) return reject(json);
           if (json.life) {
-			_this4.memkey = json.memkey;
-			if (json.title) {
+      _this4.memkey = json.memkey;
+      if (json.title) {
               if (object.movie.name) object.movie.name = json.title;
               if (object.movie.title) object.movie.title = json.title;
-			}
+      }
             filter.render().find('.filter--sort').append('<span class="lampac-balanser-loader" style="width: 1.2em; height: 1.2em; margin-top: 0; background: url(./img/loader.svg) no-repeat 50% 50%; background-size: contain; margin-left: 0.5em"></span>');
             _this4.lifeSource().then(_this4.startSource).then(resolve)["catch"](reject);
           } else {
             _this4.startSource(json).then(resolve)["catch"](reject);
           }
         }, reject, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
       });
     };
     /**
@@ -610,7 +610,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       if (number_of_requests < 10) {
         network["native"](account(url), this.parse.bind(this), this.doesNotAnswer.bind(this), false, {
           dataType: 'text',
-		  headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
         });
         clearTimeout(number_of_requests_timer);
         number_of_requests_timer = setTimeout(function() {
@@ -652,14 +652,14 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       }
     };
     this.getFileUrl = function(file, call, waiting_rch) {
-	  var _this = this;
-	  
+    var _this = this;
+    
       if(Lampa.Storage.field('player') !== 'inner' && file.stream && Lampa.Platform.is('apple')){
-		  var newfile = Lampa.Arrays.clone(file);
-		  newfile.method = 'play';
-		  newfile.url = file.stream;
-		  call(newfile, {});
-	  }
+      var newfile = Lampa.Arrays.clone(file);
+      newfile.method = 'play';
+      newfile.url = file.stream;
+      call(newfile, {});
+    }
       else if (file.method == 'play') call(file, {});
       else {
         Lampa.Loading.start(function() {
@@ -668,30 +668,30 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
           network.clear();
         });
         network["native"](account(file.url), function(json) {
-			if(json.rch){
-				if(waiting_rch) {
-					waiting_rch = false;
-					Lampa.Loading.stop();
-					call(false, {});
-				}
-				else {
-					_this.rch(json,function(){
-						Lampa.Loading.stop();
-						
-						_this.getFileUrl(file, call, true);
-					});
-				}
-			}
-			else{
-				Lampa.Loading.stop();
-				call(json, json);
-			}
+      if(json.rch){
+        if(waiting_rch) {
+          waiting_rch = false;
+          Lampa.Loading.stop();
+          call(false, {});
+        }
+        else {
+          _this.rch(json,function(){
+            Lampa.Loading.stop();
+            
+            _this.getFileUrl(file, call, true);
+          });
+        }
+      }
+      else{
+        Lampa.Loading.stop();
+        call(json, json);
+      }
         }, function() {
           Lampa.Loading.stop();
           call(false, {});
         }, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
       }
     };
     this.toPlayElement = function(file) {
@@ -701,12 +701,12 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         quality: file.qualitys,
         timeline: file.timeline,
         subtitles: file.subtitles,
-		segments: file.segments,
+    segments: file.segments,
         callback: file.mark,
-		season: file.season,
-		episode: file.episode,
-		voice_name: file.voice_name,
-		thumbnail: file.thumbnail
+    season: file.season,
+    episode: file.episode,
+    voice_name: file.voice_name,
+    thumbnail: file.thumbnail
       };
       return play;
     };
@@ -740,17 +740,17 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
               first.url = json.url;
               first.headers = json_call.headers || json.headers;
               first.quality = json_call.quality || item.qualitys;
-			  first.segments = json_call.segments || item.segments;
+        first.segments = json_call.segments || item.segments;
               first.hls_manifest_timeout = json_call.hls_manifest_timeout || json.hls_manifest_timeout;
               first.subtitles = json.subtitles;
-			  first.subtitles_call = json_call.subtitles_call || json.subtitles_call;
-			  if (json.vast && json.vast.url) {
+        first.subtitles_call = json_call.subtitles_call || json.subtitles_call;
+        if (json.vast && json.vast.url) {
                 first.vast_url = json.vast.url;
                 first.vast_msg = json.vast.msg;
                 first.vast_region = json.vast.region;
                 first.vast_platform = json.vast.platform;
                 first.vast_screen = json.vast.screen;
-			  }
+        }
               _this5.orUrlReserve(first);
               _this5.setDefaultQuality(first);
               if (item.season) {
@@ -761,14 +761,14 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
                     if (elem.method == 'call') {
                       if (Lampa.Storage.field('player') !== 'inner') {
                         cell.url = elem.stream;
-						delete cell.quality;
+            delete cell.quality;
                       } else {
                         cell.url = function(call) {
                           _this5.getFileUrl(elem, function(stream, stream_json) {
                             if (stream.url) {
                               cell.url = stream.url;
                               cell.quality = stream_json.quality || elem.qualitys;
-							  cell.segments = stream_json.segments || elem.segments;
+                cell.segments = stream_json.segments || elem.segments;
                               cell.subtitles = stream.subtitles;
                               _this5.orUrlReserve(cell);
                               _this5.setDefaultQuality(cell);
@@ -798,11 +798,11 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
               if (playlist.length > 1) first.playlist = playlist;
               if (first.url) {
                 var element = first;
-				element.isonline = true;
+        element.isonline = true;
                 
                 Lampa.Player.play(element);
                 Lampa.Player.playlist(playlist);
-				if(element.subtitles_call) _this5.loadSubtitles(element.subtitles_call)
+        if(element.subtitles_call) _this5.loadSubtitles(element.subtitles_call)
                 item.mark();
                 _this5.updateBalanser(balanser);
               } else {
@@ -829,13 +829,13 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         })
       }, this.getChoice());
     };
-	this.loadSubtitles = function(link){
-		network.silent(account(link), function(subs){
-			Lampa.Player.subtitles(subs)
-		}, function() {},false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  })
-	}
+  this.loadSubtitles = function(link){
+    network.silent(account(link), function(subs){
+      Lampa.Player.subtitles(subs)
+    }, function() {},false, {
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      })
+  }
     this.parse = function(str) {
       var json = Lampa.Arrays.decodeJson(str, {});
       if (Lampa.Arrays.isObject(str) && str.rch) json = str;
@@ -956,19 +956,19 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         elem.time = elem.time || '';
         elem.info = info.join('<span class="online-prestige-split">●</span>');
         var item = Lampa.Template.get('lampac_prestige_folder', elem);
-		if (elem.img) {
-		  var image = $('<img style="height: 7em; width: 7em; border-radius: 0.3em;"/>');
-		  item.find('.online-prestige__folder').empty().append(image);
+    if (elem.img) {
+      var image = $('<img style="height: 7em; width: 7em; border-radius: 0.3em;"/>');
+      item.find('.online-prestige__folder').empty().append(image);
 
-		  if (elem.img !== undefined) {
-		    if (elem.img.charAt(0) === '/')
-		      elem.img = Defined.localhost + elem.img.substring(1);
-		    if (elem.img.indexOf('/proxyimg') !== -1)
-		      elem.img = account(elem.img);
-		  }
+      if (elem.img !== undefined) {
+        if (elem.img.charAt(0) === '/')
+          elem.img = Defined.localhost + elem.img.substring(1);
+        if (elem.img.indexOf('/proxyimg') !== -1)
+          elem.img = account(elem.img);
+      }
 
-		  Lampa.Utils.imgLoad(image, elem.img);
-		}
+      Lampa.Utils.imgLoad(image, elem.img);
+    }
         item.on('hover:enter', function() {
           _this6.reset();
           _this6.request(elem.url);
@@ -978,7 +978,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         });
         scroll.append(item);
       });
-	  this.filter({
+    this.filter({
         season: filter_find.season.map(function(s) {
           return s.title;
         }),
@@ -1109,17 +1109,17 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
     };
     this.getEpisodes = function(season, call) {
       var episodes = [];
-	  var tmdb_id = object.movie.id;
-	  if (['cub', 'tmdb'].indexOf(object.movie.source || 'tmdb') == -1) 
+    var tmdb_id = object.movie.id;
+    if (['cub', 'tmdb'].indexOf(object.movie.source || 'tmdb') == -1) 
         tmdb_id = object.movie.tmdb_id;
       if (typeof tmdb_id == 'number' && object.movie.name) {
-		  Lampa.Api.sources.tmdb.get('tv/' + tmdb_id + '/season/' + season, {}, function(data){
-			  episodes = data.episodes || [];
-			  
-			  call(episodes);
-		  }, function(){
-			  call(episodes);
-		  })
+      Lampa.Api.sources.tmdb.get('tv/' + tmdb_id + '/season/' + season, {}, function(data){
+        episodes = data.episodes || [];
+        
+        call(episodes);
+      }, function(){
+        call(episodes);
+      })
       } else call(episodes);
     };
     this.watched = function(set) {
@@ -1212,7 +1212,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
           var html = Lampa.Template.get('lampac_prestige_full', element);
           var loader = html.find('.online-prestige__loader');
           var image = html.find('.online-prestige__img');
-		  if(object.balanser) image.hide();
+      if(object.balanser) image.hide();
           if (!serial) {
             if (choice.movie_view == hash_behold) scroll_to_element = html;
           } else if (typeof episode_last !== 'undefined' && episode_last == episode_num) {
@@ -1222,7 +1222,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
             image.append('<div class="online-prestige__episode-number">' + ('0' + (element.episode || index + 1)).slice(-2) + '</div>');
             loader.remove();
           }
-		  else if (!serial && object.movie.backdrop_path == 'undefined') loader.remove();
+      else if (!serial && object.movie.backdrop_path == 'undefined') loader.remove();
           else {
             var img = html.find('img')[0];
             img.onerror = function() {
@@ -1235,7 +1235,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
             };
             img.src = Lampa.TMDB.image('t/p/w300' + (episode ? episode.still_path : object.movie.backdrop_path));
             images.push(img);
-			element.thumbnail = img.src
+      element.thumbnail = img.src
           }
           html.find('.online-prestige__timeline').append(Lampa.Timeline.render(element.timeline));
           if (viewed.indexOf(hash_behold) !== -1) {
@@ -1532,7 +1532,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         balanser: balanser
       });
       if(er && er.accsdb) html.find('.online-empty__title').html(er.msg);
-	  
+    
       var tic = er && er.accsdb ? 10 : 5;
       html.find('.cancel').on('hover:enter', function() {
         clearInterval(balanser_timer);
@@ -1670,8 +1670,8 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
               }, function() {
                 status.error();
               }, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  })
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      })
             })
           } else {
             oncomplite([]);
@@ -1686,8 +1686,8 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
               }, function() {
                 oncomplite([]);
               }, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
             });
           } else {
             searchComplite(json);
@@ -1695,8 +1695,8 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
         }, function() {
           oncomplite([]);
         }, false, {
-			headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
-		  });
+      headers: {'X-Kit-AesGcm': Lampa.Storage.get('aesgcmkey', '')}
+      });
       },
       onCancel: function() {
         network.clear()
@@ -1736,7 +1736,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
     var manifst = {
       type: 'video',
       version: '',
-      name: 'При поддержке Onlyskaz',
+      name: 'Качественный онлайн',
       description: 'Z01',
       component: 'lampac_z',
       onContextMenu: function onContextMenu(object) {
@@ -1748,10 +1748,10 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       onContextLauch: function onContextLauch(object) {
         resetTemplates();
         Lampa.Component.add('lampac_z', component);
-		
-		var id = Lampa.Utils.hash(object.number_of_seasons ? object.original_name : object.original_title);
-		var all = Lampa.Storage.get('clarification_search','{}');
-		
+    
+    var id = Lampa.Utils.hash(object.number_of_seasons ? object.original_name : object.original_title);
+    var all = Lampa.Storage.get('clarification_search','{}');
+    
         Lampa.Activity.push({
           url: '',
           title: Lampa.Lang.translate('title_online'),
@@ -1761,12 +1761,12 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
           search_two: object.original_title,
           movie: object,
           page: 1,
-		  clarification: all[id] ? true : false
+      clarification: all[id] ? true : false
         });
       }
     };
-	
-	
+  
+  
     Lampa.Manifest.plugins = manifst;
     Lampa.Lang.add({
       lampac_watch: { //
@@ -1877,21 +1877,21 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
       Lampa.Template.add('lampac_prestige_folder', "<div class=\"online-prestige online-prestige--folder selector\">\n            <div class=\"online-prestige__folder\">\n                <svg viewBox=\"0 0 128 112\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <rect y=\"20\" width=\"128\" height=\"92\" rx=\"13\" fill=\"white\"></rect>\n                    <path d=\"M29.9963 8H98.0037C96.0446 3.3021 91.4079 0 86 0H42C36.5921 0 31.9555 3.3021 29.9963 8Z\" fill=\"white\" fill-opacity=\"0.23\"></path>\n                    <rect x=\"11\" y=\"8\" width=\"106\" height=\"76\" rx=\"13\" fill=\"white\" fill-opacity=\"0.51\"></rect>\n                </svg>\n            </div>\n            <div class=\"online-prestige__body\">\n                <div class=\"online-prestige__head\">\n                    <div class=\"online-prestige__title\">{title}</div>\n                    <div class=\"online-prestige__time\">{time}</div>\n                </div>\n\n                <div class=\"online-prestige__footer\">\n                    <div class=\"online-prestige__info\">{info}</div>\n                </div>\n            </div>\n        </div>");
       Lampa.Template.add('lampac_prestige_watched', "<div class=\"online-prestige online-prestige-watched selector\">\n            <div class=\"online-prestige-watched__icon\">\n                <svg width=\"21\" height=\"21\" viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <circle cx=\"10.5\" cy=\"10.5\" r=\"9\" stroke=\"currentColor\" stroke-width=\"3\"/>\n                    <path d=\"M14.8477 10.5628L8.20312 14.399L8.20313 6.72656L14.8477 10.5628Z\" fill=\"currentColor\"/>\n                </svg>\n            </div>\n            <div class=\"online-prestige-watched__body\">\n                \n            </div>\n        </div>");
     }
-    var button = "<div class=\"full-start__button selector view--online lampac--button\" data-subtitle=\"".concat(manifst.name, " ").concat(manifst.version, "\">\n         <svg width=\"128\" height=\"128\" viewBox=\"0 0 128 128\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"8\" y=\"8\" width=\"112\" height=\"112\" rx=\"32\" fill=\"white\" stroke=\"#2886fb\" stroke-width=\"12\"/><text x=\"50%\" y=\"50%\" text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"Arial, sans-serif\" font-size=\"76\" font-weight=\"bold\" fill=\"#2886fb\">Z</text></svg>\n\n        <span>#{title_online}</span>\n    </div>"); // нужна заглушка, а то при страте лампы говорит пусто
+    var button = "<div class=\"full-start__button selector view--online lampac--button\" data-subtitle=\"".concat(manifst.name, " ").concat(manifst.version, "\">\n         <svg width=\"128\" height=\"128\" viewBox=\"0 0 128 128\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"8\" y=\"8\" width=\"112\" height=\"112\" rx=\"32\" fill=\"white\" stroke=\"#2886fb\" stroke-width=\"12\"/><text x=\"50%\" y=\"50%\" text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"Arial, sans-serif\" font-size=\"38\" font-weight=\"bold\" fill=\"#2886fb\">Max</text></svg>\n\n        <span>#{title_online}</span>\n    </div>"); // нужна заглушка, а то при страте лампы говорит пусто
     Lampa.Component.add('lampac_z', component); //то же самое
     resetTemplates();
 
     function addButton(e) {
       if (e.render.find('.lampac--button').length) return;
       var btn = $(Lampa.Lang.translate(button));
-	  // //console.log(btn.clone().removeClass('focus').prop('outerHTML'))
+    // //console.log(btn.clone().removeClass('focus').prop('outerHTML'))
       btn.on('hover:enter', function() {
         resetTemplates();
         Lampa.Component.add('lampac_z', component);
-		
-		var id = Lampa.Utils.hash(e.movie.number_of_seasons ? e.movie.original_name : e.movie.original_title);
-		var all = Lampa.Storage.get('clarification_search','{}');
-		
+    
+    var id = Lampa.Utils.hash(e.movie.number_of_seasons ? e.movie.original_name : e.movie.original_title);
+    var all = Lampa.Storage.get('clarification_search','{}');
+    
         Lampa.Activity.push({
           url: '',
           title: Lampa.Lang.translate('title_online'),
@@ -1901,7 +1901,7 @@ window.rch_nws[hostkey].Registry = function RchRegistry(client, startConnection)
           search_two: e.movie.original_title,
           movie: e.movie,
           page: 1,
-		  clarification: all[id] ? true : false
+      clarification: all[id] ? true : false
         });
       });
       e.render.after(btn);
