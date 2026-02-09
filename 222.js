@@ -1754,13 +1754,13 @@ else if (element.url) {
     var manifst = {
       type: 'video',
       version: '',
-      name: 'BazarNetUA',
-      description: 'https://lampaua.mooo.com',
+      name: 'BazarNetUA (Безкоштовно)',
+      description: 'https://lampaua.mooo.com (Безкоштовно)',
       component: 'BazarNetUA',
       onContextMenu: function onContextMenu(object) {
         return {
           name: Lampa.Lang.translate('lampac_watch'),
-          description: 'https://lampaua.mooo.com'
+          description: 'https://lampaua.mooo.com (Безкоштовно)'
         };
       },
       onContextLauch: function onContextLauch(object) {
