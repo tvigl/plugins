@@ -2,7 +2,7 @@
     'use strict';
 
     function WikiSmartPlugin() {
-        var ICON_WIKI = 'https://yarikrazor-star.github.io/lmp/wiki.svg';
+        var ICON_WIKI = 'https://tvigl.github.io/plugins/img/Wiki.js';
         var isOpened = false;
 
         this.init = function () {
