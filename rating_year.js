@@ -20,92 +20,98 @@
             /* Контейнер нового меню Prisma */
             .prisma-menu {
                 position: fixed;
-                left: 0;
-                top: 0;
-                bottom: 0;
+                left: 20px;
+                top: 20px;
+                bottom: 20px;
                 width: 320px;
-                background: #121212;
+                background: rgba(18, 18, 18, 0.85);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 display: flex;
                 flex-direction: column;
                 z-index: 1000;
-                box-shadow: 20px 0 40px rgba(0,0,0,0.5);
+                box-shadow: 0 10px 50px rgba(0,0,0,0.8);
                 transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
                 overflow: hidden;
-                padding: 20px;
+                padding: 15px;
                 box-sizing: border-box;
+                border-radius: 24px;
+                border: 1px solid rgba(255,255,255,0.08);
             }
 
             .prisma-menu--hidden {
-                transform: translateX(-100%);
+                transform: translateX(-120%);
             }
 
             /* Шапка меню: Лого и Часы */
             .prisma-menu__header {
-                padding: 10px 10px 30px;
+                padding: 10px 10px 20px;
                 display: flex;
-                flex-direction: column;
-                gap: 20px;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-            }
-
-            .prisma-menu__header-top {
-                display: flex;
+                flex-direction: row;
                 justify-content: space-between;
-                align-items: center;
+                align-items: flex-start;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
             }
 
             .prisma-menu__logo {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                gap: 8px;
+                margin-top: 5px;
             }
 
             .prisma-menu__logo-icon {
-                width: 36px;
-                height: 36px;
-                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                width: 28px;
+                height: 28px;
+                background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
+                box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
             }
 
             .prisma-menu__logo-text {
-                font-size: 1.5em;
-                font-weight: 700;
-                letter-spacing: 1.5px;
-                color: #fff;
+                font-size: 1.2em;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                color: rgba(255,255,255,0.6);
+                text-transform: uppercase;
+            }
+
+            .prisma-menu__header-right {
+                text-align: right;
             }
 
             .prisma-menu__time {
-                font-size: 2.2em;
-                font-weight: 900;
+                font-size: 1.8em;
+                font-weight: 700;
                 color: #fff;
-                letter-spacing: -1px;
+                line-height: 1;
+                margin-bottom: 2px;
             }
 
             .prisma-menu__date-block {
-                text-align: right;
-                line-height: 1.2;
+                line-height: 1.1;
             }
 
             .prisma-menu__date {
-                font-size: 0.9em;
-                color: #888;
+                font-size: 0.75em;
+                color: rgba(255,255,255,0.5);
+                font-weight: 400;
             }
 
             .prisma-menu__day {
-                font-size: 1.1em;
-                font-weight: 600;
-                color: #fff;
+                font-size: 0.85em;
+                font-weight: 500;
+                color: rgba(255,255,255,0.7);
             }
 
             /* Список элементов меню */
             .prisma-menu__list {
                 flex: 1;
                 overflow-y: auto;
-                padding: 20px 15px;
+                padding: 15px 5px;
                 margin: 0;
                 list-style: none;
             }
@@ -114,11 +120,11 @@
                 display: flex;
                 align-items: center;
                 gap: 15px;
-                padding: 12px 15px;
-                margin-bottom: 5px;
+                padding: 10px 15px;
+                margin-bottom: 4px;
                 border-radius: 12px;
-                color: #ccc;
-                font-size: 1.1em;
+                color: rgba(255,255,255,0.7);
+                font-size: 1.05em;
                 font-weight: 500;
                 transition: all 0.2s ease;
                 cursor: pointer;
@@ -130,7 +136,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                opacity: 0.8;
+                opacity: 0.7;
             }
 
             .prisma-menu__item-icon svg {
@@ -139,23 +145,34 @@
                 fill: currentColor;
             }
 
-            /* Состояние фокуса (для пульта и мыши) */
+            /* Состояние фокуса и активного элемента */
             .prisma-menu__item.focus,
             .prisma-menu__item:hover {
-                background: rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.08);
                 color: #fff;
-                transform: translateX(5px);
+                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03), 0 5px 15px rgba(0, 0, 0, 0.3);
             }
 
             .prisma-menu__item.focus .prisma-menu__item-icon,
             .prisma-menu__item:hover .prisma-menu__item-icon {
                 opacity: 1;
                 color: #2e9fff;
+                filter: drop-shadow(0 0 8px rgba(46, 159, 255, 0.6));
             }
 
-            .prisma-menu__item.active {
-                background: rgba(46, 159, 255, 0.15);
-                color: #2e9fff;
+            .prisma-menu__item.active,
+            .prisma-menu__item.focus-active {
+                background: linear-gradient(90deg, #2e9fff 0%, #0072ff 100%);
+                color: #fff;
+                font-weight: 700;
+                box-shadow: 0 4px 20px rgba(46, 159, 255, 0.4);
+            }
+
+            .prisma-menu__item.active .prisma-menu__item-icon,
+            .prisma-menu__item.focus-active .prisma-menu__item-icon {
+                opacity: 1;
+                color: #fff;
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
             }
 
             /* Футер меню */
@@ -203,18 +220,18 @@
         
         var headerHTML = `
             <div class="prisma-menu__header">
-                <div class="prisma-menu__header-top">
-                    <div class="prisma-menu__logo">
-                        <div class="prisma-menu__logo-icon">
-                            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M7 2l12 11.2l-5.8 1.4l3.8 6.6l-2.6 1.5l-3.8-6.6l-3.6 3.1z"/></svg>
-                        </div>
-                        <div class="prisma-menu__logo-text">LampaClick</div>
+                <div class="prisma-menu__logo">
+                    <div class="prisma-menu__logo-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M7 2l12 11.2l-5.8 1.4l3.8 6.6l-2.6 1.5l-3.8-6.6l-3.6 3.1z"/></svg>
                     </div>
-                    <div class="prisma-menu__time" id="prisma-clock">00:00</div>
+                    <div class="prisma-menu__logo-text">PRISMA</div>
                 </div>
-                <div class="prisma-menu__date-block">
-                    <div class="prisma-menu__date" id="prisma-date">01 Января 2024</div>
-                    <div class="prisma-menu__day" id="prisma-day">Понедельник</div>
+                <div class="prisma-menu__header-right">
+                    <div class="prisma-menu__time" id="prisma-clock">00:00</div>
+                    <div class="prisma-menu__date-block">
+                        <div class="prisma-menu__date" id="prisma-date">01 Января 2024</div>
+                        <div class="prisma-menu__day" id="prisma-day">Понедельник</div>
+                    </div>
                 </div>
             </div>
         `;
@@ -232,12 +249,20 @@
             `;
             
             li.addEventListener('click', function() {
+                $('.prisma-menu__item').removeClass('active');
+                li.classList.add('active');
                 executeAction(item.action);
             });
 
             // Для поддержки пульта Lampa
             li.addEventListener('hover:enter', function() {
+                $('.prisma-menu__item').removeClass('active');
+                li.classList.add('active');
                 executeAction(item.action);
+            });
+
+            li.addEventListener('hover:focus', function() {
+                Lampa.Controller.collectionSet(menuEl);
             });
 
             listEl.appendChild(li);
