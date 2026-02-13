@@ -200,14 +200,25 @@
                 infoBlock.className = 'card__rating-year-info';
                 
                 var html = '';
+                
+                // Рейтинг с неоновым эффектом
                 if (rating > 0) {
                     html += '<span class="rating-val">';
                     html += '<svg class="rating-star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
                     html += parseFloat(rating).toFixed(1);
                     html += '</span>';
                 }
+
+                // Год
                 if (year) {
                     html += '<span class="year-val">' + year + '</span>';
+                }
+
+                // Добавляем бейдж качества (если есть в данных)
+                var quality = data.quality || '';
+                if (quality) {
+                    var qClass = quality.toLowerCase().indexOf('4k') > -1 ? ' card__quality-badge--4k' : '';
+                    html += '<span class="card__quality-badge' + qClass + '">' + quality + '</span>';
                 }
                 
                 infoBlock.innerHTML = html;
