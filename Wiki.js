@@ -62,8 +62,7 @@
                 if (!isOpened) _this.startSearch(data.movie);
             });
 
-            var enabled = Lampa.Controller.enabled();
-            if (enabled && enabled.name === 'full_start') {
+            if (Lampa.Controller.enabled().name === 'full_start') {
                 Lampa.Controller.enable('full_start');
             }
         };
@@ -109,8 +108,7 @@
 
         this.showMenu = function(items, movieTitle) {
             var _this = this;
-            var enabled = Lampa.Controller.enabled();
-            var current_controller = enabled ? enabled.name : 'full_start';
+            var current_controller = Lampa.Controller.enabled().name;
             var menu = $('<div class="wiki-select-container"><div class="wiki-select-body">' +
                             '<div style="font-size: 1.4em; margin-bottom: 20px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px;">Wikipedia: ' + movieTitle + '</div>' +
                             '<div class="wiki-items-list"></div></div></div>');
