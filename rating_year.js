@@ -320,21 +320,42 @@
             // Получаем все пункты меню от Lampa
             var allLampaItems = [];
             if (window.Lampa && Lampa.Menu) {
-                if (typeof Lampa.Menu.get === 'function') {
-                    allLampaItems = Lampa.Menu.get();
-                } else if (Lampa.Menu.items) {
-                    allLampaItems = Array.isArray(Lampa.Menu.items) ? Lampa.Menu.items : Object.values(Lampa.Menu.items);
+                var m = Lampa.Menu;
+                var items = [];
+                
+                if (typeof m.get === 'function') items = m.get();
+                else if (typeof m.items === 'function') items = m.items();
+                else if (m.items) items = m.items;
+                
+                if (!items || (Array.isArray(items) && items.length === 0)) {
+                    if (typeof m.list === 'function') items = m.list();
+                    else if (m.list) items = m.list;
                 }
+
+                if (Array.isArray(items)) allLampaItems = items;
+                else if (items && typeof items === 'object') allLampaItems = Object.values(items);
             }
 
             if (!Array.isArray(allLampaItems)) allLampaItems = [];
 
+            // Если список все еще пуст, добавляем стандартные пункты Lampa как фолбек
+            if (allLampaItems.length === 0) {
+                allLampaItems = [
+                    {title: '{menu_main}', id: 'main', icon: iconMap.main},
+                    {title: '{menu_movies}', id: 'movies', icon: iconMap.movies},
+                    {title: '{menu_tv}', id: 'tv', icon: iconMap.tv},
+                    {title: '{menu_anime}', id: 'anime', icon: iconMap.anime},
+                    {title: '{menu_favorite}', id: 'favorite', icon: iconMap.favorite},
+                    {title: '{menu_history}', id: 'history', icon: iconMap.history},
+                    {title: '{menu_settings}', id: 'settings', icon: iconMap.settings}
+                ];
+            }
+
             allLampaItems.forEach(function(item) {
-                var id = item.id || item.action || item.component;
+                var id = item.id || item.action || item.component || (typeof item.title === 'string' ? item.title : '');
                 
                 // Пропускаем поиск по просьбе пользователя
-                if (id === 'search') return;
-                if (!id) return;
+                if (id === 'search' || !id) return;
 
                 // Переводим заголовок, если это ключ локализации
                 var title = item.title;
@@ -348,7 +369,7 @@
                 var icon = item.icon || iconMap[id] || '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
                 if (iconMap[id]) icon = iconMap[id]; // Приоритет нашим иконкам для стандартных пунктов
 
-                // Если иконка - это имя класса или FontAwesome, оборачиваем в div
+                // Если иконка - это имя класса или FontAwesome, оборачиваем в i
                 if (typeof icon === 'string' && icon.indexOf('<svg') === -1) {
                     icon = `<i class="${icon}"></i>`;
                 }
