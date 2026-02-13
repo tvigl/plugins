@@ -336,13 +336,22 @@
                 if (id === 'search') return;
                 if (!id) return;
 
+                // Переводим заголовок, если это ключ локализации
                 var title = item.title;
-                if (window.Lampa.Lang && Lampa.Lang.translate && typeof title === 'string' && title.indexOf('{') === 0) {
-                    title = Lampa.Lang.translate(title);
+                if (window.Lampa.Lang && Lampa.Lang.translate && typeof title === 'string') {
+                    if (title.indexOf('{') === 0 || title.indexOf('menu_') === 0) {
+                        title = Lampa.Lang.translate(title);
+                    }
                 }
 
+                // Обработка иконок: используем нашу карту или иконку от Lampa
                 var icon = item.icon || iconMap[id] || '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
                 if (iconMap[id]) icon = iconMap[id]; // Приоритет нашим иконкам для стандартных пунктов
+
+                // Если иконка - это имя класса или FontAwesome, оборачиваем в div
+                if (typeof icon === 'string' && icon.indexOf('<svg') === -1) {
+                    icon = `<i class="${icon}"></i>`;
+                }
 
                 var li = document.createElement('li');
                 li.className = 'prisma-menu__item selector';
