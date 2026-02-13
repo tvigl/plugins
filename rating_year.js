@@ -193,6 +193,58 @@
                 background: rgba(255,255,255,0.1);
                 border-radius: 10px;
             }
+
+            /* Адаптивность для разных экранов */
+            @media screen and (max-width: 768px) {
+                .prisma-menu {
+                    width: 280px;
+                    left: 10px;
+                    top: 10px;
+                    bottom: 10px;
+                    padding: 10px;
+                    border-radius: 18px;
+                }
+                .prisma-menu__logo-text {
+                    font-size: 1.1em;
+                }
+                .prisma-menu__time {
+                    font-size: 1.5em;
+                }
+                .prisma-menu__item {
+                    padding: 8px 12px;
+                    font-size: 0.95em;
+                }
+                .prisma-menu__logo-icon {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            @media screen and (max-width: 480px) {
+                .prisma-menu {
+                    width: 250px;
+                    left: 5px;
+                    top: 5px;
+                    bottom: 5px;
+                    border-radius: 15px;
+                }
+                .prisma-menu__logo-text {
+                    display: none; /* Скрываем текст лого на совсем маленьких экранах */
+                }
+                .prisma-menu__header {
+                    padding-bottom: 10px;
+                }
+                .prisma-menu__time {
+                    font-size: 1.3em;
+                }
+                .prisma-menu__date-block {
+                    display: none; /* Скрываем дату на мобилках для экономии места */
+                }
+                .prisma-menu__item {
+                    gap: 10px;
+                    padding: 7px 10px;
+                }
+            }
         `;
 
         if (!document.getElementById('prisma-menu-styles')) {
@@ -224,7 +276,7 @@
                     <div class="prisma-menu__logo-icon">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M7 2l12 11.2l-5.8 1.4l3.8 6.6l-2.6 1.5l-3.8-6.6l-3.6 3.1z"/></svg>
                     </div>
-                    <div class="prisma-menu__logo-text">PRISMA</div>
+                    <div class="prisma-menu__logo-text">LampaClick</div>
                 </div>
                 <div class="prisma-menu__header-right">
                     <div class="prisma-menu__time" id="prisma-clock">00:00</div>
