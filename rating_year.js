@@ -35,14 +35,25 @@
 
             /* Оформление значения рейтинга */
             .card__rating-year-info .rating-val {
-                color: #ffc107; /* Золотистый цвет */
+                color: #2e9fff; /* Синий цвет как на картинке */
                 font-weight: bold;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            /* Иконка звезды */
+            .card__rating-year-info .rating-star {
+                width: 16px;
+                height: 16px;
+                fill: #2e9fff;
             }
 
             /* Оформление значения года */
             .card__rating-year-info .year-val {
                 color: #fff;
-                opacity: 0.7;
+                opacity: 0.5;
+                margin-left: 2px;
             }
 
             /* Корректировка отступа названия */
@@ -112,7 +123,10 @@
                 
                 var html = '';
                 if (rating > 0) {
-                    html += '<span class="rating-val">' + parseFloat(rating).toFixed(1) + '</span>';
+                    html += '<span class="rating-val">';
+                    html += '<svg class="rating-star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+                    html += parseFloat(rating).toFixed(1);
+                    html += '</span>';
                 }
                 if (year) {
                     html += '<span class="year-val">' + year + '</span>';
