@@ -111,16 +111,16 @@
         }
 
         var css = `
-            .rating-year-inline {
-                display: inline-block;
-                margin-left: 8px;
-                font-size: 0.9em;
+            .rating-year-container {
+                text-align: center;
+                margin: 4px 0;
+                font-size: 0.85em;
                 font-weight: 500;
-                opacity: 0.8;
+                opacity: 0.9;
                 transition: opacity 0.2s ease;
             }
 
-            .rating-year-inline:hover {
+            .rating-year-container:hover {
                 opacity: 1;
             }
 
@@ -144,18 +144,33 @@
                 font-weight: 400;
             }
 
-            /* Для карточек где нет отдельного контейнера для заголовка */
+            /* Перемещаем заголовок под рейтинг и год */
             .card__title {
+                order: 3;
+                margin-top: 2px;
+            }
+
+            /* Контейнер для рейтинга и года */
+            .card__rating-year {
+                order: 2;
+                margin: 2px 0;
+            }
+
+            /* Постер должен быть первым */
+            .card__view {
                 display: flex;
-                align-items: center;
-                flex-wrap: wrap;
+                flex-direction: column;
+            }
+
+            .card__poster {
+                order: 1;
             }
 
             /* Адаптивность */
             @media (max-width: 768px) {
-                .rating-year-inline {
-                    font-size: 0.8em;
-                    margin-left: 4px;
+                .rating-year-container {
+                    font-size: 0.75em;
+                    margin: 2px 0;
                 }
             }
         `;
@@ -243,8 +258,8 @@
         }
 
         // Создаем контейнер для рейтинга и года
-        var infoContainer = document.createElement('span');
-        infoContainer.className = 'rating-year-inline';
+        var infoContainer = document.createElement('div');
+        infoContainer.className = 'rating-year-container card__rating-year';
         
         var hasContent = false;
 
@@ -273,26 +288,35 @@
             }
         }
 
-        // Добавляем контейнер после заголовка
+        // Добавляем контейнер после постера, перед заголовком
         if (hasContent) {
+            var cardView = cardElement.querySelector('.card__view');
             var titleElement = cardElement.querySelector('.card__title, .card__name, .title');
-            if (titleElement) {
-                titleElement.appendChild(infoContainer);
+            
+            if (cardView) {
+                // Вставляем контейнер перед заголовком
+                if (titleElement) {
+                    cardView.insertBefore(infoContainer, titleElement);
+                } else {
+                    // Если заголовка нет, добавляем в конец
+                    cardView.appendChild(infoContainer);
+                }
             }
         }
 
         // Если нет данных, пытаемся получить из TMDB
         if ((!cardData.rating || !cardData.year) && cardData.title) {
             fetchFromTMDB(cardData.title, cardData, function(data) {
+                var cardView = cardElement.querySelector('.card__view');
                 var titleElement = cardElement.querySelector('.card__title, .card__name, .title');
-                var existingInfo = titleElement.querySelector('.rating-year-inline');
+                var existingInfo = cardView.querySelector('.card__rating-year');
                 
                 if (existingInfo) {
                     existingInfo.remove();
                 }
                 
-                var infoContainer = document.createElement('span');
-                infoContainer.className = 'rating-year-inline';
+                var infoContainer = document.createElement('div');
+                infoContainer.className = 'rating-year-container card__rating-year';
                 
                 var hasContent = false;
                 
@@ -319,8 +343,12 @@
                     }
                 }
                 
-                if (hasContent && titleElement) {
-                    titleElement.appendChild(infoContainer);
+                if (hasContent && cardView) {
+                    if (titleElement) {
+                        cardView.insertBefore(infoContainer, titleElement);
+                    } else {
+                        cardView.appendChild(infoContainer);
+                    }
                 }
             });
         }
