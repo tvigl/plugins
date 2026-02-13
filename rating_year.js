@@ -311,14 +311,28 @@
             
             // Получаем динамические пункты от других плагинов, если они есть
             var dynamicItems = [];
-            if (window.Lampa && Lampa.Menu && Lampa.Menu.get) {
-                var allItems = Lampa.Menu.get();
+            if (window.Lampa && Lampa.Menu) {
+                // Пытаемся получить список через разные методы Lampa (в разных версиях по-разному)
+                var allItems = [];
+                if (typeof Lampa.Menu.get === 'function') allItems = Lampa.Menu.get();
+                else if (Lampa.Menu.items) allItems = Lampa.Menu.items;
+
+                console.log('Prisma Menu: All detected items:', allItems);
+
                 // Фильтруем те, которых нет в нашем статичном списке
                 dynamicItems = allItems.filter(function(item) {
-                    return !menuData.find(function(m) { return m.action === item.id || m.action === item.action; });
+                    var id = item.id || item.action;
+                    // Проверяем, нет ли уже такого ID в нашем базовом меню
+                    return !menuData.find(function(m) { return m.action === id; });
                 }).map(function(item) {
+                    // Обрабатываем перевод заголовка, если это ключ
+                    var title = item.title;
+                    if (window.Lampa.Lang && Lampa.Lang.translate) {
+                        title = Lampa.Lang.translate(title);
+                    }
+                    
                     return {
-                        title: item.title,
+                        title: title,
                         action: item.id || item.action,
                         icon: item.icon || '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>'
                     };
@@ -354,6 +368,16 @@
 
                 listEl.appendChild(li);
             });
+        }
+
+        // Перехватываем добавление новых пунктов меню
+        if (window.Lampa && Lampa.Menu) {
+            var originalMenuAdd = Lampa.Menu.add;
+            Lampa.Menu.add = function(item) {
+                if (originalMenuAdd) originalMenuAdd.apply(Lampa.Menu, arguments);
+                console.log('Prisma Menu: New item added via Lampa.Menu.add:', item);
+                renderMenuItems();
+            };
         }
 
         renderMenuItems();
@@ -421,12 +445,22 @@
             } else if (action === 'anime') {
                 Lampa.Activity.push({ component: 'category', url: 'movie', title: 'Аниме', genres: '16' });
             } else {
-                // Если действие не найдено в списке, пробуем запустить его через стандартную систему Lampa
-                // Это позволяет работать сторонним плагинам
-                if (window.Lampa && Lampa.Component && Lampa.Component.get(action)) {
+                // Пытаемся найти оригинальный пункт в меню Lampa
+                var allItems = [];
+                if (window.Lampa && Lampa.Menu) {
+                    if (typeof Lampa.Menu.get === 'function') allItems = Lampa.Menu.get();
+                    else if (Lampa.Menu.items) allItems = Lampa.Menu.items;
+                }
+
+                var originalItem = allItems.find(function(item) {
+                    return (item.id || item.action) === action;
+                });
+
+                if (originalItem && typeof originalItem.onSelect === 'function') {
+                    originalItem.onSelect();
+                } else if (window.Lampa && Lampa.Component && Lampa.Component.get(action)) {
                     Lampa.Activity.push({ component: action, title: action });
                 } else {
-                    // Универсальный запуск события для плагинов, которые слушают клики по своим пунктам
                     Lampa.Listener.send('menu', { type: 'click', action: action });
                 }
             }
