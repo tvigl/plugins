@@ -17,8 +17,8 @@
                 display: none !important;
             }
 
-            /* Контейнер нового меню Prisma */
-            .prisma-menu {
+            /* Контейнер нового меню Click */
+            .click-menu {
                 position: fixed;
                 left: 20px;
                 top: 20px;
@@ -40,12 +40,12 @@
                 max-height: calc(100vh - 40px);
             }
 
-            .prisma-menu--hidden {
+            .click-menu--hidden {
                 transform: translateX(-120%);
             }
 
             /* Подложка для закрытия */
-            .prisma-menu-overlay {
+            .click-menu-overlay {
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -58,13 +58,13 @@
                 transition: all 0.4s ease;
             }
 
-            .prisma-menu-overlay--show {
+            .click-menu-overlay--show {
                 opacity: 1;
                 visibility: visible;
             }
 
             /* Шапка меню: Лого и Часы */
-            .prisma-menu__header {
+            .click-menu__header {
                 padding: 5px 10px 10px;
                 display: flex;
                 flex-direction: row;
@@ -73,14 +73,14 @@
                 border-bottom: 1px solid rgba(255,255,255,0.05);
             }
 
-            .prisma-menu__logo {
+            .click-menu__logo {
                 display: flex;
                 align-items: center;
                 gap: 12px;
                 padding: 5px 0;
             }
 
-            .prisma-menu__logo-icon {
+            .click-menu__logo-icon {
                 width: 28px;
                 height: 28px;
                 background: linear-gradient(135deg, #ff00cc 0%, #3333ff 100%);
@@ -92,7 +92,7 @@
                 transform: rotate(-10deg);
             }
 
-            .prisma-menu__logo-text {
+            .click-menu__logo-text {
                 font-size: 1.3em;
                 font-weight: 800;
                 letter-spacing: -0.5px;
@@ -101,43 +101,43 @@
                 text-shadow: 0 0 10px rgba(255,255,255,0.2);
             }
 
-            .prisma-menu__header-right {
+            .click-menu__header-right {
                 text-align: right;
             }
 
-            .prisma-menu__time {
+            .click-menu__time {
                 font-size: 1.5em;
                 font-weight: 700;
                 color: #fff;
                 line-height: 1;
             }
 
-            .prisma-menu__date-block {
+            .click-menu__date-block {
                 line-height: 1.1;
                 margin-top: 2px;
             }
 
-            .prisma-menu__date {
+            .click-menu__date {
                 font-size: 0.7em;
                 color: rgba(255,255,255,0.5);
                 font-weight: 400;
             }
 
-            .prisma-menu__day {
+            .click-menu__day {
                 font-size: 0.8em;
                 font-weight: 500;
                 color: rgba(255,255,255,0.7);
             }
 
             /* Список элементов меню */
-            .prisma-menu__list {
+            .click-menu__list {
                 padding: 10px 0;
                 margin: 0;
                 list-style: none;
                 overflow-y: auto;
             }
 
-            .prisma-menu__item {
+            .click-menu__item {
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -151,7 +151,7 @@
                 cursor: pointer;
             }
 
-            .prisma-menu__item-icon {
+            .click-menu__item-icon {
                 width: 20px;
                 height: 20px;
                 display: flex;
@@ -160,76 +160,76 @@
                 opacity: 0.7;
             }
 
-            .prisma-menu__item-icon svg {
+            .click-menu__item-icon svg {
                 width: 18px;
                 height: 18px;
                 fill: currentColor;
             }
 
             /* Состояние фокуса и активного элемента */
-            .prisma-menu__item.focus,
-            .prisma-menu__item:hover {
+            .click-menu__item.focus,
+            .click-menu__item:hover {
                 background: rgba(255, 255, 255, 0.08);
                 color: #fff;
                 box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03), 0 5px 15px rgba(0, 0, 0, 0.3);
             }
 
-            .prisma-menu__item.focus .prisma-menu__item-icon,
-            .prisma-menu__item:hover .prisma-menu__item-icon {
+            .click-menu__item.focus .click-menu__item-icon,
+            .click-menu__item:hover .click-menu__item-icon {
                 opacity: 1;
                 color: #2e9fff;
                 filter: drop-shadow(0 0 8px rgba(46, 159, 255, 0.6));
             }
 
-            .prisma-menu__item.active,
-            .prisma-menu__item.focus-active {
+            .click-menu__item.active,
+            .click-menu__item.focus-active {
                 background: linear-gradient(90deg, #2e9fff 0%, #0072ff 100%);
                 color: #fff;
                 font-weight: 700;
                 box-shadow: 0 4px 20px rgba(46, 159, 255, 0.4);
             }
 
-            .prisma-menu__item.active .prisma-menu__item-icon,
-            .prisma-menu__item.focus-active .prisma-menu__item-icon {
+            .click-menu__item.active .click-menu__item-icon,
+            .click-menu__item.focus-active .click-menu__item-icon {
                 opacity: 1;
                 color: #fff;
                 filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
             }
 
             /* Футер меню */
-            .prisma-menu__footer {
+            .click-menu__footer {
                 padding: 5px 0 0;
                 border-top: 1px solid rgba(255,255,255,0.05);
             }
 
             /* Стили для скроллбара */
-            .prisma-menu__list::-webkit-scrollbar {
+            .click-menu__list::-webkit-scrollbar {
                 width: 4px;
             }
-            .prisma-menu__list::-webkit-scrollbar-track {
+            .click-menu__list::-webkit-scrollbar-track {
                 background: transparent;
             }
-            .prisma-menu__list::-webkit-scrollbar-thumb {
+            .click-menu__list::-webkit-scrollbar-thumb {
                 background: rgba(255,255,255,0.1);
                 border-radius: 10px;
             }
 
             /* Адаптивность для разных экранов */
             @media screen and (max-width: 768px) {
-                .prisma-menu {
+                .click-menu {
                     width: 260px;
                     left: 10px;
                     top: 10px;
                     padding: 8px;
                     border-radius: 18px;
                 }
-                .prisma-menu__logo-text {
+                .click-menu__logo-text {
                     font-size: 1em;
                 }
-                .prisma-menu__time {
+                .click-menu__time {
                     font-size: 1.3em;
                 }
-                .prisma-menu__item {
+                .click-menu__item {
                     padding: 6px 10px;
                     font-size: 0.9em;
                     gap: 10px;
@@ -237,62 +237,62 @@
             }
 
             @media screen and (max-width: 480px) {
-                .prisma-menu {
+                .click-menu {
                     width: 240px;
                     left: 5px;
                     top: 5px;
                     padding: 6px;
                     border-radius: 15px;
                 }
-                .prisma-menu__time {
+                .click-menu__time {
                     font-size: 1.2em;
                 }
-                .prisma-menu__item {
+                .click-menu__item {
                     padding: 5px 8px;
                     gap: 8px;
                 }
             }
         `;
 
-        if (!document.getElementById('prisma-menu-styles')) {
+        if (!document.getElementById('click-menu-styles')) {
             var styleEl = document.createElement('style');
-            styleEl.id = 'prisma-menu-styles';
+            styleEl.id = 'click-menu-styles';
             styleEl.innerHTML = style;
             document.head.appendChild(styleEl);
         }
 
         var menuEl = document.createElement('div');
-        menuEl.className = 'prisma-menu prisma-menu--hidden';
+        menuEl.className = 'click-menu click-menu--hidden';
 
         var overlayEl = document.createElement('div');
-        overlayEl.className = 'prisma-menu-overlay';
+        overlayEl.className = 'click-menu-overlay';
         overlayEl.addEventListener('click', function() {
             toggleMenu(false);
         });
         document.body.appendChild(overlayEl);
         
         var headerHTML = `
-            <div class="prisma-menu__header">
-                <div class="prisma-menu__logo">
-                    <div class="prisma-menu__logo-icon">
+            <div class="click-menu__header">
+                <div class="click-menu__logo">
+                    <div class="click-menu__logo-icon">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
                             <path d="M10.07 2.42L3.5 19.07l6.07-2.57 3.43 7.08 3.5-1.7-3.43-7.08 7.43-1.42L10.07 2.42z"/>
                         </svg>
                     </div>
-                    <div class="prisma-menu__logo-text">Click</div>
+                    <div class="click-menu__logo-text">Click</div>
                 </div>
-                <div class="prisma-menu__header-right">
-                    <div class="prisma-menu__time" id="prisma-clock">00:00</div>
-                    <div class="prisma-menu__date-block">
-                        <div class="prisma-menu__date" id="prisma-date">01 Января 2024</div>
-                        <div class="prisma-menu__day" id="prisma-day">Понедельник</div>
+                <div class="click-menu__header-right">
+                    <div class="click-menu__time" id="click-clock">00:00</div>
+                    <div class="click-menu__date-block">
+                        <div class="click-menu__date" id="click-date">01 Января 2024</div>
+                        <div class="click-menu__day" id="click-day">Понедельник</div>
                     </div>
                 </div>
             </div>
         `;
 
         var listEl = document.createElement('ul');
-        listEl.className = 'prisma-menu__list';
+        listEl.className = 'click-menu__list';
 
         // Собираем меню сразу
         menuEl.innerHTML = headerHTML;
@@ -300,13 +300,13 @@
         
         // Футер (Инфо)
         var footerEl = document.createElement('div');
-        footerEl.className = 'prisma-menu__footer';
+        footerEl.className = 'click-menu__footer';
         var infoItem = document.createElement('div');
-        infoItem.className = 'prisma-menu__item selector';
+        infoItem.className = 'click-menu__item selector';
         infoItem.dataset.action = 'about';
         infoItem.innerHTML = `
-            <div class="prisma-menu__item-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
-            <div class="prisma-menu__item-text">Инфо</div>
+            <div class="click-menu__item-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
+            <div class="click-menu__item-text">Инфо</div>
         `;
         infoItem.addEventListener('click', function() { executeAction('about'); });
         infoItem.addEventListener('hover:enter', function() { executeAction('about'); });
@@ -333,9 +333,106 @@
             'about': '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
         };
 
+        function toggleMenu(show) {
+            if (show) {
+                menuEl.classList.remove('click-menu--hidden');
+                overlayEl.classList.add('click-menu-overlay--show');
+                Lampa.Controller.add('click_menu', {
+                    toggle: function() {},
+                    update: function() {},
+                    render: function() { return menuEl; },
+                    collection: function() { return menuEl; },
+                    active: function() { return menuEl; },
+                    exit: function() { toggleMenu(false); },
+                    pause: function() {},
+                    stop: function() {},
+                    renderMenuItems: renderMenuItems
+                });
+                Lampa.Controller.toggle('click_menu');
+            } else {
+                menuEl.classList.add('click-menu--hidden');
+                overlayEl.classList.remove('click-menu-overlay--show');
+                Lampa.Controller.toggle('content');
+            }
+        }
+
+        function updateTime() {
+            var now = new Date();
+            var h = now.getHours();
+            var m = now.getMinutes();
+            var clockEl = document.getElementById('click-clock');
+            if (clockEl) clockEl.innerText = (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m);
+
+            var days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+            var months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+            
+            var dayEl = document.getElementById('click-day');
+            if (dayEl) dayEl.innerText = days[now.getDay()];
+
+            var dateEl = document.getElementById('click-date');
+            if (dateEl) dateEl.innerText = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+        }
+
+        setInterval(updateTime, 10000);
+        updateTime();
+
+        function executeAction(action) {
+            console.log('Click Menu: Executing action', action);
+            
+            // Если это наше "Инфо"
+            if (action === 'about') {
+                toggleMenu(false);
+                Lampa.Activity.push({
+                    url: '',
+                    title: 'О плагине',
+                    component: 'info',
+                    page: 1
+                });
+                return;
+            }
+
+            // Ищем оригинальный пункт в Lampa.Menu
+            var originalItem = null;
+            try {
+                var items = [];
+                if (typeof Lampa.Menu.get === 'function') items = Lampa.Menu.get();
+                else if (Lampa.Menu.items) items = Lampa.Menu.items;
+
+                if (items && typeof items === 'object') {
+                    for (var key in items) {
+                        var itm = items[key];
+                        var itmId = itm.id || itm.action || itm.component;
+                        if (itmId === action) {
+                            originalItem = itm;
+                            break;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Click Menu: Error finding original item', e);
+            }
+
+            toggleMenu(false);
+
+            // Если у пункта есть свой обработчик onSelect (как у большинства плагинов)
+            if (originalItem && typeof originalItem.onSelect === 'function') {
+                console.log('Click Menu: Calling original onSelect for', action);
+                originalItem.onSelect();
+            } else {
+                // Иначе используем стандартный переход Lampa
+                console.log('Click Menu: Navigating to component', action);
+                Lampa.Activity.push({
+                    url: '',
+                    title: action,
+                    component: action,
+                    page: 1
+                });
+            }
+        }
+
         function renderMenuItems() {
             if (!listEl) return;
-            console.log('Prisma Menu: Starting renderMenuItems');
+            console.log('Click Menu: Starting renderMenuItems');
             
             var oldHtml = listEl.innerHTML;
             listEl.innerHTML = '';
@@ -347,18 +444,18 @@
                     var m = Lampa.Menu;
                     var items = [];
                     
-                    console.log('Prisma Menu: Lampa.Menu found', m);
+                    console.log('Click Menu: Lampa.Menu found', m);
 
                     if (typeof m.get === 'function') items = m.get();
                     else if (typeof m.items === 'function') items = m.items();
                     else if (m.items) items = m.items;
                     
-                    console.log('Prisma Menu: Items from Lampa.Menu', items);
+                    console.log('Click Menu: Items from Lampa.Menu', items);
 
                     if (!items || (Array.isArray(items) && items.length === 0)) {
                         if (typeof m.list === 'function') items = m.list();
                         else if (m.list) items = m.list;
-                        console.log('Prisma Menu: Items from Lampa.Menu (fallback list)', items);
+                        console.log('Click Menu: Items from Lampa.Menu (fallback list)', items);
                     }
 
                     if (items && (typeof items === 'object')) {
@@ -373,29 +470,13 @@
                         }
                     }
                 } else {
-                    console.log('Prisma Menu: Lampa.Menu NOT found');
+                    console.log('Click Menu: Lampa.Menu NOT found');
                 }
             } catch (e) {
-                console.error('Prisma Menu: Error getting items from Lampa', e);
+                console.error('Click Menu: Error getting items from Lampa', e);
             }
 
-            console.log('Prisma Menu: allLampaItems before fallback', allLampaItems);
-
-            // Если список все еще пуст, добавляем стандартные пункты Lampa как фолбек
-            if (!allLampaItems || allLampaItems.length === 0) {
-                console.log('Prisma Menu: Using fallback items');
-                allLampaItems = [
-                    {title: 'menu_main', id: 'main', icon: iconMap.main},
-                    {title: 'menu_movies', id: 'movies', icon: iconMap.movies},
-                    {title: 'menu_tv', id: 'tv', icon: iconMap.tv},
-                    {title: 'menu_anime', id: 'anime', icon: iconMap.anime},
-                    {title: 'menu_favorite', id: 'favorite', icon: iconMap.favorite},
-                    {title: 'menu_history', id: 'history', icon: iconMap.history},
-                    {title: 'menu_settings', id: 'settings', icon: iconMap.settings}
-                ];
-            }
-
-            console.log('Prisma Menu: Final allLampaItems to render', allLampaItems);
+            console.log('Click Menu: Final allLampaItems to render', allLampaItems);
 
             allLampaItems.forEach(function(item) {
                 try {
@@ -414,7 +495,7 @@
                     
                     // Пропускаем поиск по просьбе пользователя
                     if (id === 'search' || (!id && !title)) {
-                        console.log('Prisma Menu: Skipping item', item);
+                        console.log('Click Menu: Skipping item', item);
                         return;
                     }
 
@@ -443,21 +524,21 @@
                     }
 
                     var li = document.createElement('li');
-                    li.className = 'prisma-menu__item selector';
+                    li.className = 'click-menu__item selector';
                     li.dataset.action = id;
                     li.innerHTML = `
-                        <div class="prisma-menu__item-icon">${icon}</div>
-                        <div class="prisma-menu__item-text">${title || id || 'Пункт'}</div>
+                        <div class="click-menu__item-icon">${icon}</div>
+                        <div class="click-menu__item-text">${title || id || 'Пункт'}</div>
                     `;
                     
                     li.addEventListener('click', function() {
-                        $('.prisma-menu__item').removeClass('active');
+                        $('.click-menu__item').removeClass('active');
                         li.classList.add('active');
                         executeAction(id);
                     });
 
                     li.addEventListener('hover:enter', function() {
-                        $('.prisma-menu__item').removeClass('active');
+                        $('.click-menu__item').removeClass('active');
                         li.classList.add('active');
                         executeAction(id);
                     });
@@ -467,17 +548,17 @@
                     });
 
                     listEl.appendChild(li);
-                    console.log('Prisma Menu: Appended item', id);
+                    console.log('Click Menu: Appended item', id);
                 } catch (e) {
-                    console.error('Prisma Menu: Error rendering item', item, e);
+                    console.error('Click Menu: Error rendering item', item, e);
                 }
             });
 
             // Если контент изменился, уведомляем контроллер
-            if (listEl.innerHTML !== oldHtml && !menuEl.classList.contains('prisma-menu--hidden')) {
+            if (listEl.innerHTML !== oldHtml && !menuEl.classList.contains('click-menu--hidden')) {
                 Lampa.Controller.collectionSet(menuEl);
             }
-            console.log('Prisma Menu: Render finished');
+            console.log('Click Menu: Render finished');
         }
 
         // Запускаем периодическую проверку в течение первых 15 секунд
@@ -489,7 +570,7 @@
             var originalMenuAdd = Lampa.Menu.add;
             Lampa.Menu.add = function(item) {
                 if (originalMenuAdd) originalMenuAdd.apply(Lampa.Menu, arguments);
-                console.log('Prisma Menu: New item added via Lampa.Menu.add:', item);
+                console.log('Click Menu: New item added via Lampa.Menu.add:', item);
                 renderMenuItems();
             };
         }
@@ -512,170 +593,39 @@
             });
         }
 
-        menuEl.innerHTML = headerHTML;
-        menuEl.appendChild(listEl);
-        
-        // Футер (Инфо)
-        var footerEl = document.createElement('div');
-        footerEl.className = 'prisma-menu__footer';
-        var infoItem = document.createElement('div');
-        infoItem.className = 'prisma-menu__item selector';
-        infoItem.dataset.action = 'about';
-        infoItem.innerHTML = `
-            <div class="prisma-menu__item-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
-            <div class="prisma-menu__item-text">Инфо</div>
-        `;
-        infoItem.addEventListener('click', function() { executeAction('about'); });
-        infoItem.addEventListener('hover:enter', function() { executeAction('about'); });
-        footerEl.appendChild(infoItem);
-        menuEl.appendChild(footerEl);
-
-        document.body.appendChild(menuEl);
-
-        function executeAction(action) {
-            console.log('Prisma Menu Action:', action);
-            toggleMenu(false);
-            
-            // Получаем актуальный список пунктов от Lampa
-            var allLampaItems = [];
-            if (window.Lampa && Lampa.Menu) {
-                if (typeof Lampa.Menu.get === 'function') {
-                    allLampaItems = Lampa.Menu.get();
-                } else if (Lampa.Menu.items) {
-                    allLampaItems = Array.isArray(Lampa.Menu.items) ? Lampa.Menu.items : Object.values(Lampa.Menu.items);
-                }
-            }
-
-            // Ищем оригинальный пункт
-            var originalItem = allLampaItems.find(function(item) {
-                return (item.id || item.action || item.component) === action;
-            });
-
-            // Если у пункта есть свой обработчик onSelect, вызываем его
-            if (originalItem && typeof originalItem.onSelect === 'function') {
-                originalItem.onSelect();
-                return;
-            }
-
-            // Если это стандартный пункт или у него нет onSelect, используем логику Lampa
-            if (action === 'settings') {
-                Lampa.Controller.enable('settings');
-            } else if (action === 'about') {
-                Lampa.Component.add('about', {});
-                Lampa.Activity.push({ component: 'about', title: 'О приложении' });
-            } else if (originalItem && originalItem.component) {
-                // Если у пункта указан компонент, запускаем его
-                Lampa.Activity.push({
-                    url: originalItem.url || '',
-                    title: originalItem.title,
-                    component: originalItem.component,
-                    page: 1
-                });
-            } else {
-                // В крайнем случае отправляем событие клика в систему
-                Lampa.Listener.send('menu', { type: 'click', action: action });
-            }
-        }
-
-        function toggleMenu(show) {
-            if (show) {
-                menuEl.classList.remove('prisma-menu--hidden');
-                overlayEl.classList.add('prisma-menu-overlay--show');
-                Lampa.Controller.enable('prisma_menu');
-            } else {
-                menuEl.classList.add('prisma-menu--hidden');
-                overlayEl.classList.remove('prisma-menu-overlay--show');
-                // Возвращаем фокус на контент, если меню закрыто
-                Lampa.Controller.enable('content');
-            }
-        }
-
-        // Обновление времени и даты
-        function updateClock() {
-            var now = new Date();
-            var hours = String(now.getHours()).padStart(2, '0');
-            var minutes = String(now.getMinutes()).padStart(2, '0');
-            
-            var clockEl = document.getElementById('prisma-clock');
-            if (clockEl) clockEl.textContent = hours + ':' + minutes;
-
-            var days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-            var months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
-            
-            var dayEl = document.getElementById('prisma-day');
-            if (dayEl) dayEl.textContent = days[now.getDay()];
-
-            var dateEl = document.getElementById('prisma-date');
-            if (dateEl) dateEl.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Перехват открытия стандартного меню
+        // Заменяем стандартный контроллер меню
         function replaceMenuController() {
-            Lampa.Controller.add('prisma_menu', {
-                toggle: function () {
-                    Lampa.Controller.collectionSet(menuEl);
-                },
-                up: function () {
-                    Lampa.Select.prev();
-                },
-                down: function () {
-                    Lampa.Select.next();
-                },
-                right: function () {
-                    toggleMenu(false);
-                },
-                back: function () {
-                    toggleMenu(false);
-                }
-            });
-
-            // Слушаем события Lampa для открытия меню
-            Lampa.Listener.follow('app', function (e) {
-                if (e.type === 'ready') {
-                    // Переопределяем метод показа меню в стандартном контроллере
-                    var old_menu_toggle = Lampa.Controller.toggle;
-                    Lampa.Controller.toggle = function(name) {
-                        if (name === 'menu') {
-                            toggleMenu(true);
-                        } else {
-                            old_menu_toggle.apply(Lampa.Controller, arguments);
-                        }
-                    };
-                }
-            });
-
-            // Глобальный перехват кнопки BACK
-            Lampa.Listener.follow('key', function (e) {
-                if (e.code === 8 || e.code === 27 || e.code === 461 || e.code === 10009) { // Backspace, Escape, WebOS Back, Tizen Back
-                    if (!menuEl.classList.contains('prisma-menu--hidden')) {
-                        toggleMenu(false);
-                        e.event.preventDefault();
-                        e.event.stopPropagation();
-                    }
-                }
-            });
-
-            // Также ловим нажатие "Влево" на главной, если фокус на первом элементе
-            $(document).on('keydown', function(e) {
-                if (e.keyCode === 37 && !menuEl.classList.contains('prisma-menu--hidden')) {
-                    // Меню уже открыто, ничего не делаем
-                } else if (e.keyCode === 37 && Lampa.Controller.enabled().name === 'content') {
-                    // Если мы на самом левом краю контента и жмем влево
-                    // (это поведение обычно зашито в Lampa, но мы подстрахуемся)
-                }
-            });
+            var originalOpen = Lampa.Menu.open;
+            Lampa.Menu.open = function() {
+                toggleMenu(true);
+            };
         }
 
         replaceMenuController();
+
+        // Глобальный слушатель кнопок для закрытия меню (Back/Esc)
+        window.addEventListener('keydown', function(e) {
+            if (!menuEl.classList.contains('click-menu--hidden')) {
+                // Коды кнопок: Esc (27), Back (8), Back на TV (461, 10009)
+                if (e.keyCode === 27 || e.keyCode === 8 || e.keyCode === 461 || e.keyCode === 10009) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMenu(false);
+                }
+            }
+        }, true);
     }
 
+    // Ожидаем готовности Lampa
     if (window.Lampa) {
         init();
     } else {
-        document.addEventListener('lampa_ready', init);
+        var interval = setInterval(function() {
+            if (window.Lampa) {
+                clearInterval(interval);
+                init();
+            }
+        }, 100);
     }
 
 })();
