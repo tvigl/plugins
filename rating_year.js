@@ -313,6 +313,7 @@
 
         function renderMenuItems() {
             if (!listEl) return;
+            console.log('Prisma Menu: Starting renderMenuItems');
             
             var oldHtml = listEl.innerHTML;
             listEl.innerHTML = '';
@@ -323,23 +324,31 @@
                 var m = Lampa.Menu;
                 var items = [];
                 
+                console.log('Prisma Menu: Lampa.Menu found', m);
+
                 if (typeof m.get === 'function') items = m.get();
                 else if (typeof m.items === 'function') items = m.items();
                 else if (m.items) items = m.items;
                 
+                console.log('Prisma Menu: Items from Lampa.Menu', items);
+
                 if (!items || (Array.isArray(items) && items.length === 0)) {
                     if (typeof m.list === 'function') items = m.list();
                     else if (m.list) items = m.list;
+                    console.log('Prisma Menu: Items from Lampa.Menu (fallback list)', items);
                 }
 
                 if (Array.isArray(items)) allLampaItems = items;
                 else if (items && typeof items === 'object') allLampaItems = Object.values(items);
+            } else {
+                console.log('Prisma Menu: Lampa.Menu NOT found');
             }
 
-            if (!Array.isArray(allLampaItems)) allLampaItems = [];
+            console.log('Prisma Menu: allLampaItems before fallback', allLampaItems);
 
             // Если список все еще пуст, добавляем стандартные пункты Lampa как фолбек
             if (allLampaItems.length === 0) {
+                console.log('Prisma Menu: Using fallback items');
                 allLampaItems = [
                     {title: '{menu_main}', id: 'main', icon: iconMap.main},
                     {title: '{menu_movies}', id: 'movies', icon: iconMap.movies},
@@ -351,11 +360,16 @@
                 ];
             }
 
+            console.log('Prisma Menu: Final allLampaItems to render', allLampaItems);
+
             allLampaItems.forEach(function(item) {
                 var id = item.id || item.action || item.component || (typeof item.title === 'string' ? item.title : '');
                 
                 // Пропускаем поиск по просьбе пользователя
-                if (id === 'search' || !id) return;
+                if (id === 'search' || !id) {
+                    console.log('Prisma Menu: Skipping item', item);
+                    return;
+                }
 
                 // Переводим заголовок, если это ключ локализации
                 var title = item.title;
@@ -399,12 +413,14 @@
                 });
 
                 listEl.appendChild(li);
+                console.log('Prisma Menu: Appended item', id);
             });
 
             // Если контент изменился, уведомляем контроллер
             if (listEl.innerHTML !== oldHtml && !menuEl.classList.contains('prisma-menu--hidden')) {
                 Lampa.Controller.collectionSet(menuEl);
             }
+            console.log('Prisma Menu: Render finished');
         }
 
         // Запускаем периодическую проверку в течение первых 15 секунд
