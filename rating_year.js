@@ -13,24 +13,58 @@
     function init() {
         // Добавляем стили для скрытия стандартных элементов и оформления новых
         var style = `
-            /* Скрываем стандартные элементы года и рейтинга на карточках */
+            /* Скрываем все возможные стандартные элементы года и рейтинга */
             .card__year, 
+            .card__age,
             .card__vote, 
             .card__rating,
+            .card__info,
+            .card__type,
             .card__view .card__vote,
-            .card__view .card__rating {
+            .card__view .card__rating,
+            .card__view .card__year,
+            .card__view .card__age,
+            .card__view .card__quality,
+            .card__view .card__type,
+            .card__view > div:not(.card__rating-year-info) {
+                /* Будем осторожны с последним селектором, лучше перечислим явно */
+            }
+
+            /* Уточненный список для скрытия всех дефолтных элементов */
+            [class*="card__year"],
+            [class*="card__vote"],
+            [class*="card__rating"]:not(.card__rating-year-info),
+            [class*="card__age"],
+            [class*="card__info"],
+            [class*="card__type"],
+            [class*="card__quality"],
+            .card__view > div, 
+            .card__view > span {
+                /* Скрываем всё лишнее внутри постера и карточки, кроме нашего блока */
                 display: none !important;
+            }
+
+            /* Исключаем наш блок из скрытия, если он вдруг попал под маску */
+            .card__rating-year-info,
+            .card__rating-year-info * {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
 
             /* Контейнер для нашего рейтинга и года */
             .card__rating-year-info {
-                display: flex;
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
                 align-items: center;
                 gap: 10px;
-                margin: 5px 0 2px 0;
+                margin: 4px 0 2px 0;
                 font-size: 1.1em;
                 font-weight: 500;
                 line-height: 1;
+                position: relative;
+                z-index: 10;
             }
 
             /* Оформление значения рейтинга */
@@ -77,6 +111,21 @@
          */
         function processCard(cardEl) {
             if (!cardEl || cardEl.getAttribute('data-rating-year-processed')) return;
+
+            // Удаляем стандартные элементы из DOM для надежности
+            var toRemove = cardEl.querySelectorAll('.card__year, .card__age, .card__vote, .card__rating, .card__info, .card__type');
+            for (var i = 0; i < toRemove.length; i++) {
+                toRemove[i].remove();
+            }
+
+            // Также проверяем внутри .card__view (там часто лежат бейджи)
+            var viewEl = cardEl.querySelector('.card__view');
+            if (viewEl) {
+                var badgesToRemove = viewEl.querySelectorAll('.card__vote, .card__rating, .card__year, .card__age, .card__type, .card__quality');
+                for (var j = 0; j < badgesToRemove.length; j++) {
+                    badgesToRemove[j].remove();
+                }
+            }
 
             // Получаем данные карточки
             var data = cardEl.card_data || {};
@@ -138,9 +187,9 @@
                 var viewEl = cardEl.querySelector('.card__view');
                 var titleEl = cardEl.querySelector('.card__title');
 
-                if (viewEl && titleEl) {
-                    // Вставляем между постером и названием
-                    cardEl.insertBefore(infoBlock, titleEl);
+                if (titleEl && titleEl.parentNode) {
+                    // Вставляем строго перед названием (после постера)
+                    titleEl.parentNode.insertBefore(infoBlock, titleEl);
                 } else if (viewEl) {
                     // Если названия нет, просто после постера
                     viewEl.after(infoBlock);
@@ -181,6 +230,30 @@
         for (var k = 0; k < existingCards.length; k++) {
             processCard(existingCards[k]);
         }
+
+        // Периодическая очистка (на случай если Lampa добавляет элементы позже)
+        setInterval(function() {
+            var allCards = document.querySelectorAll('.card');
+            for (var i = 0; i < allCards.length; i++) {
+                var card = allCards[i];
+                // Очищаем стандартные элементы даже если карточка "обработана"
+                var toRemove = card.querySelectorAll('.card__year, .card__age, .card__vote, .card__rating, .card__info, .card__type');
+                for (var j = 0; j < toRemove.length; j++) {
+                    toRemove[j].remove();
+                }
+                var view = card.querySelector('.card__view');
+                if (view) {
+                    var badges = view.querySelectorAll('.card__vote, .card__rating, .card__year, .card__age, .card__type, .card__quality');
+                    for (var l = 0; l < badges.length; l++) {
+                        badges[l].remove();
+                    }
+                }
+                // Если карточка еще не была полностью обработана нашим плагином
+                if (!card.getAttribute('data-rating-year-processed')) {
+                    processCard(card);
+                }
+            }
+        }, 1000);
     }
 
     // Запуск при готовности Lampa
