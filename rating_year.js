@@ -259,16 +259,16 @@
         }
 
         var menuData = [
+            { title: 'Поиск', action: 'search', icon: '<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>' },
             { title: 'Главная', action: 'main', icon: '<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>' },
             { title: 'Фильмы', action: 'movie', icon: '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>' },
             { title: 'Сериалы', action: 'tv', icon: '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>' },
-            { title: 'Детям', action: 'child', icon: '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>' },
             { title: 'Аниме', action: 'anime', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>' },
+            { title: 'Каналы', action: 'channels', icon: '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zM5 7v2h2V7H5zm0 4v2h2v-2H5zm0 4v2h2v-2H5z"/></svg>' },
             { title: 'Подборки', action: 'collections', icon: '<svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>' },
-            { title: 'Фильтр', action: 'filter', icon: '<svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>' },
             { title: 'Избранное', action: 'favorite', icon: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' },
             { title: 'История', action: 'history', icon: '<svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>' },
-            { title: 'Спорт', action: 'sport', icon: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>' }
+            { title: 'Настройки', action: 'settings', icon: '<svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>' }
         ];
 
         var menuEl = document.createElement('div');
@@ -362,9 +362,10 @@
                 page: 1
             };
 
-            if (action === 'settings') {
-                Lampa.Component.add('settings', {});
-                Lampa.Activity.push({ component: 'settings', title: 'Настройки' });
+            if (action === 'search') {
+                Lampa.Controller.enable('search');
+            } else if (action === 'settings') {
+                Lampa.Controller.enable('settings');
             } else if (action === 'main') {
                 Lampa.Activity.push({ url: '', title: 'Главная', component: 'main' });
             } else if (action === 'movie') {
@@ -378,16 +379,12 @@
             } else if (action === 'about') {
                 Lampa.Component.add('about', {});
                 Lampa.Activity.push({ component: 'about', title: 'О приложении' });
-            } else if (action === 'filter') {
-                Lampa.Activity.push({ component: 'filter', title: 'Фильтр' });
             } else if (action === 'collections') {
                 Lampa.Activity.push({ component: 'collections', title: 'Подборки' });
-            } else if (action === 'child') {
-                Lampa.Activity.push({ component: 'category', url: 'movie', title: 'Детям', genres: '16,35,10751' }); // Пример для TMDB
+            } else if (action === 'channels') {
+                Lampa.Activity.push({ component: 'channels', title: 'Каналы' });
             } else if (action === 'anime') {
                 Lampa.Activity.push({ component: 'category', url: 'movie', title: 'Аниме', genres: '16' }); // Пример для TMDB
-            } else if (action === 'sport') {
-                Lampa.Activity.push({ component: 'category', url: 'movie', title: 'Спорт', genres: '99' }); // Пример
             }
         }
 
