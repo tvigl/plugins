@@ -43,6 +43,25 @@
                 transform: translateX(-120%);
             }
 
+            /* Подложка для закрытия */
+            .prisma-menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+            }
+
+            .prisma-menu-overlay--show {
+                opacity: 1;
+                visibility: visible;
+            }
+
             /* Шапка меню: Лого и Часы */
             .prisma-menu__header {
                 padding: 10px 10px 20px;
@@ -269,6 +288,13 @@
 
         var menuEl = document.createElement('div');
         menuEl.className = 'prisma-menu prisma-menu--hidden';
+
+        var overlayEl = document.createElement('div');
+        overlayEl.className = 'prisma-menu-overlay';
+        overlayEl.addEventListener('click', function() {
+            toggleMenu(false);
+        });
+        document.body.appendChild(overlayEl);
         
         var headerHTML = `
             <div class="prisma-menu__header">
@@ -383,9 +409,11 @@
         function toggleMenu(show) {
             if (show) {
                 menuEl.classList.remove('prisma-menu--hidden');
+                overlayEl.classList.add('prisma-menu-overlay--show');
                 Lampa.Controller.enable('prisma_menu');
             } else {
                 menuEl.classList.add('prisma-menu--hidden');
+                overlayEl.classList.remove('prisma-menu-overlay--show');
                 // Возвращаем фокус на контент, если меню закрыто
                 Lampa.Controller.enable('content');
             }
@@ -446,6 +474,17 @@
                             old_menu_toggle.apply(Lampa.Controller, arguments);
                         }
                     };
+                }
+            });
+
+            // Глобальный перехват кнопки BACK
+            Lampa.Listener.follow('key', function (e) {
+                if (e.code === 8 || e.code === 27 || e.code === 461 || e.code === 10009) { // Backspace, Escape, WebOS Back, Tizen Back
+                    if (!menuEl.classList.contains('prisma-menu--hidden')) {
+                        toggleMenu(false);
+                        e.event.preventDefault();
+                        e.event.stopPropagation();
+                    }
                 }
             });
 
