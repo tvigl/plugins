@@ -22,8 +22,7 @@
                 position: fixed;
                 left: 20px;
                 top: 20px;
-                bottom: 20px;
-                width: 320px;
+                width: 300px;
                 background: rgba(18, 18, 18, 0.85);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
@@ -33,10 +32,12 @@
                 box-shadow: 0 10px 50px rgba(0,0,0,0.8);
                 transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
                 overflow: hidden;
-                padding: 15px;
+                padding: 10px;
                 box-sizing: border-box;
                 border-radius: 24px;
                 border: 1px solid rgba(255,255,255,0.08);
+                height: auto;
+                max-height: calc(100vh - 40px);
             }
 
             .prisma-menu--hidden {
@@ -64,11 +65,11 @@
 
             /* Шапка меню: Лого и Часы */
             .prisma-menu__header {
-                padding: 10px 10px 20px;
+                padding: 5px 10px 10px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                align-items: flex-start;
+                align-items: center;
                 border-bottom: 1px solid rgba(255,255,255,0.05);
             }
 
@@ -76,12 +77,11 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                margin-top: 5px;
             }
 
             .prisma-menu__logo-icon {
-                width: 28px;
-                height: 28px;
+                width: 24px;
+                height: 24px;
                 background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
                 border-radius: 50%;
                 display: flex;
@@ -91,7 +91,7 @@
             }
 
             .prisma-menu__logo-text {
-                font-size: 1.2em;
+                font-size: 1.1em;
                 font-weight: 600;
                 letter-spacing: 0.5px;
                 color: rgba(255,255,255,0.6);
@@ -103,55 +103,54 @@
             }
 
             .prisma-menu__time {
-                font-size: 1.8em;
+                font-size: 1.5em;
                 font-weight: 700;
                 color: #fff;
                 line-height: 1;
-                margin-bottom: 2px;
             }
 
             .prisma-menu__date-block {
                 line-height: 1.1;
+                margin-top: 2px;
             }
 
             .prisma-menu__date {
-                font-size: 0.75em;
+                font-size: 0.7em;
                 color: rgba(255,255,255,0.5);
                 font-weight: 400;
             }
 
             .prisma-menu__day {
-                font-size: 0.85em;
+                font-size: 0.8em;
                 font-weight: 500;
                 color: rgba(255,255,255,0.7);
             }
 
             /* Список элементов меню */
             .prisma-menu__list {
-                flex: 1;
-                overflow-y: auto;
-                padding: 15px 5px;
+                padding: 10px 0;
                 margin: 0;
                 list-style: none;
+                overflow-y: auto;
             }
 
             .prisma-menu__item {
                 display: flex;
                 align-items: center;
-                gap: 15px;
-                padding: 10px 15px;
-                margin-bottom: 4px;
+                gap: 12px;
+                padding: 8px 12px;
+                margin-bottom: 2px;
                 border-radius: 12px;
                 color: rgba(255,255,255,0.7);
-                font-size: 1.05em;
+                font-size: 1em;
                 font-weight: 500;
                 transition: all 0.2s ease;
                 cursor: pointer;
             }
 
             .prisma-menu__item-icon {
-                width: 24px;
-                height: 24px;
+                width: 20px;
+                height: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -159,8 +158,8 @@
             }
 
             .prisma-menu__item-icon svg {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
                 fill: currentColor;
             }
 
@@ -196,9 +195,8 @@
 
             /* Футер меню */
             .prisma-menu__footer {
-                padding: 15px;
+                padding: 5px 0 0;
                 border-top: 1px solid rgba(255,255,255,0.05);
-                margin-top: auto;
             }
 
             /* Стили для скроллбара */
@@ -216,52 +214,39 @@
             /* Адаптивность для разных экранов */
             @media screen and (max-width: 768px) {
                 .prisma-menu {
-                    width: 280px;
+                    width: 260px;
                     left: 10px;
                     top: 10px;
-                    bottom: 10px;
-                    padding: 10px;
+                    padding: 8px;
                     border-radius: 18px;
                 }
                 .prisma-menu__logo-text {
-                    font-size: 1.1em;
+                    font-size: 1em;
                 }
                 .prisma-menu__time {
-                    font-size: 1.5em;
+                    font-size: 1.3em;
                 }
                 .prisma-menu__item {
-                    padding: 8px 12px;
-                    font-size: 0.95em;
-                }
-                .prisma-menu__logo-icon {
-                    width: 24px;
-                    height: 24px;
+                    padding: 6px 10px;
+                    font-size: 0.9em;
+                    gap: 10px;
                 }
             }
 
             @media screen and (max-width: 480px) {
                 .prisma-menu {
-                    width: 250px;
+                    width: 240px;
                     left: 5px;
                     top: 5px;
-                    bottom: 5px;
+                    padding: 6px;
                     border-radius: 15px;
                 }
-                .prisma-menu__logo-text {
-                    display: none; /* Скрываем текст лого на совсем маленьких экранах */
-                }
-                .prisma-menu__header {
-                    padding-bottom: 10px;
-                }
                 .prisma-menu__time {
-                    font-size: 1.3em;
-                }
-                .prisma-menu__date-block {
-                    display: none; /* Скрываем дату на мобилках для экономии места */
+                    font-size: 1.2em;
                 }
                 .prisma-menu__item {
-                    gap: 10px;
-                    padding: 7px 10px;
+                    padding: 5px 8px;
+                    gap: 8px;
                 }
             }
         `;
