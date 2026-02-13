@@ -294,6 +294,28 @@
         var listEl = document.createElement('ul');
         listEl.className = 'prisma-menu__list';
 
+        // Собираем меню сразу
+        menuEl.innerHTML = headerHTML;
+        menuEl.appendChild(listEl);
+        
+        // Футер (Инфо)
+        var footerEl = document.createElement('div');
+        footerEl.className = 'prisma-menu__footer';
+        var infoItem = document.createElement('div');
+        infoItem.className = 'prisma-menu__item selector';
+        infoItem.dataset.action = 'about';
+        infoItem.innerHTML = `
+            <div class="prisma-menu__item-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
+            <div class="prisma-menu__item-text">Инфо</div>
+        `;
+        infoItem.addEventListener('click', function() { executeAction('about'); });
+        infoItem.addEventListener('hover:enter', function() { executeAction('about'); });
+        footerEl.appendChild(infoItem);
+        menuEl.appendChild(footerEl);
+
+        // Добавляем в DOM
+        document.body.appendChild(menuEl);
+
         // Иконки для стандартных пунктов Lampa
         var iconMap = {
             'main': '<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>',
@@ -301,7 +323,7 @@
             'movie': '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>',
             'movies': '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>',
             'tv': '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>',
-            'anime': '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>',
+            'anime': '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm12 0c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>',
             'channels': '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zM5 7v2h2V7H5zm0 4v2h2v-2H5zm0 4v2h2v-2H5z"/></svg>',
             'collections': '<svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>',
             'vitaliy': '<svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>',
@@ -320,34 +342,47 @@
             
             // Получаем все пункты меню от Lampa
             var allLampaItems = [];
-            if (window.Lampa && Lampa.Menu) {
-                var m = Lampa.Menu;
-                var items = [];
-                
-                console.log('Prisma Menu: Lampa.Menu found', m);
+            try {
+                if (window.Lampa && Lampa.Menu) {
+                    var m = Lampa.Menu;
+                    var items = [];
+                    
+                    console.log('Prisma Menu: Lampa.Menu found', m);
 
-                if (typeof m.get === 'function') items = m.get();
-                else if (typeof m.items === 'function') items = m.items();
-                else if (m.items) items = m.items;
-                
-                console.log('Prisma Menu: Items from Lampa.Menu', items);
+                    if (typeof m.get === 'function') items = m.get();
+                    else if (typeof m.items === 'function') items = m.items();
+                    else if (m.items) items = m.items;
+                    
+                    console.log('Prisma Menu: Items from Lampa.Menu', items);
 
-                if (!items || (Array.isArray(items) && items.length === 0)) {
-                    if (typeof m.list === 'function') items = m.list();
-                    else if (m.list) items = m.list;
-                    console.log('Prisma Menu: Items from Lampa.Menu (fallback list)', items);
+                    if (!items || (Array.isArray(items) && items.length === 0)) {
+                        if (typeof m.list === 'function') items = m.list();
+                        else if (m.list) items = m.list;
+                        console.log('Prisma Menu: Items from Lampa.Menu (fallback list)', items);
+                    }
+
+                    if (items && (typeof items === 'object')) {
+                        if (items.constructor === Array) {
+                            allLampaItems = items;
+                        } else {
+                            for (var key in items) {
+                                if (Object.prototype.hasOwnProperty.call(items, key)) {
+                                    allLampaItems.push(items[key]);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    console.log('Prisma Menu: Lampa.Menu NOT found');
                 }
-
-                if (Array.isArray(items)) allLampaItems = items;
-                else if (items && typeof items === 'object') allLampaItems = Object.values(items);
-            } else {
-                console.log('Prisma Menu: Lampa.Menu NOT found');
+            } catch (e) {
+                console.error('Prisma Menu: Error getting items from Lampa', e);
             }
 
             console.log('Prisma Menu: allLampaItems before fallback', allLampaItems);
 
             // Если список все еще пуст, добавляем стандартные пункты Lampa как фолбек
-            if (allLampaItems.length === 0) {
+            if (!allLampaItems || allLampaItems.length === 0) {
                 console.log('Prisma Menu: Using fallback items');
                 allLampaItems = [
                     {title: '{menu_main}', id: 'main', icon: iconMap.main},
@@ -363,57 +398,71 @@
             console.log('Prisma Menu: Final allLampaItems to render', allLampaItems);
 
             allLampaItems.forEach(function(item) {
-                var id = item.id || item.action || item.component || (typeof item.title === 'string' ? item.title : '');
-                
-                // Пропускаем поиск по просьбе пользователя
-                if (id === 'search' || !id) {
-                    console.log('Prisma Menu: Skipping item', item);
-                    return;
-                }
-
-                // Переводим заголовок, если это ключ локализации
-                var title = item.title;
-                if (window.Lampa.Lang && Lampa.Lang.translate && typeof title === 'string') {
-                    if (title.indexOf('{') === 0 || title.indexOf('menu_') === 0) {
-                        title = Lampa.Lang.translate(title);
+                try {
+                    // Извлекаем заголовок
+                    var title = item.title || '';
+                    if (typeof title === 'object' && title !== null) {
+                        if (title.ru) title = title.ru;
+                        else if (title.en) title = title.en;
+                        else {
+                            for (var k in title) { title = title[k]; break; }
+                        }
                     }
+
+                    // Извлекаем ID
+                    var id = item.id || item.action || item.component || (typeof title === 'string' ? title : '');
+                    
+                    // Пропускаем поиск по просьбе пользователя
+                    if (id === 'search' || (!id && !title)) {
+                        console.log('Prisma Menu: Skipping item', item);
+                        return;
+                    }
+
+                    // Переводим заголовок, если это ключ локализации
+                    if (window.Lampa.Lang && Lampa.Lang.translate && typeof title === 'string') {
+                        if (title.indexOf('{') === 0 || title.indexOf('menu_') === 0) {
+                            title = Lampa.Lang.translate(title);
+                        }
+                    }
+
+                    // Обработка иконок: используем нашу карту или иконку от Lampa
+                    var icon = item.icon || iconMap[id] || '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
+                    if (iconMap[id]) icon = iconMap[id]; // Приоритет нашим иконкам для стандартных пунктов
+
+                    // Если иконка - это имя класса или FontAwesome, оборачиваем в i
+                    if (typeof icon === 'string' && icon.indexOf('<svg') === -1 && icon.indexOf('fa-') !== -1) {
+                        icon = `<i class="${icon}"></i>`;
+                    }
+
+                    var li = document.createElement('li');
+                    li.className = 'prisma-menu__item selector';
+                    li.dataset.action = id;
+                    li.innerHTML = `
+                        <div class="prisma-menu__item-icon">${icon}</div>
+                        <div class="prisma-menu__item-text">${title || id || 'Пункт'}</div>
+                    `;
+                    
+                    li.addEventListener('click', function() {
+                        $('.prisma-menu__item').removeClass('active');
+                        li.classList.add('active');
+                        executeAction(id);
+                    });
+
+                    li.addEventListener('hover:enter', function() {
+                        $('.prisma-menu__item').removeClass('active');
+                        li.classList.add('active');
+                        executeAction(id);
+                    });
+
+                    li.addEventListener('hover:focus', function() {
+                        Lampa.Controller.collectionSet(menuEl);
+                    });
+
+                    listEl.appendChild(li);
+                    console.log('Prisma Menu: Appended item', id);
+                } catch (e) {
+                    console.error('Prisma Menu: Error rendering item', item, e);
                 }
-
-                // Обработка иконок: используем нашу карту или иконку от Lampa
-                var icon = item.icon || iconMap[id] || '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
-                if (iconMap[id]) icon = iconMap[id]; // Приоритет нашим иконкам для стандартных пунктов
-
-                // Если иконка - это имя класса или FontAwesome, оборачиваем в i
-                if (typeof icon === 'string' && icon.indexOf('<svg') === -1) {
-                    icon = `<i class="${icon}"></i>`;
-                }
-
-                var li = document.createElement('li');
-                li.className = 'prisma-menu__item selector';
-                li.dataset.action = id;
-                li.innerHTML = `
-                    <div class="prisma-menu__item-icon">${icon}</div>
-                    <div class="prisma-menu__item-text">${title || id}</div>
-                `;
-                
-                li.addEventListener('click', function() {
-                    $('.prisma-menu__item').removeClass('active');
-                    li.classList.add('active');
-                    executeAction(id);
-                });
-
-                li.addEventListener('hover:enter', function() {
-                    $('.prisma-menu__item').removeClass('active');
-                    li.classList.add('active');
-                    executeAction(id);
-                });
-
-                li.addEventListener('hover:focus', function() {
-                    Lampa.Controller.collectionSet(menuEl);
-                });
-
-                listEl.appendChild(li);
-                console.log('Prisma Menu: Appended item', id);
             });
 
             // Если контент изменился, уведомляем контроллер
@@ -560,7 +609,6 @@
             Lampa.Controller.add('prisma_menu', {
                 toggle: function () {
                     Lampa.Controller.collectionSet(menuEl);
-                    Lampa.Controller.enable('prisma_menu');
                 },
                 up: function () {
                     Lampa.Select.prev();
