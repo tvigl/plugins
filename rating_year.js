@@ -2,10 +2,10 @@
     'use strict';
 
     /**
-     * Плагин для Lampa: Меню LampaClick
+     * Плагин для Lampa: Меню Click
      * 
      * Особенности:
-     * - Заменяет стандартное боковое меню на стильное меню LampaClick
+     * - Заменяет стандартное боковое меню на стильное меню Click
      * - Отображает часы, дату и день недели
      * - Адаптировано под управление пультом
      */
@@ -76,26 +76,29 @@
             .prisma-menu__logo {
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 12px;
+                padding: 5px 0;
             }
 
             .prisma-menu__logo-icon {
-                width: 24px;
-                height: 24px;
-                background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                background: linear-gradient(135deg, #ff00cc 0%, #3333ff 100%);
+                border-radius: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+                box-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
+                transform: rotate(-10deg);
             }
 
             .prisma-menu__logo-text {
-                font-size: 1.1em;
-                font-weight: 600;
-                letter-spacing: 0.5px;
-                color: rgba(255,255,255,0.6);
-                text-transform: uppercase;
+                font-size: 1.3em;
+                font-weight: 800;
+                letter-spacing: -0.5px;
+                color: #fff;
+                text-transform: none;
+                text-shadow: 0 0 10px rgba(255,255,255,0.2);
             }
 
             .prisma-menu__header-right {
@@ -259,7 +262,6 @@
         }
 
         var menuData = [
-            { title: 'Поиск', action: 'search', icon: '<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>' },
             { title: 'Главная', action: 'main', icon: '<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>' },
             { title: 'Фильмы', action: 'movie', icon: '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>' },
             { title: 'Сериалы', action: 'tv', icon: '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>' },
@@ -285,9 +287,11 @@
             <div class="prisma-menu__header">
                 <div class="prisma-menu__logo">
                     <div class="prisma-menu__logo-icon">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M7 2l12 11.2l-5.8 1.4l3.8 6.6l-2.6 1.5l-3.8-6.6l-3.6 3.1z"/></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
+                            <path d="M10.07 2.42L3.5 19.07l6.07-2.57 3.43 7.08 3.5-1.7-3.43-7.08 7.43-1.42L10.07 2.42z"/>
+                        </svg>
                     </div>
-                    <div class="prisma-menu__logo-text">LampaClick</div>
+                    <div class="prisma-menu__logo-text">Click</div>
                 </div>
                 <div class="prisma-menu__header-right">
                     <div class="prisma-menu__time" id="prisma-clock">00:00</div>
@@ -362,9 +366,7 @@
                 page: 1
             };
 
-            if (action === 'search') {
-                Lampa.Controller.enable('search');
-            } else if (action === 'settings') {
+            if (action === 'settings') {
                 Lampa.Controller.enable('settings');
             } else if (action === 'main') {
                 Lampa.Activity.push({ url: '', title: 'Главная', component: 'main' });
