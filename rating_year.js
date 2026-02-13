@@ -2,10 +2,10 @@
     'use strict';
 
     /**
-     * Плагин для Lampa: Меню в стиле Prisma
+     * Плагин для Lampa: Меню LampaClick
      * 
      * Особенности:
-     * - Заменяет стандартное боковое меню на стильное меню Prisma
+     * - Заменяет стандартное боковое меню на стильное меню LampaClick
      * - Отображает часы, дату и день недели
      * - Адаптировано под управление пультом
      */
@@ -206,9 +206,9 @@
                 <div class="prisma-menu__header-top">
                     <div class="prisma-menu__logo">
                         <div class="prisma-menu__logo-icon">
-                            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M7 2l12 11.2l-5.8 1.4l3.8 6.6l-2.6 1.5l-3.8-6.6l-3.6 3.1z"/></svg>
                         </div>
-                        <div class="prisma-menu__logo-text">PRISMA</div>
+                        <div class="prisma-menu__logo-text">LampaClick</div>
                     </div>
                     <div class="prisma-menu__time" id="prisma-clock">00:00</div>
                 </div>
