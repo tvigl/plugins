@@ -323,7 +323,7 @@
             'movie': '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>',
             'movies': '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>',
             'tv': '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>',
-            'anime': '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm12 0c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>',
+            'anime': '<svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 4.17 2.84 7.67 6.69 8.69L12 22l2.31-2.31C18.16 18.67 21 15.17 21 11c0-4.97-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7 0 3.17-2.11 5.85-5.02 6.74L12 19.71l-1.98-1.97C7.11 16.85 5 14.17 5 11c0-3.87 3.13-7 7-7zm-3.5 6c-.83 0-1.5.67-1.5 1.5S7.67 13 8.5 13s1.5-.67 1.5-1.5S9.33 10 8.5 10zm7 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/></svg>',
             'channels': '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zM5 7v2h2V7H5zm0 4v2h2v-2H5zm0 4v2h2v-2H5z"/></svg>',
             'collections': '<svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>',
             'vitaliy': '<svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>',
@@ -385,13 +385,13 @@
             if (!allLampaItems || allLampaItems.length === 0) {
                 console.log('Prisma Menu: Using fallback items');
                 allLampaItems = [
-                    {title: '{menu_main}', id: 'main', icon: iconMap.main},
-                    {title: '{menu_movies}', id: 'movies', icon: iconMap.movies},
-                    {title: '{menu_tv}', id: 'tv', icon: iconMap.tv},
-                    {title: '{menu_anime}', id: 'anime', icon: iconMap.anime},
-                    {title: '{menu_favorite}', id: 'favorite', icon: iconMap.favorite},
-                    {title: '{menu_history}', id: 'history', icon: iconMap.history},
-                    {title: '{menu_settings}', id: 'settings', icon: iconMap.settings}
+                    {title: 'menu_main', id: 'main', icon: iconMap.main},
+                    {title: 'menu_movies', id: 'movies', icon: iconMap.movies},
+                    {title: 'menu_tv', id: 'tv', icon: iconMap.tv},
+                    {title: 'menu_anime', id: 'anime', icon: iconMap.anime},
+                    {title: 'menu_favorite', id: 'favorite', icon: iconMap.favorite},
+                    {title: 'menu_history', id: 'history', icon: iconMap.history},
+                    {title: 'menu_settings', id: 'settings', icon: iconMap.settings}
                 ];
             }
 
@@ -420,8 +420,16 @@
 
                     // Переводим заголовок, если это ключ локализации
                     if (window.Lampa.Lang && Lampa.Lang.translate && typeof title === 'string') {
-                        if (title.indexOf('{') === 0 || title.indexOf('menu_') === 0) {
-                            title = Lampa.Lang.translate(title);
+                        // Очищаем от фигурных скобок, если они есть
+                        var cleanKey = title.replace(/\{|\}/g, '');
+                        
+                        // Если это известный ключ или начинается с menu_
+                        if (title.indexOf('{') === 0 || title.indexOf('menu_') === 0 || cleanKey.indexOf('menu_') === 0) {
+                            var translated = Lampa.Lang.translate(cleanKey);
+                            // Если перевод удался (не вернул тот же ключ), используем его
+                            if (translated && translated !== cleanKey) {
+                                title = translated;
+                            }
                         }
                     }
 
