@@ -58,7 +58,8 @@
                 visibility: visible !important;
                 opacity: 1 !important;
                 align-items: center;
-                gap: 10px;
+                justify-content: space-between; /* Рейтинг слева, год справа */
+                width: 100%;
                 margin: 4px 0 2px 0;
                 font-size: 1.1em;
                 font-weight: 500;
@@ -87,7 +88,7 @@
             .card__rating-year-info .year-val {
                 color: #fff;
                 opacity: 0.5;
-                margin-left: 2px;
+                margin-left: auto; /* Дополнительная страховка для выравнивания вправо */
             }
 
             /* Корректировка отступа названия */
