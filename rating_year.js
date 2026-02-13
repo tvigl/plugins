@@ -306,34 +306,73 @@
         var listEl = document.createElement('ul');
         listEl.className = 'prisma-menu__list';
 
-        menuData.forEach(function(item) {
-            var li = document.createElement('li');
-            li.className = 'prisma-menu__item selector';
-            li.dataset.action = item.action;
-            li.innerHTML = `
-                <div class="prisma-menu__item-icon">${item.icon}</div>
-                <div class="prisma-menu__item-text">${item.title}</div>
-            `;
+        function renderMenuItems() {
+            listEl.innerHTML = '';
             
-            li.addEventListener('click', function() {
-                $('.prisma-menu__item').removeClass('active');
-                li.classList.add('active');
-                executeAction(item.action);
-            });
+            // Получаем динамические пункты от других плагинов, если они есть
+            var dynamicItems = [];
+            if (window.Lampa && Lampa.Menu && Lampa.Menu.get) {
+                var allItems = Lampa.Menu.get();
+                // Фильтруем те, которых нет в нашем статичном списке
+                dynamicItems = allItems.filter(function(item) {
+                    return !menuData.find(function(m) { return m.action === item.id || m.action === item.action; });
+                }).map(function(item) {
+                    return {
+                        title: item.title,
+                        action: item.id || item.action,
+                        icon: item.icon || '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>'
+                    };
+                });
+            }
 
-            // Для поддержки пульта Lampa
-            li.addEventListener('hover:enter', function() {
-                $('.prisma-menu__item').removeClass('active');
-                li.classList.add('active');
-                executeAction(item.action);
-            });
+            var fullMenu = menuData.concat(dynamicItems);
 
-            li.addEventListener('hover:focus', function() {
-                Lampa.Controller.collectionSet(menuEl);
-            });
+            fullMenu.forEach(function(item) {
+                var li = document.createElement('li');
+                li.className = 'prisma-menu__item selector';
+                li.dataset.action = item.action;
+                li.innerHTML = `
+                    <div class="prisma-menu__item-icon">${item.icon}</div>
+                    <div class="prisma-menu__item-text">${item.title}</div>
+                `;
+                
+                li.addEventListener('click', function() {
+                    $('.prisma-menu__item').removeClass('active');
+                    li.classList.add('active');
+                    executeAction(item.action);
+                });
 
-            listEl.appendChild(li);
-        });
+                li.addEventListener('hover:enter', function() {
+                    $('.prisma-menu__item').removeClass('active');
+                    li.classList.add('active');
+                    executeAction(item.action);
+                });
+
+                li.addEventListener('hover:focus', function() {
+                    Lampa.Controller.collectionSet(menuEl);
+                });
+
+                listEl.appendChild(li);
+            });
+        }
+
+        renderMenuItems();
+
+        // Подписываемся на события Lampa для обновления меню
+        if (window.Lampa && Lampa.Listener) {
+            Lampa.Listener.follow('app', function (e) {
+                if (e.type === 'ready') {
+                    renderMenuItems();
+                }
+            });
+            
+            // Также перерисовываем при каждом открытии меню, чтобы подхватить опоздавшие плагины
+            Lampa.Listener.follow('menu', function (e) {
+                if (e.type === 'open') {
+                    renderMenuItems();
+                }
+            });
+        }
 
         menuEl.innerHTML = headerHTML;
         menuEl.appendChild(listEl);
@@ -359,13 +398,7 @@
             console.log('Prisma Menu Action:', action);
             toggleMenu(false);
             
-            var activity_data = {
-                url: '',
-                title: '',
-                component: action,
-                page: 1
-            };
-
+            // Если действие соответствует одному из наших предопределенных
             if (action === 'settings') {
                 Lampa.Controller.enable('settings');
             } else if (action === 'main') {
@@ -386,7 +419,16 @@
             } else if (action === 'channels') {
                 Lampa.Activity.push({ component: 'channels', title: 'Каналы' });
             } else if (action === 'anime') {
-                Lampa.Activity.push({ component: 'category', url: 'movie', title: 'Аниме', genres: '16' }); // Пример для TMDB
+                Lampa.Activity.push({ component: 'category', url: 'movie', title: 'Аниме', genres: '16' });
+            } else {
+                // Если действие не найдено в списке, пробуем запустить его через стандартную систему Lampa
+                // Это позволяет работать сторонним плагинам
+                if (window.Lampa && Lampa.Component && Lampa.Component.get(action)) {
+                    Lampa.Activity.push({ component: action, title: action });
+                } else {
+                    // Универсальный запуск события для плагинов, которые слушают клики по своим пунктам
+                    Lampa.Listener.send('menu', { type: 'click', action: action });
+                }
             }
         }
 
