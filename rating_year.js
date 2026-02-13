@@ -85,8 +85,8 @@
 
             /* Оформление значения года */
             .card__rating-year-info .year-val {
-                color: #fff;
-                opacity: 0.5;
+                color: #aaa; /* Сероватый цвет */
+                opacity: 0.8;
                 margin-left: 0; /* Сбрасываем принудительное выравнивание вправо */
             }
 
