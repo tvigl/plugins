@@ -26,8 +26,7 @@
     // === НАСТРОЙКИ ПО УМОЛЧАНИЮ ===
     var settings = {
         rating: 'on',      // 'on' или 'off'
-        year: 'on',        // 'on' или 'off'
-        position: 'bottom' // 'bottom' или 'top'
+        year: 'on'         // 'on' или 'off'
     };
 
     // === КЭШ ДЛЯ ДАННЫХ TMDB ===
@@ -112,84 +111,51 @@
         }
 
         var css = `
-            .rating-year-badge {
-                position: absolute;
-                z-index: 12;
-                font-size: 0.7em;
-                font-weight: 600;
-                padding: 2px 6px;
-                border-radius: 3px;
-                opacity: 0;
-                transform: translateY(10px);
-                transition: all 0.3s ease;
-                pointer-events: none;
-                text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-                box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            .rating-year-inline {
+                display: inline-block;
+                margin-left: 8px;
+                font-size: 0.9em;
+                font-weight: 500;
+                opacity: 0.8;
+                transition: opacity 0.2s ease;
             }
 
-            .rating-year-badge.show {
+            .rating-year-inline:hover {
                 opacity: 1;
-                transform: translateY(0);
             }
 
-            /* Рейтинг */
-            .rating-badge {
-                background: rgba(0, 0, 0, 0.8);
-                color: #fff;
+            .rating-star {
+                color: #2196F3;
+                margin-right: 2px;
             }
 
-            .rating-badge.excellent {
-                background: rgba(0, 170, 0, 0.9);
-                color: #fff;
+            .rating-value {
+                color: #2196F3;
+                font-weight: 600;
             }
 
-            .rating-badge.good {
-                background: rgba(255, 170, 0, 0.9);
-                color: #fff;
+            .year-separator {
+                color: #666;
+                margin: 0 4px;
             }
 
-            .rating-badge.average {
-                background: rgba(255, 140, 0, 0.9);
-                color: #fff;
+            .year-value {
+                color: #999;
+                font-weight: 400;
             }
 
-            .rating-badge.poor {
-                background: rgba(220, 53, 69, 0.9);
-                color: #fff;
+            /* Для карточек где нет отдельного контейнера для заголовка */
+            .card__title {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
             }
 
-            /* Год */
-            .year-badge {
-                background: rgba(0, 0, 0, 0.8);
-                color: #fff;
-            }
-
-            /* Позиционирование */
-            .rating-year-position-bottom .rating-badge {
-                bottom: 2px;
-                left: 2px;
-            }
-
-            .rating-year-position-bottom .year-badge {
-                bottom: 2px;
-                right: 2px;
-            }
-
-            .rating-year-position-top .rating-badge {
-                top: 2px;
-                left: 2px;
-            }
-
-            .rating-year-position-top .year-badge {
-                top: 2px;
-                right: 2px;
-            }
-
-            /* Адаптивность для карточек */
+            /* Адаптивность */
             @media (max-width: 768px) {
-                .rating-year-badge {
-                    font-size: 0.6em;
-                    padding: 1px 4px;
+                .rating-year-inline {
+                    font-size: 0.8em;
+                    margin-left: 4px;
                 }
             }
         `;
@@ -276,45 +242,85 @@
             return;
         }
 
-        // Создаем контейнер для бейджей
-        var badgeContainer = document.createElement('div');
-        badgeContainer.className = 'rating-year-container rating-year-position-' + settings.position;
+        // Создаем контейнер для рейтинга и года
+        var infoContainer = document.createElement('span');
+        infoContainer.className = 'rating-year-inline';
         
-        // Добавляем класс позиционирования к родительской карточке
-        var cardView = cardElement.querySelector('.card__view') || cardElement;
-        cardView.classList.add('rating-year-position-' + settings.position);
+        var hasContent = false;
 
         // Добавляем рейтинг
         if (settings.rating === 'on' && cardData.rating) {
-            var ratingBadge = createRatingBadge(cardData.rating);
-            if (ratingBadge) {
-                cardView.appendChild(ratingBadge);
+            var ratingSpan = createRatingInline(cardData.rating);
+            if (ratingSpan) {
+                infoContainer.appendChild(ratingSpan);
+                hasContent = true;
             }
         }
 
         // Добавляем год
         if (settings.year === 'on' && cardData.year) {
-            var yearBadge = createYearBadge(cardData.year);
-            if (yearBadge) {
-                cardView.appendChild(yearBadge);
+            if (hasContent) {
+                var separator = document.createElement('span');
+                separator.className = 'year-separator';
+                separator.textContent = '•';
+                infoContainer.appendChild(separator);
+            }
+            
+            var yearSpan = createYearInline(cardData.year);
+            if (yearSpan) {
+                infoContainer.appendChild(yearSpan);
+                hasContent = true;
+            }
+        }
+
+        // Добавляем контейнер после заголовка
+        if (hasContent) {
+            var titleElement = cardElement.querySelector('.card__title, .card__name, .title');
+            if (titleElement) {
+                titleElement.appendChild(infoContainer);
             }
         }
 
         // Если нет данных, пытаемся получить из TMDB
         if ((!cardData.rating || !cardData.year) && cardData.title) {
             fetchFromTMDB(cardData.title, cardData, function(data) {
+                var titleElement = cardElement.querySelector('.card__title, .card__name, .title');
+                var existingInfo = titleElement.querySelector('.rating-year-inline');
+                
+                if (existingInfo) {
+                    existingInfo.remove();
+                }
+                
+                var infoContainer = document.createElement('span');
+                infoContainer.className = 'rating-year-inline';
+                
+                var hasContent = false;
+                
                 if (data.rating && settings.rating === 'on') {
-                    var ratingBadge = createRatingBadge(data.rating);
-                    if (ratingBadge) {
-                        cardView.appendChild(ratingBadge);
+                    var ratingSpan = createRatingInline(data.rating);
+                    if (ratingSpan) {
+                        infoContainer.appendChild(ratingSpan);
+                        hasContent = true;
                     }
                 }
                 
                 if (data.year && settings.year === 'on') {
-                    var yearBadge = createYearBadge(data.year);
-                    if (yearBadge) {
-                        cardView.appendChild(yearBadge);
+                    if (hasContent) {
+                        var separator = document.createElement('span');
+                        separator.className = 'year-separator';
+                        separator.textContent = '•';
+                        infoContainer.appendChild(separator);
                     }
+                    
+                    var yearSpan = createYearInline(data.year);
+                    if (yearSpan) {
+                        infoContainer.appendChild(yearSpan);
+                        hasContent = true;
+                    }
+                }
+                
+                if (hasContent && titleElement) {
+                    titleElement.appendChild(infoContainer);
                 }
             });
         }
@@ -394,51 +400,38 @@
     }
 
     /**
-     * Создание бейджа рейтинга
+     * Создание инлайн-элемента рейтинга
      */
-    function createRatingBadge(rating) {
+    function createRatingInline(rating) {
         if (!rating || isNaN(rating)) return null;
 
-        var badge = document.createElement('div');
-        badge.className = 'rating-year-badge rating-badge';
+        var container = document.createElement('span');
         
-        // Определяем цвет по оценке
-        if (rating >= 8.0) {
-            badge.classList.add('excellent');
-        } else if (rating >= 6.0) {
-            badge.classList.add('good');
-        } else if (rating >= 4.0) {
-            badge.classList.add('average');
-        } else {
-            badge.classList.add('poor');
-        }
+        var star = document.createElement('span');
+        star.className = 'rating-star';
+        star.textContent = '★';
         
-        badge.textContent = rating.toFixed(1);
+        var value = document.createElement('span');
+        value.className = 'rating-value';
+        value.textContent = rating.toFixed(1);
         
-        // Анимация появления
-        setTimeout(function() {
-            badge.classList.add('show');
-        }, 50);
+        container.appendChild(star);
+        container.appendChild(value);
         
-        return badge;
+        return container;
     }
 
     /**
-     * Создание бейджа года
+     * Создание инлайн-элемента года
      */
-    function createYearBadge(year) {
+    function createYearInline(year) {
         if (!year) return null;
 
-        var badge = document.createElement('div');
-        badge.className = 'rating-year-badge year-badge';
-        badge.textContent = year;
+        var span = document.createElement('span');
+        span.className = 'year-value';
+        span.textContent = year;
         
-        // Анимация появления
-        setTimeout(function() {
-            badge.classList.add('show');
-        }, 50);
-        
-        return badge;
+        return span;
     }
 
     /**
@@ -541,15 +534,13 @@
             param: {
                 name: 'position',
                 type: 'select',
-                default: 'bottom',
+                default: 'inline',
                 values: {
-                    'bottom': 'Внизу карточки',
-                    'top': 'Вверху карточки'
+                    'inline': 'Рядом с названием'
                 }
             },
             onChange: function(value) {
-                settings.position = value;
-                saveSettings();
+                // Позиция всегда inline для этого формата
                 processExistingCards();
             }
         });
