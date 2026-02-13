@@ -140,11 +140,31 @@
      */
     function processExistingCards() {
         try {
-            var cards = document.querySelectorAll('.card, .card--view, .card--category');
-            console.log('Найдено карточек:', cards.length);
+            // Ищем карточки по разным селекторам
+            var selectors = [
+                '.card',
+                '.card--view', 
+                '.card--category',
+                '.card-item',
+                '[class*="card"]',
+                '.movie-card',
+                '.poster-item'
+            ];
             
-            for (var i = 0; i < cards.length; i++) {
-                processCard(cards[i]);
+            var allCards = [];
+            for (var s = 0; s < selectors.length; s++) {
+                var cards = document.querySelectorAll(selectors[s]);
+                for (var c = 0; c < cards.length; c++) {
+                    if (allCards.indexOf(cards[c]) === -1) {
+                        allCards.push(cards[c]);
+                    }
+                }
+            }
+            
+            console.log('Найдено карточек:', allCards.length);
+            
+            for (var i = 0; i < allCards.length; i++) {
+                processCard(allCards[i]);
             }
         } catch (e) {
             console.error('Ошибка обработки карточек:', e);
@@ -236,54 +256,96 @@
             var titleElement = cardElement.querySelector('.card__title, .card__name, .title');
             if (titleElement) {
                 data.title = titleElement.textContent.trim();
+            } else {
+                // Ищем любой текстовый элемент
+                var textElements = cardElement.querySelectorAll('*');
+                for (var k = 0; k < textElements.length; k++) {
+                    if (textElements[k].textContent && textElements[k].textContent.trim().length > 0) {
+                        data.title = textElements[k].textContent.trim();
+                        break;
+                    }
+                }
             }
 
-            // Получаем рейтинг
+            console.log('Карточка:', data.title, 'Элементы:', cardElement.className);
+
+            // Получаем рейтинг из разных источников
             var ratingSources = [
                 '.card__vote',
-                '.card__rating',
+                '.card__rating', 
                 '.rating',
                 '[data-rating]',
-                '[data-vote]'
+                '[data-vote]',
+                '[data-vote_average]'
             ];
 
             for (var i = 0; i < ratingSources.length; i++) {
                 var ratingElement = cardElement.querySelector(ratingSources[i]);
                 if (ratingElement) {
-                    var ratingText = ratingElement.textContent || ratingElement.getAttribute('data-rating') || ratingElement.getAttribute('data-vote');
+                    var ratingText = ratingElement.textContent || ratingElement.getAttribute('data-rating') || ratingElement.getAttribute('data-vote') || ratingElement.getAttribute('data-vote_average');
                     if (ratingText) {
-                        var rating = parseFloat(ratingText.replace(',', '.'));
+                        var rating = parseFloat(ratingText.replace(',', '.').replace(/[^0-9.]/g, ''));
                         if (!isNaN(rating) && rating > 0 && rating <= 10) {
                             data.rating = rating;
+                            console.log('Найден рейтинг:', rating, 'из источника:', ratingSources[i]);
                             break;
                         }
                     }
                 }
             }
 
-            // Получаем год
+            // Получаем год из разных источников
             var yearSources = [
                 '.card__year',
-                '.card__age',
+                '.card__age', 
                 '.card__date',
                 '[data-year]',
-                '[data-release]'
+                '[data-release]',
+                '[data-release_date]',
+                '[data-first_air_date]'
             ];
 
             for (var j = 0; j < yearSources.length; j++) {
                 var yearElement = cardElement.querySelector(yearSources[j]);
                 if (yearElement) {
-                    var yearText = yearElement.textContent || yearElement.getAttribute('data-year') || yearElement.getAttribute('data-release');
+                    var yearText = yearElement.textContent || yearElement.getAttribute('data-year') || yearElement.getAttribute('data-release') || yearElement.getAttribute('data-release_date') || yearElement.getAttribute('data-first_air_date');
                     if (yearText) {
                         var yearMatch = yearText.match(/(19|20)\d{2}/);
                         if (yearMatch) {
                             data.year = parseInt(yearMatch[0], 10);
+                            console.log('Найден год:', data.year, 'из источника:', yearSources[j]);
                             break;
                         }
                     }
                 }
             }
 
+            // Если данных нет, ищем в атрибутах самой карточки
+            if (!data.rating && !data.year) {
+                var allAttrs = cardElement.attributes;
+                for (var l = 0; l < allAttrs.length; l++) {
+                    var attrName = allAttrs[l].name;
+                    var attrValue = allAttrs[l].value;
+                    
+                    if (attrName.includes('rating') || attrName.includes('vote')) {
+                        var rating = parseFloat(attrValue.replace(',', '.'));
+                        if (!isNaN(rating) && rating > 0 && rating <= 10) {
+                            data.rating = rating;
+                            console.log('Найден рейтинг в атрибуте:', rating, attrName);
+                        }
+                    }
+                    
+                    if (attrName.includes('year') || attrName.includes('release')) {
+                        var yearMatch = attrValue.match(/(19|20)\d{2}/);
+                        if (yearMatch) {
+                            data.year = parseInt(yearMatch[0], 10);
+                            console.log('Найден год в атрибуте:', data.year, attrName);
+                        }
+                    }
+                }
+            }
+
+            console.log('Итоговые данные:', data);
             return data.title ? data : null;
         } catch (e) {
             console.error('Ошибка извлечения данных:', e);
