@@ -67,13 +67,22 @@
                 z-index: 10;
             }
 
-            /* Оформление значения рейтинга */
+            /* Оформление рейтинга (число и звезда) */
             .card__rating-year-info .rating-val {
-                color: #2e9fff; /* Синий цвет как на картинке */
-                font-weight: bold;
                 display: flex;
                 align-items: center;
                 gap: 4px;
+                color: #2e9fff;
+                font-weight: bold;
+                text-shadow: 0 0 5px rgba(46, 159, 255, 0.5); /* Мягкое неоновое свечение */
+                transition: all 0.3s ease;
+            }
+
+            /* Эффект при наведении на карточку */
+            .card:focus .card__rating-year-info .rating-val,
+            .card:hover .card__rating-year-info .rating-val {
+                text-shadow: 0 0 10px rgba(46, 159, 255, 0.8);
+                transform: scale(1.05);
             }
 
             /* Иконка звезды */
@@ -85,9 +94,29 @@
 
             /* Оформление значения года */
             .card__rating-year-info .year-val {
-                color: #aaa; /* Сероватый цвет */
+                color: #aaa;
                 opacity: 0.8;
-                margin-left: 0; /* Сбрасываем принудительное выравнивание вправо */
+                font-size: 0.9em;
+                font-weight: 400;
+            }
+
+            /* Стильные бейджи качества */
+            .card__quality-badge {
+                font-size: 0.7em;
+                padding: 1px 4px;
+                border-radius: 3px;
+                background: rgba(255,255,255,0.1);
+                color: #fff;
+                text-transform: uppercase;
+                border: 1px solid rgba(255,255,255,0.2);
+                margin-left: 6px;
+                letter-spacing: 0.5px;
+            }
+
+            .card__quality-badge--4k {
+                border-color: #e4bb24;
+                color: #e4bb24;
+                text-shadow: 0 0 3px rgba(228, 187, 36, 0.3);
             }
 
             /* Корректировка отступа названия */
