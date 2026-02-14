@@ -263,12 +263,14 @@
 
         var observer = null;
         var mirror = new Map();
+        var poll = null;
         function buildMenuFromDOM() {
-            var left = document.querySelector('.menu .menu__list');
-            if (!left) return;
+            var lists = Array.from(document.querySelectorAll('.menu .menu__list'));
+            if (!lists.length) return;
             while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
             mirror.clear();
-            var items = left.querySelectorAll('.menu__item');
+            var items = [];
+            lists.forEach(function(l){ items = items.concat(Array.from(l.querySelectorAll('.menu__item'))); });
             items.forEach(function (orig) {
                 var textEl = orig.querySelector('.menu__text');
                 var icoEl = orig.querySelector('.menu__ico');
@@ -284,14 +286,14 @@
                     $('.prisma-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggleMenu(false);
-                    orig.dispatchEvent(new CustomEvent('hover:enter', { bubbles: true }));
+                    $(orig).trigger('hover:enter');
                 });
                 li.addEventListener('hover:enter', function () {
                     if (li.classList.contains('disabled')) return;
                     $('.prisma-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggleMenu(false);
-                    orig.dispatchEvent(new CustomEvent('hover:enter', { bubbles: true }));
+                    $(orig).trigger('hover:enter');
                 });
                 li.addEventListener('hover:focus', function () {
                     Lampa.Controller.collectionSet(menuEl);
@@ -321,6 +323,10 @@
             });
             observer.observe(left, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
             buildMenuFromDOM();
+            if (poll) clearInterval(poll);
+            poll = setInterval(function(){
+                buildMenuFromDOM();
+            }, 1000);
         }
 
         var menuEl = document.createElement('div');
@@ -364,16 +370,7 @@
         // Футер (Инфо)
         var footerEl = document.createElement('div');
         footerEl.className = 'prisma-menu__footer';
-        var infoItem = document.createElement('div');
-        infoItem.className = 'prisma-menu__item selector';
-        infoItem.dataset.action = 'about';
-        infoItem.innerHTML = `
-            <div class="prisma-menu__item-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
-            <div class="prisma-menu__item-text">Инфо</div>
-        `;
-        infoItem.addEventListener('click', function() { executeAction('about'); });
-        infoItem.addEventListener('hover:enter', function() { executeAction('about'); });
-        footerEl.appendChild(infoItem);
+        footerEl.style.display = 'none';
         menuEl.appendChild(footerEl);
 
         document.body.appendChild(menuEl);
@@ -384,16 +381,7 @@
             });
         }
 
-        function executeAction(action) {
-            console.log('Prisma Menu Action:', action);
-            toggleMenu(false);
-            if (action === 'about') {
-                Lampa.Component.add('about', {});
-                Lampa.Activity.push({ component: 'about', title: 'О приложении' });
-            } else if (action === 'settings') {
-                Lampa.Controller.enable('settings');
-            }
-        }
+        function executeAction(action) {}
 
         function toggleMenu(show) {
             if (show) {
