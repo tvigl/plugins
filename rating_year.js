@@ -261,12 +261,13 @@
             document.head.appendChild(styleEl);
         }
 
-        // Построение пунктов меню динамически из штатного левого меню Lampa
         var observer = null;
+        var mirror = new Map();
         function buildMenuFromDOM() {
             var left = document.querySelector('.menu .menu__list');
             if (!left) return;
             while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+            mirror.clear();
             var items = left.querySelectorAll('.menu__item');
             items.forEach(function (orig) {
                 var textEl = orig.querySelector('.menu__text');
@@ -275,34 +276,50 @@
                 var li = document.createElement('li');
                 li.className = 'prisma-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
+                if (orig.classList.contains('hide') || orig.classList.contains('disabled')) li.classList.add('disabled');
                 li.innerHTML = '<div class="prisma-menu__item-icon">' + (icoEl ? icoEl.innerHTML : '') + '</div>' +
                                '<div class="prisma-menu__item-text">' + title + '</div>';
                 li.addEventListener('click', function () {
+                    if (li.classList.contains('disabled')) return;
                     $('.prisma-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggleMenu(false);
-                    $(orig).trigger('hover:enter');
+                    orig.dispatchEvent(new CustomEvent('hover:enter', { bubbles: true }));
                 });
                 li.addEventListener('hover:enter', function () {
+                    if (li.classList.contains('disabled')) return;
                     $('.prisma-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggleMenu(false);
-                    $(orig).trigger('hover:enter');
+                    orig.dispatchEvent(new CustomEvent('hover:enter', { bubbles: true }));
                 });
                 li.addEventListener('hover:focus', function () {
                     Lampa.Controller.collectionSet(menuEl);
                 });
                 listEl.appendChild(li);
+                mirror.set(orig, li);
+            });
+        }
+        function syncActive() {
+            mirror.forEach(function (li, orig) {
+                li.classList.toggle('active', orig.classList.contains('active'));
             });
         }
         function observeLeftMenu() {
             var left = document.querySelector('.menu .menu__list');
             if (!left) return;
             if (observer) observer.disconnect();
-            observer = new MutationObserver(function () {
-                buildMenuFromDOM();
+            observer = new MutationObserver(function (mutations) {
+                var needRebuild = false;
+                var needSync = false;
+                mutations.forEach(function (m) {
+                    if (m.type === 'childList') needRebuild = true;
+                    if (m.type === 'attributes') needSync = true;
+                });
+                if (needRebuild) buildMenuFromDOM();
+                else if (needSync) syncActive();
             });
-            observer.observe(left, { childList: true });
+            observer.observe(left, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
             buildMenuFromDOM();
         }
 
@@ -339,7 +356,6 @@
         var listEl = document.createElement('ul');
         listEl.className = 'prisma-menu__list';
 
-        // Инициализируем пункты на основе штатного меню
         buildMenuFromDOM();
 
         menuEl.innerHTML = headerHTML;
@@ -361,7 +377,6 @@
         menuEl.appendChild(footerEl);
 
         document.body.appendChild(menuEl);
-        // Наблюдаем за добавлением сторонних пунктов в левое меню и синхронизируемся
         if (window.appready) observeLeftMenu();
         else {
             Lampa.Listener.follow('app', function (e) {
