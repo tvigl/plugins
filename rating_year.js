@@ -491,10 +491,26 @@
         replaceMenuController();
     }
 
-    if (window.Lampa) {
-        init();
-    } else {
-        document.addEventListener('lampa_ready', init);
-    }
+    (function waitReady(){
+        if (window.appready && window.Lampa) return init();
+        var ok = false;
+        try{
+            if (window.Lampa && Lampa.Listener){
+                Lampa.Listener.follow('app', function(e){
+                    if(e.type==='ready' && !ok){
+                        ok = true;
+                        init();
+                    }
+                });
+                return;
+            }
+        }catch(e){}
+        var t = setInterval(function(){
+            if (window.appready && window.Lampa){
+                clearInterval(t);
+                init();
+            }
+        },200);
+    })();
 
 })();
