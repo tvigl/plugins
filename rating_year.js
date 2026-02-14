@@ -1,304 +1,77 @@
-(function () {
+;(function () {
     'use strict';
-
-    /**
-     * Плагин для Lampa: Меню Click
-     * 
-     * Особенности:
-     * - Заменяет стандартное боковое меню на стильное меню Click
-     * - Отображает часы, дату и день недели
-     * - Адаптировано под управление пультом
-     */
-
-    function init() {
-        var style = `
-            /* Скрываем стандартное меню Lampa */
-            .menu {
-                display: none !important;
-            }
-
-            /* Контейнер нового меню Prisma */
-            .prisma-menu {
-                position: fixed;
-                left: 20px;
-                top: 20px;
-                width: 300px;
-                background: rgba(18, 18, 18, 0.85);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                display: flex;
-                flex-direction: column;
-                z-index: 1000;
-                box-shadow: 0 10px 50px rgba(0,0,0,0.8);
-                transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                overflow: hidden;
-                padding: 10px;
-                box-sizing: border-box;
-                border-radius: 24px;
-                border: 1px solid rgba(255,255,255,0.08);
-                height: auto;
-                max-height: calc(100vh - 40px);
-            }
-
-            .prisma-menu--hidden {
-                transform: translateX(-120%);
-            }
-
-            /* Подложка для закрытия */
-            .prisma-menu-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0,0,0,0.5);
-                z-index: 999;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s ease;
-            }
-
-            .prisma-menu-overlay--show {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            /* Шапка меню: Лого и Часы */
-            .prisma-menu__header {
-                padding: 5px 10px 10px;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-            }
-
-            .prisma-menu__logo {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 5px 0;
-            }
-
-            .prisma-menu__logo-icon {
-                width: 28px;
-                height: 28px;
-                background: linear-gradient(135deg, #ff00cc 0%, #3333ff 100%);
-                border-radius: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
-                transform: rotate(-10deg);
-            }
-
-            .prisma-menu__logo-text {
-                font-size: 1.3em;
-                font-weight: 800;
-                letter-spacing: -0.5px;
-                color: #fff;
-                text-transform: none;
-                text-shadow: 0 0 10px rgba(255,255,255,0.2);
-            }
-
-            .prisma-menu__header-right {
-                text-align: right;
-            }
-
-            .prisma-menu__time {
-                font-size: 1.5em;
-                font-weight: 700;
-                color: #fff;
-                line-height: 1;
-            }
-
-            .prisma-menu__date-block {
-                line-height: 1.1;
-                margin-top: 2px;
-            }
-
-            .prisma-menu__date {
-                font-size: 0.7em;
-                color: rgba(255,255,255,0.5);
-                font-weight: 400;
-            }
-
-            .prisma-menu__day {
-                font-size: 0.8em;
-                font-weight: 500;
-                color: rgba(255,255,255,0.7);
-            }
-
-            /* Список элементов меню */
-            .prisma-menu__list {
-                padding: 10px 0;
-                margin: 0;
-                list-style: none;
-                overflow-y: auto;
-            }
-
-            .prisma-menu__item {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 8px 12px;
-                margin-bottom: 2px;
-                border-radius: 12px;
-                color: rgba(255,255,255,0.7);
-                font-size: 1em;
-                font-weight: 500;
-                transition: all 0.2s ease;
-                cursor: pointer;
-            }
-
-            .prisma-menu__item-icon {
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0.7;
-            }
-
-            .prisma-menu__item-icon svg {
-                width: 18px;
-                height: 18px;
-                fill: currentColor;
-            }
-
-            /* Состояние фокуса и активного элемента */
-            .prisma-menu__item.focus,
-            .prisma-menu__item:hover {
-                background: rgba(255, 255, 255, 0.08);
-                color: #fff;
-                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03), 0 5px 15px rgba(0, 0, 0, 0.3);
-            }
-
-            .prisma-menu__item.focus .prisma-menu__item-icon,
-            .prisma-menu__item:hover .prisma-menu__item-icon {
-                opacity: 1;
-                color: #2e9fff;
-                filter: drop-shadow(0 0 8px rgba(46, 159, 255, 0.6));
-            }
-
-            .prisma-menu__item.active,
-            .prisma-menu__item.focus-active {
-                background: linear-gradient(90deg, #2e9fff 0%, #0072ff 100%);
-                color: #fff;
-                font-weight: 700;
-                box-shadow: 0 4px 20px rgba(46, 159, 255, 0.4);
-            }
-
-            .prisma-menu__item.active .prisma-menu__item-icon,
-            .prisma-menu__item.focus-active .prisma-menu__item-icon {
-                opacity: 1;
-                color: #fff;
-                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
-            }
-
-            /* Футер меню */
-            .prisma-menu__footer {
-                padding: 5px 0 0;
-                border-top: 1px solid rgba(255,255,255,0.05);
-            }
-
-            /* Стили для скроллбара */
-            .prisma-menu__list::-webkit-scrollbar {
-                width: 4px;
-            }
-            .prisma-menu__list::-webkit-scrollbar-track {
-                background: transparent;
-            }
-            .prisma-menu__list::-webkit-scrollbar-thumb {
-                background: rgba(255,255,255,0.1);
-                border-radius: 10px;
-            }
-
-            /* Адаптивность для разных экранов */
-            @media screen and (max-width: 768px) {
-                .prisma-menu {
-                    width: 260px;
-                    left: 10px;
-                    top: 10px;
-                    padding: 8px;
-                    border-radius: 18px;
-                }
-                .prisma-menu__logo-text {
-                    font-size: 1em;
-                }
-                .prisma-menu__time {
-                    font-size: 1.3em;
-                }
-                .prisma-menu__item {
-                    padding: 6px 10px;
-                    font-size: 0.9em;
-                    gap: 10px;
-                }
-            }
-
-            @media screen and (max-width: 480px) {
-                .prisma-menu {
-                    width: 240px;
-                    left: 5px;
-                    top: 5px;
-                    padding: 6px;
-                    border-radius: 15px;
-                }
-                .prisma-menu__time {
-                    font-size: 1.2em;
-                }
-                .prisma-menu__item {
-                    padding: 5px 8px;
-                    gap: 8px;
-                }
-            }
-        `;
-
-        if (!document.getElementById('prisma-menu-styles')) {
-            var styleEl = document.createElement('style');
-            styleEl.id = 'prisma-menu-styles';
-            styleEl.innerHTML = style;
-            document.head.appendChild(styleEl);
+    function run() {
+        var css = "\n            .menu{display:none!important}\n            .side-menu{position:fixed;left:20px;top:20px;width:300px;background:rgba(18,18,18,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;flex-direction:column;z-index:1000;box-shadow:0 10px 50px rgba(0,0,0,.8);transition:transform .4s cubic-bezier(.165,.84,.44,1);overflow:hidden;padding:10px;box-sizing:border-box;border-radius:24px;border:1px solid rgba(255,255,255,.08);max-height:calc(100vh - 40px)}\n            .side-menu--hidden{transform:translateX(-120%)}\n            .side-menu__overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;opacity:0;visibility:hidden;transition:all .4s ease}\n            .side-menu__overlay--show{opacity:1;visibility:visible}\n            .side-menu__header{padding:5px 10px 10px;display:flex;flex-direction:row;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.05)}\n            .side-menu__logo{display:flex;align-items:center;gap:12px;padding:5px 0}\n            .side-menu__logo-ico{width:28px;height:28px;background:linear-gradient(135deg,#ff00cc 0%,#3333ff 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,0,204,.4);transform:rotate(-10deg)}\n            .side-menu__logo-text{font-size:1.3em;font-weight:800;letter-spacing:-.5px;color:#fff;text-shadow:0 0 10px rgba(255,255,255,.2)}\n            .side-menu__header-right{text-align:right}\n            .side-menu__time{font-size:1.5em;font-weight:700;color:#fff;line-height:1}\n            .side-menu__date-block{line-height:1.1;margin-top:2px}\n            .side-menu__date{font-size:.7em;color:rgba(255,255,255,.5);font-weight:400}\n            .side-menu__day{font-size:.8em;font-weight:500;color:rgba(255,255,255,.7)}\n            .side-menu__list{padding:10px 0;margin:0;list-style:none;overflow-y:auto}\n            .side-menu__item{display:flex;align-items:center;gap:12px;padding:8px 12px;margin-bottom:2px;border-radius:12px;color:rgba(255,255,255,.7);font-size:1em;font-weight:500;transition:all .2s ease;cursor:pointer}\n            .side-menu__item-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;opacity:.7}\n            .side-menu__item-icon svg{width:18px;height:18px;fill:currentColor}\n            .side-menu__item:hover,.side-menu__item.focus{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 15px rgba(255,255,255,.03),0 5px 15px rgba(0,0,0,.3)}\n            .side-menu__item:hover .side-menu__item-icon,.side-menu__item.focus .side-menu__item-icon{opacity:1;color:#2e9fff;filter:drop-shadow(0 0 8px rgba(46,159,255,.6))}\n            .side-menu__item.active,.side-menu__item.focus-active{background:linear-gradient(90deg,#2e9fff 0%,#0072ff 100%);color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(46,159,255,.4)}\n            .side-menu__item.active .side-menu__item-icon,.side-menu__item.focus-active .side-menu__item-icon{opacity:1;color:#fff;filter:drop-shadow(0 0 5px rgba(255,255,255,.5))}\n            .side-menu__list::-webkit-scrollbar{width:4px}\n            .side-menu__list::-webkit-scrollbar-track{background:transparent}\n            .side-menu__list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:10px}\n            @media screen and (max-width:768px){.side-menu{width:260px;left:10px;top:10px;padding:8px;border-radius:18px}.side-menu__logo-text{font-size:1em}.side-menu__time{font-size:1.3em}.side-menu__item{padding:6px 10px;font-size:.9em;gap:10px}}\n            @media screen and (max-width:480px){.side-menu{width:240px;left:5px;top:5px;padding:6px;border-radius:15px}.side-menu__time{font-size:1.2em}.side-menu__item{padding:5px 8px;gap:8px}}\n        ";
+        if (!document.getElementById('side-menu-styles')) {
+            var s = document.createElement('style');
+            s.id = 'side-menu-styles';
+            s.innerHTML = css;
+            document.head.appendChild(s);
         }
-
+        var overlay = document.createElement('div');
+        overlay.className = 'side-menu__overlay';
+        overlay.addEventListener('click', function () {
+            toggle(false);
+        });
+        document.body.appendChild(overlay);
+        var root = document.createElement('div');
+        root.className = 'side-menu side-menu--hidden';
+        var header = document.createElement('div');
+        header.className = 'side-menu__header';
+        header.innerHTML = '' +
+            '<div class="side-menu__logo">' +
+            '<div class="side-menu__logo-ico"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M10.07 2.42L3.5 19.07l6.07-2.57 3.43 7.08 3.5-1.7-3.43-7.08 7.43-1.42L10.07 2.42z"/></svg></div>' +
+            '<div class="side-menu__logo-text">Click</div>' +
+            '</div>' +
+            '<div class="side-menu__header-right">' +
+            '<div class="side-menu__time" id="overlay-clock">00:00</div>' +
+            '<div class="side-menu__date-block">' +
+            '<div class="side-menu__date" id="overlay-date">01 Января 2024</div>' +
+            '<div class="side-menu__day" id="overlay-day">Понедельник</div>' +
+            '</div>' +
+            '</div>';
+        var list = document.createElement('ul');
+        list.className = 'side-menu__list';
+        root.appendChild(header);
+        root.appendChild(list);
+        document.body.appendChild(root);
         var observer = null;
         var mirror = new Map();
         var poll = null;
-        function buildMenuFromDOM() {
+        function build() {
             var lists = Array.from(document.querySelectorAll('.menu .menu__list'));
             if (!lists.length) return;
-            while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+            while (list.firstChild) list.removeChild(list.firstChild);
             mirror.clear();
             var items = [];
-            lists.forEach(function(l){ items = items.concat(Array.from(l.querySelectorAll('.menu__item'))); });
+            lists.forEach(function (l) { items = items.concat(Array.from(l.querySelectorAll('.menu__item'))); });
             items.forEach(function (orig) {
-                var textEl = orig.querySelector('.menu__text');
-                var icoEl = orig.querySelector('.menu__ico');
-                var title = textEl ? (textEl.textContent || '').trim() : '';
+                var t = orig.querySelector('.menu__text');
+                var i = orig.querySelector('.menu__ico');
+                var title = t ? (t.textContent || '').trim() : '';
                 var li = document.createElement('li');
-                li.className = 'prisma-menu__item selector';
+                li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
                 if (orig.classList.contains('hide') || orig.classList.contains('disabled')) li.classList.add('disabled');
-                li.innerHTML = '<div class="prisma-menu__item-icon">' + (icoEl ? icoEl.innerHTML : '') + '</div>' +
-                               '<div class="prisma-menu__item-text">' + title + '</div>';
+                li.innerHTML = '<div class="side-menu__item-icon">' + (i ? i.innerHTML : '') + '</div><div class="side-menu__item-text">' + title + '</div>';
                 li.addEventListener('click', function () {
                     if (li.classList.contains('disabled')) return;
-                    $('.prisma-menu__item').removeClass('active');
+                    $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggleMenu(false);
+                    toggle(false);
                     $(orig).trigger('hover:enter');
                 });
                 li.addEventListener('hover:enter', function () {
                     if (li.classList.contains('disabled')) return;
-                    $('.prisma-menu__item').removeClass('active');
+                    $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggleMenu(false);
+                    toggle(false);
                     $(orig).trigger('hover:enter');
                 });
                 li.addEventListener('hover:focus', function () {
-                    Lampa.Controller.collectionSet(menuEl);
+                    Lampa.Controller.collectionSet(root);
                 });
-                listEl.appendChild(li);
+                list.appendChild(li);
                 mirror.set(orig, li);
             });
         }
@@ -307,198 +80,81 @@
                 li.classList.toggle('active', orig.classList.contains('active'));
             });
         }
-        function observeLeftMenu() {
+        function observe() {
             var left = document.querySelector('.menu .menu__list');
             if (!left) return;
             if (observer) observer.disconnect();
-            observer = new MutationObserver(function (mutations) {
-                var needRebuild = false;
-                var needSync = false;
-                mutations.forEach(function (m) {
-                    if (m.type === 'childList') needRebuild = true;
-                    if (m.type === 'attributes') needSync = true;
+            observer = new MutationObserver(function (m) {
+                var rb = false, sa = false;
+                m.forEach(function (x) {
+                    if (x.type === 'childList') rb = true;
+                    if (x.type === 'attributes') sa = true;
                 });
-                if (needRebuild) buildMenuFromDOM();
-                else if (needSync) syncActive();
+                if (rb) build();
+                else if (sa) syncActive();
             });
             observer.observe(left, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
-            buildMenuFromDOM();
+            build();
             if (poll) clearInterval(poll);
-            poll = setInterval(function(){
-                buildMenuFromDOM();
-            }, 1000);
+            poll = setInterval(build, 1000);
         }
-
-        var menuEl = document.createElement('div');
-        menuEl.className = 'prisma-menu prisma-menu--hidden';
-
-        var overlayEl = document.createElement('div');
-        overlayEl.className = 'prisma-menu-overlay';
-        overlayEl.addEventListener('click', function() {
-            toggleMenu(false);
-        });
-        document.body.appendChild(overlayEl);
-        
-        var headerHTML = `
-            <div class="prisma-menu__header">
-                <div class="prisma-menu__logo">
-                    <div class="prisma-menu__logo-icon">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
-                            <path d="M10.07 2.42L3.5 19.07l6.07-2.57 3.43 7.08 3.5-1.7-3.43-7.08 7.43-1.42L10.07 2.42z"/>
-                        </svg>
-                    </div>
-                    <div class="prisma-menu__logo-text">Click</div>
-                </div>
-                <div class="prisma-menu__header-right">
-                    <div class="prisma-menu__time" id="prisma-clock">00:00</div>
-                    <div class="prisma-menu__date-block">
-                        <div class="prisma-menu__date" id="prisma-date">01 Января 2024</div>
-                        <div class="prisma-menu__day" id="prisma-day">Понедельник</div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        var listEl = document.createElement('ul');
-        listEl.className = 'prisma-menu__list';
-
-        buildMenuFromDOM();
-
-        menuEl.innerHTML = headerHTML;
-        menuEl.appendChild(listEl);
-        
-        // Футер (Инфо)
-        var footerEl = document.createElement('div');
-        footerEl.className = 'prisma-menu__footer';
-        footerEl.style.display = 'none';
-        menuEl.appendChild(footerEl);
-
-        document.body.appendChild(menuEl);
-        if (window.appready) observeLeftMenu();
-        else {
-            Lampa.Listener.follow('app', function (e) {
-                if (e.type === 'ready') observeLeftMenu();
-            });
-        }
-
-        function executeAction(action) {}
-
-        function toggleMenu(show) {
+        function toggle(show) {
             if (show) {
-                menuEl.classList.remove('prisma-menu--hidden');
-                overlayEl.classList.add('prisma-menu-overlay--show');
-                Lampa.Controller.enable('prisma_menu');
+                root.classList.remove('side-menu--hidden');
+                overlay.classList.add('side-menu__overlay--show');
+                Lampa.Controller.enable('custom_menu_overlay');
             } else {
-                menuEl.classList.add('prisma-menu--hidden');
-                overlayEl.classList.remove('prisma-menu-overlay--show');
-                // Возвращаем фокус на контент, если меню закрыто
+                root.classList.add('side-menu--hidden');
+                overlay.classList.remove('side-menu__overlay--show');
                 Lampa.Controller.enable('content');
             }
         }
-
-        // Обновление времени и даты
-        function updateClock() {
+        function clock() {
             var now = new Date();
-            var hours = String(now.getHours()).padStart(2, '0');
-            var minutes = String(now.getMinutes()).padStart(2, '0');
-            
-            var clockEl = document.getElementById('prisma-clock');
-            if (clockEl) clockEl.textContent = hours + ':' + minutes;
-
-            var days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-            var months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
-            
-            var dayEl = document.getElementById('prisma-day');
-            if (dayEl) dayEl.textContent = days[now.getDay()];
-
-            var dateEl = document.getElementById('prisma-date');
-            if (dateEl) dateEl.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+            var h = String(now.getHours()).padStart(2, '0');
+            var m = String(now.getMinutes()).padStart(2, '0');
+            var d = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+            var mo = ['Января','Февраля','Марта','Апреля','Мая','Июня','Июля','Августа','Сентября','Октября','Ноября','Декабря'];
+            var ce = document.getElementById('overlay-clock');
+            var de = document.getElementById('overlay-date');
+            var dy = document.getElementById('overlay-day');
+            if (ce) ce.textContent = h + ':' + m;
+            if (de) de.textContent = now.getDate() + ' ' + mo[now.getMonth()] + ' ' + now.getFullYear();
+            if (dy) dy.textContent = d[now.getDay()];
         }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Перехват открытия стандартного меню
-        function replaceMenuController() {
-            Lampa.Controller.add('prisma_menu', {
-                toggle: function () {
-                    Lampa.Controller.collectionSet(menuEl);
-                    Lampa.Controller.enable('prisma_menu');
-                },
-                up: function () {
-                    Lampa.Select.prev();
-                },
-                down: function () {
-                    Lampa.Select.next();
-                },
-                right: function () {
-                    toggleMenu(false);
-                },
-                back: function () {
-                    toggleMenu(false);
-                }
-            });
-
-            // Слушаем события Lampa для открытия меню
-            Lampa.Listener.follow('app', function (e) {
-                if (e.type === 'ready') {
-                    // Переопределяем метод показа меню в стандартном контроллере
-                    var old_menu_toggle = Lampa.Controller.toggle;
-                    Lampa.Controller.toggle = function(name) {
-                        if (name === 'menu') {
-                            toggleMenu(true);
-                        } else {
-                            old_menu_toggle.apply(Lampa.Controller, arguments);
-                        }
-                    };
-                }
-            });
-
-            // Глобальный перехват кнопки BACK
-            Lampa.Listener.follow('key', function (e) {
-                if (e.code === 8 || e.code === 27 || e.code === 461 || e.code === 10009) { // Backspace, Escape, WebOS Back, Tizen Back
-                    if (!menuEl.classList.contains('prisma-menu--hidden')) {
-                        toggleMenu(false);
-                        e.event.preventDefault();
-                        e.event.stopPropagation();
-                    }
-                }
-            });
-
-            // Также ловим нажатие "Влево" на главной, если фокус на первом элементе
-            $(document).on('keydown', function(e) {
-                if (e.keyCode === 37 && !menuEl.classList.contains('prisma-menu--hidden')) {
-                    // Меню уже открыто, ничего не делаем
-                } else if (e.keyCode === 37 && Lampa.Controller.enabled().name === 'content') {
-                    // Если мы на самом левом краю контента и жмем влево
-                    // (это поведение обычно зашито в Lampa, но мы подстрахуемся)
-                }
-            });
-        }
-
-        replaceMenuController();
+        setInterval(clock, 1000);
+        clock();
+        Lampa.Controller.add('custom_menu_overlay', {
+            toggle: function () {
+                Lampa.Controller.collectionSet(root);
+                Lampa.Controller.enable('custom_menu_overlay');
+            },
+            up: function () { Lampa.Select.prev(); },
+            down: function () { Lampa.Select.next(); },
+            right: function () { toggle(false); },
+            back: function () { toggle(false); }
+        });
+        Lampa.Listener.follow('app', function (e) {
+            if (e.type === 'ready') {
+                var baseToggle = Lampa.Controller.toggle;
+                Lampa.Controller.toggle = function (name) {
+                    if (name === 'menu') toggle(true);
+                    else baseToggle.apply(Lampa.Controller, arguments);
+                };
+                observe();
+            }
+        });
+        if (window.appready) observe();
     }
-
-    (function waitReady(){
-        if (window.appready && window.Lampa) return init();
-        var ok = false;
-        try{
-            if (window.Lampa && Lampa.Listener){
-                Lampa.Listener.follow('app', function(e){
-                    if(e.type==='ready' && !ok){
-                        ok = true;
-                        init();
-                    }
-                });
-                return;
-            }
-        }catch(e){}
-        var t = setInterval(function(){
-            if (window.appready && window.Lampa){
-                clearInterval(t);
-                init();
-            }
-        },200);
+    (function init() {
+        if (window.Lampa && Lampa.Listener) run();
+        else {
+            var t = setInterval(function () {
+                if (window.Lampa && Lampa.Listener) {
+                    clearInterval(t);
+                    run();
+                }
+            }, 200);
+        }
     })();
-
-})();
+})(); 
