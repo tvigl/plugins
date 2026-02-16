@@ -2,7 +2,7 @@
     'use strict';
 
     /* ============================================================
-     * NETFLIX PREMIUM STYLE v5.1
+     * NETFLIX PREMIUM STYLE v5.1.0
      * Cinematic Red Accent, Smooth Rows, Movie Logo Headers
      * ============================================================ */
 
