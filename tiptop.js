@@ -401,22 +401,20 @@
                     console.log('name:', name);
                     console.trace();
                     console.groupEnd();
-                    if (name === 'menu') toggle(true);
-                    else baseToggle.apply(Lampa.Controller, arguments);
+                    var now = Date.now();
+                    if (name === 'menu') {
+                        toggle(true);
+                    } else if (name === 'content' && now < noCloseUntil) {
+                        console.log('[TIPTOP DEBUG] suppress Lampa.Controller.toggle("content")');
+                        return;
+                    } else {
+                        baseToggle.apply(Lampa.Controller, arguments);
+                    }
                 };
                 if (window.goclose && !window.__tiptop_goclose_wrapped__) {
                     window.__tiptop_goclose_wrapped__ = true;
                     var originalGoClose = window.goclose;
                     window.goclose = function () {
-                        var now = Date.now();
-                        if (now < noCloseUntil) {
-                            console.groupCollapsed('%c[TIPTOP DEBUG] goclose() suppressed', 'color:red;font-weight:bold;');
-                            console.log('this:', this);
-                            console.log('arguments:', arguments);
-                            console.trace();
-                            console.groupEnd();
-                            return;
-                        }
                         console.groupCollapsed('%c[TIPTOP DEBUG] goclose()', 'color:red;font-weight:bold;');
                         console.log('this:', this);
                         console.log('arguments:', arguments);
