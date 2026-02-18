@@ -303,6 +303,9 @@
                     li.classList.add('active');
                     setTimeout(function () {
                         $(orig).trigger('hover:enter');
+                        setTimeout(function () {
+                            toggle(false);
+                        }, 80);
                     }, 10);
                 }
                 li.addEventListener('click', activate);
