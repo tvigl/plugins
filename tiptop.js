@@ -284,6 +284,9 @@
             mirror.clear();
             var items = [];
             lists.forEach(function (l) { items = items.concat(Array.from(l.querySelectorAll('.menu__item'))); });
+            if (currentIndex >= items.length) currentIndex = items.length - 1;
+            if (currentIndex < 0 && items.length) currentIndex = 0;
+            var idx = 0;
             items.forEach(function (orig) {
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
@@ -293,6 +296,7 @@
                 if (orig.classList.contains('active')) li.classList.add('active');
                 if (orig.classList.contains('hide') || orig.classList.contains('disabled')) li.classList.add('disabled');
                 li.innerHTML = '<div class="side-menu__item-icon">' + (i ? i.innerHTML : '') + '</div><div class="side-menu__item-text">' + title + '</div>';
+                if (idx === currentIndex) li.classList.add('focus');
                 li.addEventListener('click', function () {
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
@@ -312,6 +316,7 @@
                 });
                 list.appendChild(li);
                 mirror.set(orig, li);
+                idx++;
             });
         }
         function syncActive() {
