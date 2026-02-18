@@ -287,15 +287,10 @@
             if (currentIndex >= items.length) currentIndex = items.length - 1;
             if (currentIndex < 0 && items.length) currentIndex = 0;
             var idx = 0;
-            var sidePanelNames = ['поиск', 'фильтр', 'настройки'];
             items.forEach(function (orig) {
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
                 var title = t ? (t.textContent || '').trim() : '';
-                var lower = title.toLowerCase();
-                var is_side_panel = sidePanelNames.some(function (name) {
-                    return lower.indexOf(name.toLowerCase()) !== -1;
-                });
                 var li = document.createElement('li');
                 li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
@@ -306,16 +301,10 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    if (is_side_panel) {
-                        setTimeout(function () {
-                            $(orig).trigger('hover:enter');
-                        }, 10);
-                    } else {
-                        toggle(false);
-                        setTimeout(function () {
-                            $(orig).trigger('hover:enter');
-                        }, 10);
-                    }
+                    toggle(false);
+                    setTimeout(function () {
+                        $(orig).trigger('hover:enter');
+                    }, 10);
                 }
                 li.addEventListener('click', activate);
                 li.addEventListener('hover:enter', activate);
