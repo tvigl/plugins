@@ -11,7 +11,7 @@
                 position: fixed;
                 left: 20px;
                 top: 20px;
-                width: 300px;
+                width: 260px;
                 background: rgba(18, 18, 18, 0.85);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
@@ -21,7 +21,7 @@
                 box-shadow: 0 10px 50px rgba(0,0,0,0.8);
                 transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
                 overflow: hidden;
-                padding: 10px;
+                padding: 8px;
                 box-sizing: border-box;
                 border-radius: 24px;
                 border: 1px solid rgba(255,255,255,0.08);
@@ -52,7 +52,7 @@
             }
 
             .side-menu__header {
-                padding: 5px 10px 10px;
+                padding: 4px 10px 8px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
@@ -125,20 +125,20 @@
             .side-menu__item {
                 display: flex;
                 align-items: center;
-                gap: 12px;
-                padding: 8px 12px;
-                margin-bottom: 2px;
+                gap: 10px;
+                padding: 6px 10px;
+                margin-bottom: 1px;
                 border-radius: 12px;
                 color: rgba(255,255,255,0.7);
-                font-size: 1em;
+                font-size: 0.9em;
                 font-weight: 500;
                 transition: all 0.2s ease;
                 cursor: pointer;
             }
 
             .side-menu__item-icon {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -146,8 +146,8 @@
             }
 
             .side-menu__item-icon svg {
-                width: 18px;
-                height: 18px;
+                width: 16px;
+                height: 16px;
                 fill: currentColor;
             }
 
@@ -200,15 +200,15 @@
 
             @media screen and (max-width: 768px) {
                 .side-menu {
-                    width: 260px;
+                    width: 240px;
                     left: 10px;
                     top: 10px;
-                    padding: 8px;
+                    padding: 6px;
                     border-radius: 18px;
                 }
 
                 .side-menu__logo-text {
-                    font-size: 1em;
+                    font-size: 0.95em;
                 }
 
                 .side-menu__time {
@@ -216,9 +216,9 @@
                 }
 
                 .side-menu__item {
-                    padding: 6px 10px;
-                    font-size: 0.9em;
-                    gap: 10px;
+                    padding: 5px 9px;
+                    font-size: 0.85em;
+                    gap: 8px;
                 }
             }
 
