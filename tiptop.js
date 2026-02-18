@@ -442,9 +442,7 @@
             if (!root || root.classList.contains('side-menu--hidden')) return;
             var code = ev.keyCode || ev.which;
 
-            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22)
             if (code === 39 || code === 22) {
-                toggle(false);
                 ev.preventDefault();
                 ev.stopPropagation();
             }
