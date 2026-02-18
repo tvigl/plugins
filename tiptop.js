@@ -277,6 +277,7 @@
         document.body.appendChild(root);
         var observer = null;
         var mirror = new Map();
+        var noCloseUntil = 0;
         function build() {
             var lists = Array.from(document.querySelectorAll('.menu .menu__list'));
             if (!lists.length) return;
@@ -287,15 +288,10 @@
             if (currentIndex >= items.length) currentIndex = items.length - 1;
             if (currentIndex < 0 && items.length) currentIndex = 0;
             var idx = 0;
-            var sidePanelNames = ['сортировка', 'фильтр', 'фильтры', 'источники', 'подборки'];
             items.forEach(function (orig) {
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
                 var title = t ? (t.textContent || '').trim() : '';
-                 var lower = title.toLowerCase();
-                 var is_side_panel = sidePanelNames.some(function (name) {
-                     return lower.indexOf(name) !== -1;
-                 });
                 var li = document.createElement('li');
                 li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
@@ -307,17 +303,11 @@
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     setTimeout(function () {
-                        if (is_side_panel) {
-                            $(orig).trigger('hover:focus');
-                            setTimeout(function () {
-                                toggle(false);
-                            }, 80);
-                        } else {
-                            $(orig).trigger('hover:enter');
-                            setTimeout(function () {
-                                toggle(false);
-                            }, 80);
-                        }
+                        noCloseUntil = Date.now() + 500;
+                        $(orig).trigger('hover:enter');
+                        setTimeout(function () {
+                            toggle(false);
+                        }, 80);
                     }, 10);
                 }
                 li.addEventListener('click', activate);
@@ -418,6 +408,15 @@
                     window.__tiptop_goclose_wrapped__ = true;
                     var originalGoClose = window.goclose;
                     window.goclose = function () {
+                        var now = Date.now();
+                        if (now < noCloseUntil) {
+                            console.groupCollapsed('%c[TIPTOP DEBUG] goclose() suppressed', 'color:red;font-weight:bold;');
+                            console.log('this:', this);
+                            console.log('arguments:', arguments);
+                            console.trace();
+                            console.groupEnd();
+                            return;
+                        }
                         console.groupCollapsed('%c[TIPTOP DEBUG] goclose()', 'color:red;font-weight:bold;');
                         console.log('this:', this);
                         console.log('arguments:', arguments);
