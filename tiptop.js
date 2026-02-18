@@ -153,14 +153,14 @@
                 fill: currentColor;
             }
 
-            .side-menu__item.focus,
+            .side-menu__item.side-menu__item--focus,
             .side-menu__item:hover {
                 background: rgba(255, 255, 255, 0.08);
                 color: #fff;
                 box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03), 0 5px 15px rgba(0, 0, 0, 0.3);
             }
 
-            .side-menu__item.focus .side-menu__item-icon,
+            .side-menu__item.side-menu__item--focus .side-menu__item-icon,
             .side-menu__item:hover .side-menu__item-icon {
                 opacity: 1;
                 color: #2e9fff;
@@ -296,7 +296,7 @@
                 if (orig.classList.contains('active')) li.classList.add('active');
                 if (orig.classList.contains('hide') || orig.classList.contains('disabled')) li.classList.add('disabled');
                 li.innerHTML = '<div class="side-menu__item-icon">' + (i ? i.innerHTML : '') + '</div><div class="side-menu__item-text">' + title + '</div>';
-                if (idx === currentIndex) li.classList.add('focus');
+                if (idx === currentIndex) li.classList.add('side-menu__item--focus');
                 li.addEventListener('click', function () {
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
@@ -349,9 +349,9 @@
             if (index < 0) index = 0;
             if (index >= items.length) index = items.length - 1;
             currentIndex = index;
-            items.forEach(function (el) { el.classList.remove('focus'); });
+            items.forEach(function (el) { el.classList.remove('side-menu__item--focus'); });
             var el = items[currentIndex];
-            el.classList.add('focus');
+            el.classList.add('side-menu__item--focus');
             if (el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
         }
         function toggle(show) {
