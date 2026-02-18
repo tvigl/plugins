@@ -341,7 +341,7 @@
             if (show) {
                 root.classList.remove('side-menu--hidden');
                 overlay.classList.add('side-menu__overlay--show');
-                Lampa.Controller.toggle('custom_menu_overlay');
+                Lampa.Controller.enable('custom_menu_overlay');
             } else {
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
