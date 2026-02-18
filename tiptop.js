@@ -1,10 +1,6 @@
 ;(function () {
     'use strict';
     
-    // Настройка: список ключевых слов для боковых панелей (фильтры, настройки и т.д.)
-    // Пункты меню, содержащие эти слова, не будут скрывать меню при активации
-    var SIDE_PANEL_KEYWORDS = ['фильтр', 'filter', 'настройки', 'settings', 'сортировка', 'sort', 'поиск', 'search'];
-    
     function run() {
         var css = "\n            .menu{display:none!important}\n            .side-menu{position:fixed;left:20px;top:20px;width:300px;background:rgba(18,18,18,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;flex-direction:column;z-index:1000;box-shadow:0 10px 50px rgba(0,0,0,.8);transition:transform .4s cubic-bezier(.165,.84,.44,1);overflow:hidden;padding:10px;box-sizing:border-box;border-radius:24px;border:1px solid rgba(255,255,255,.08);max-height:calc(100vh - 40px)}\n            .side-menu--hidden{transform:translateX(-120%)}\n            .side-menu__overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;opacity:0;visibility:hidden;transition:all .4s ease}\n            .side-menu__overlay--show{opacity:1;visibility:visible}\n            .side-menu__header{padding:5px 10px 10px;display:flex;flex-direction:row;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.05)}\n            .side-menu__logo{display:flex;align-items:center;gap:12px;padding:5px 0}\n            .side-menu__logo-ico{width:28px;height:28px;background:linear-gradient(135deg,#ff00cc 0%,#3333ff 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,0,204,.4);transform:rotate(-10deg)}\n            .side-menu__logo-text{font-size:1.3em;font-weight:800;letter-spacing:-.5px;color:#fff;text-shadow:0 0 10px rgba(255,255,255,.2)}\n            .side-menu__header-right{text-align:right}\n            .side-menu__time{font-size:1.5em;font-weight:700;color:#fff;line-height:1}\n            .side-menu__date-block{line-height:1.1;margin-top:2px}\n            .side-menu__date{font-size:.7em;color:rgba(255,255,255,.5);font-weight:400}\n            .side-menu__day{font-size:.8em;font-weight:500;color:rgba(255,255,255,.7)}\n            .side-menu__list{padding:10px 0;margin:0;list-style:none;overflow-y:auto}\n            .side-menu__item{display:flex;align-items:center;gap:12px;padding:8px 12px;margin-bottom:2px;border-radius:12px;color:rgba(255,255,255,.7);font-size:1em;font-weight:500;transition:all .2s ease;cursor:pointer}\n            .side-menu__item-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;opacity:.7}\n            .side-menu__item-icon svg{width:18px;height:18px;fill:currentColor}\n            .side-menu__item:hover,.side-menu__item.focus{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 15px rgba(255,255,255,.03),0 5px 15px rgba(0,0,0,.3)}\n            .side-menu__item:hover .side-menu__item-icon,.side-menu__item.focus .side-menu__item-icon{opacity:1;color:#2e9fff;filter:drop-shadow(0 0 8px rgba(46,159,255,.6))}\n            .side-menu__item.active,.side-menu__item.focus-active{background:linear-gradient(90deg,#2e9fff 0%,#0072ff 100%);color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(46,159,255,.4)}\n            .side-menu__item.active .side-menu__item-icon,.side-menu__item.focus-active .side-menu__item-icon{opacity:1;color:#fff;filter:drop-shadow(0 0 5px rgba(255,255,255,.5))}\n            .side-menu__list::-webkit-scrollbar{width:4px}\n            .side-menu__list::-webkit-scrollbar-track{background:transparent}\n            .side-menu__list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:10px}\n            @media screen and (max-width:768px){.side-menu{width:260px;left:10px;top:10px;padding:8px;border-radius:18px}.side-menu__logo-text{font-size:1em}.side-menu__time{font-size:1.3em}.side-menu__item{padding:6px 10px;font-size:.9em;gap:10px}}\n            @media screen and (max-width:480px){.side-menu{width:240px;left:5px;top:5px;padding:6px;border-radius:15px}.side-menu__time{font-size:1.2em}.side-menu__item{padding:5px 8px;gap:8px}}\n        ";
         var css2 = `
@@ -296,16 +292,6 @@
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
                 var title = t ? (t.textContent || '').trim() : '';
-                var lower = title.toLowerCase();
-                
-                // Определяем, является ли пункт боковой панелью (фильтр, настройки и т.д.)
-                var is_side_panel = false;
-                for (var k = 0; k < SIDE_PANEL_KEYWORDS.length; k++) {
-                    if (lower.indexOf(SIDE_PANEL_KEYWORDS[k]) !== -1) {
-                        is_side_panel = true;
-                        break;
-                    }
-                }
                 var li = document.createElement('li');
                 li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
@@ -317,18 +303,10 @@
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     
-                    if (is_side_panel) {
-                        // Для боковых панелей не скрываем меню, а просто активируем элемент
-                        setTimeout(function () {
-                            $(orig).trigger('hover:enter');
-                        }, 10);
-                    } else {
-                        // Для обычных пунктов скрываем меню после активации
-                        toggle(false);
-                        setTimeout(function () {
-                            $(orig).trigger('hover:enter');
-                        }, 10);
-                    }
+                    // Просто активируем элемент без скрытия меню
+                    setTimeout(function () {
+                        $(orig).trigger('hover:enter');
+                    }, 10);
                 }
                 li.addEventListener('click', activate);
                 li.addEventListener('hover:enter', activate);
@@ -449,43 +427,22 @@
                     ev.stopPropagation();
                 }
             }
-            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22)
+            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22) - просто активируем без закрытия
             else if (code === 39 || code === 22) {
-                // Проверяем, является ли текущий элемент боковой панелью
                 if (currentIndex >= 0 && currentIndex < items.length) {
-                    var currentLi = items[currentIndex];
-                    var origItem = Array.from(mirror.keys()).find(function(orig) {
-                        return mirror.get(orig) === currentLi;
-                    });
-                    
-                    if (origItem) {
-                        var title = origItem.querySelector('.menu__text');
-                        var titleText = title ? (title.textContent || '').trim().toLowerCase() : '';
-                        var isSidePanel = false;
-                        
-                        for (var k = 0; k < SIDE_PANEL_KEYWORDS.length; k++) {
-                            if (titleText.indexOf(SIDE_PANEL_KEYWORDS[k]) !== -1) {
-                                isSidePanel = true;
-                                break;
-                            }
-                        }
-                        
-                        if (isSidePanel) {
-                            // Для боковых панелей не скрываем меню, а активируем элемент
-                            currentLi.click();
-                        } else {
-                            // Для обычных пунктов скрываем меню
-                            toggle(false);
-                        }
-                    }
-                } else {
-                    toggle(false);
+                    items[currentIndex].click();
                 }
                 ev.preventDefault();
                 ev.stopPropagation();
             }
-            // LEFT: ArrowLeft (37) или Android DPAD_LEFT (21)
+            // LEFT: ArrowLeft (37) или Android DPAD_LEFT (21) - закрываем меню
             else if (code === 37 || code === 21) {
+                toggle(false);
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+            // ESC: Escape (27) - закрываем меню
+            else if (code === 27) {
                 toggle(false);
                 ev.preventDefault();
                 ev.stopPropagation();
@@ -496,37 +453,8 @@
             if (!root || root.classList.contains('side-menu--hidden')) return;
             var code = ev.keyCode || ev.which;
 
-            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22)
+            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22) - не скрываем меню
             if (code === 39 || code === 22) {
-                // Не скрываем меню для боковых панелей при отпускании клавиши
-                var items = Array.from(root.querySelectorAll('.side-menu__item'));
-                if (currentIndex >= 0 && currentIndex < items.length) {
-                    var currentLi = items[currentIndex];
-                    var origItem = Array.from(mirror.keys()).find(function(orig) {
-                        return mirror.get(orig) === currentLi;
-                    });
-                    
-                    if (origItem) {
-                        var title = origItem.querySelector('.menu__text');
-                        var titleText = title ? (title.textContent || '').trim().toLowerCase() : '';
-                        var isSidePanel = false;
-                        
-                        for (var k = 0; k < SIDE_PANEL_KEYWORDS.length; k++) {
-                            if (titleText.indexOf(SIDE_PANEL_KEYWORDS[k]) !== -1) {
-                                isSidePanel = true;
-                                break;
-                            }
-                        }
-                        
-                        if (!isSidePanel) {
-                            toggle(false);
-                        }
-                    } else {
-                        toggle(false);
-                    }
-                } else {
-                    toggle(false);
-                }
                 ev.preventDefault();
                 ev.stopPropagation();
             }
