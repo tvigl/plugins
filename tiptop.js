@@ -302,14 +302,16 @@
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggle(false);
-                    $(orig).trigger('hover:enter');
+                    if (typeof orig.click === 'function') orig.click();
+                    else $(orig).trigger('click');
                 });
                 li.addEventListener('hover:enter', function () {
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggle(false);
-                    $(orig).trigger('hover:enter');
+                    if (typeof orig.click === 'function') orig.click();
+                    else $(orig).trigger('click');
                 });
                 li.addEventListener('hover:focus', function () {
                     Lampa.Controller.collectionSet(root);
