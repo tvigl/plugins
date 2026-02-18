@@ -301,7 +301,6 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggle(false);
                     if (typeof orig.click === 'function') orig.click();
                     else $(orig).trigger('click');
                 });
@@ -309,7 +308,6 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggle(false);
                     if (typeof orig.click === 'function') orig.click();
                     else $(orig).trigger('click');
                 });
