@@ -410,13 +410,13 @@
                 focusItem(currentIndex + 1);
                 ev.preventDefault();
                 ev.stopPropagation();
-            } else if (code === 13) { // enter
+            } else if (code === 13) { // enter / OK
                 if (currentIndex >= 0 && currentIndex < items.length) {
                     items[currentIndex].click();
                     ev.preventDefault();
                     ev.stopPropagation();
                 }
-            } else if (code === 37) { // left
+            } else if (code === 37 || code === 39) { // left or right
                 toggle(false);
                 ev.preventDefault();
                 ev.stopPropagation();
