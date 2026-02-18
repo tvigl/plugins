@@ -301,7 +301,6 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggle(false);
                     setTimeout(function () {
                         $(orig).trigger('hover:enter');
                     }, 10);
