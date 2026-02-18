@@ -341,14 +341,11 @@
             if (show) {
                 root.classList.remove('side-menu--hidden');
                 overlay.classList.add('side-menu__overlay--show');
-                Lampa.Controller.collectionSet(root);
-                var current = $('.side-menu__item.active').get(0) || $('.side-menu__item').get(0);
-                if (current) $(current).trigger('hover:focus');
-                Lampa.Controller.enable('custom_menu_overlay');
+                Lampa.Controller.toggle('custom_menu_overlay');
             } else {
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
-                Lampa.Controller.enable('content');
+                Lampa.Controller.toggle('content');
             }
         }
         function clock() {
@@ -369,7 +366,8 @@
         Lampa.Controller.add('custom_menu_overlay', {
             toggle: function () {
                 Lampa.Controller.collectionSet(root);
-                Lampa.Controller.enable('custom_menu_overlay');
+                var current = $('.side-menu__item.active').get(0) || $('.side-menu__item').get(0);
+                if (current) $(current).trigger('hover:focus');
             },
             up: function () { Lampa.Select.prev(); },
             down: function () { Lampa.Select.next(); },
@@ -384,26 +382,6 @@
                     else baseToggle.apply(Lampa.Controller, arguments);
                 };
                 observe();
-            }
-        });
-
-        Lampa.Listener.follow('key', function (e) {
-            if (!root || root.classList.contains('side-menu--hidden')) return;
-            var code = e.code || (e.event && e.event.keyCode);
-            if (code === 38) {
-                Lampa.Controller.collectionSet(root);
-                Lampa.Select.prev();
-                if (e.event) {
-                    e.event.preventDefault();
-                    e.event.stopPropagation();
-                }
-            } else if (code === 40) {
-                Lampa.Controller.collectionSet(root);
-                Lampa.Select.next();
-                if (e.event) {
-                    e.event.preventDefault();
-                    e.event.stopPropagation();
-                }
             }
         });
         if (window.appready) observe();
