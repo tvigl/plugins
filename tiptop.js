@@ -402,21 +402,35 @@
             var code = ev.keyCode || ev.which;
             var items = Array.from(root.querySelectorAll('.side-menu__item'));
             if (!items.length) return;
-            if (code === 38) { // up
+
+            // UP: ArrowUp (38) или Android DPAD_UP (19)
+            if (code === 38 || code === 19) {
                 focusItem(currentIndex - 1);
                 ev.preventDefault();
                 ev.stopPropagation();
-            } else if (code === 40) { // down
+            }
+            // DOWN: ArrowDown (40) или Android DPAD_DOWN (20)
+            else if (code === 40 || code === 20) {
                 focusItem(currentIndex + 1);
                 ev.preventDefault();
                 ev.stopPropagation();
-            } else if (code === 13) { // enter / OK
+            }
+            // ENTER / OK: Enter (13) или Android DPAD_CENTER (23)
+            else if (code === 13 || code === 23) {
                 if (currentIndex >= 0 && currentIndex < items.length) {
                     items[currentIndex].click();
                     ev.preventDefault();
                     ev.stopPropagation();
                 }
-            } else if (code === 37 || code === 39) { // left or right
+            }
+            // LEFT: ArrowLeft (37) или Android DPAD_LEFT (21)
+            else if (code === 37 || code === 21) {
+                toggle(false);
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22)
+            else if (code === 39 || code === 22) {
                 toggle(false);
                 ev.preventDefault();
                 ev.stopPropagation();
