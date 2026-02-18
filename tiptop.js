@@ -358,7 +358,9 @@
                 items.forEach(function (el, i) {
                     if (el.classList.contains('active') && start === 0) start = i;
                 });
-                focusItem(start);
+                setTimeout(function () {
+                    focusItem(start);
+                }, 50);
             } else {
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
@@ -389,39 +391,32 @@
                 observe();
             }
         });
-        Lampa.Listener.follow('key', function (e) {
+
+        window.addEventListener('keydown', function (ev) {
             if (!root || root.classList.contains('side-menu--hidden')) return;
-            var code = e.code || (e.event && e.event.keyCode);
+            var code = ev.keyCode || ev.which;
             var items = Array.from(root.querySelectorAll('.side-menu__item'));
             if (!items.length) return;
-            if (code === 38) {
+            if (code === 38) { // up
                 focusItem(currentIndex - 1);
-                if (e.event) {
-                    e.event.preventDefault();
-                    e.event.stopPropagation();
-                }
-            } else if (code === 40) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            } else if (code === 40) { // down
                 focusItem(currentIndex + 1);
-                if (e.event) {
-                    e.event.preventDefault();
-                    e.event.stopPropagation();
-                }
-            } else if (code === 13) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            } else if (code === 13) { // enter
                 if (currentIndex >= 0 && currentIndex < items.length) {
                     items[currentIndex].click();
-                    if (e.event) {
-                        e.event.preventDefault();
-                        e.event.stopPropagation();
-                    }
+                    ev.preventDefault();
+                    ev.stopPropagation();
                 }
-            } else if (code === 37) {
+            } else if (code === 37) { // left
                 toggle(false);
-                if (e.event) {
-                    e.event.preventDefault();
-                    e.event.stopPropagation();
-                }
+                ev.preventDefault();
+                ev.stopPropagation();
             }
-        });
+        }, true);
         if (window.appready) observe();
     }
     (function init() {
