@@ -277,8 +277,7 @@
         document.body.appendChild(root);
         var observer = null;
         var mirror = new Map();
-        var noCloseUntil = 0;
-        var suppressNextContent = false;
+        var panelProtectUntil = 0;
         function build() {
             var lists = Array.from(document.querySelectorAll('.menu .menu__list'));
             if (!lists.length) return;
@@ -304,8 +303,7 @@
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     setTimeout(function () {
-                        suppressNextContent = true;
-                        noCloseUntil = Date.now() + 500;
+                        panelProtectUntil = Date.now() + 3000;
                         $(orig).trigger('hover:enter');
                         setTimeout(function () {
                             toggle(false);
@@ -406,9 +404,8 @@
                     var now = Date.now();
                     if (name === 'menu') {
                         toggle(true);
-                    } else if (name === 'content' && suppressNextContent) {
-                        suppressNextContent = false;
-                        console.log('[TIPTOP DEBUG] suppress first Lampa.Controller.toggle("content")');
+                    } else if (name === 'content' && now < panelProtectUntil) {
+                        console.log('[TIPTOP DEBUG] suppress timed Lampa.Controller.toggle("content")');
                         return;
                     } else {
                         baseToggle.apply(Lampa.Controller, arguments);
