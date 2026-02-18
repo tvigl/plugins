@@ -301,15 +301,19 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    if (typeof orig.click === 'function') orig.click();
-                    else $(orig).trigger('click');
+                    toggle(false);
+                    setTimeout(function () {
+                        $(orig).trigger('hover:enter');
+                    }, 10);
                 });
                 li.addEventListener('hover:enter', function () {
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    if (typeof orig.click === 'function') orig.click();
-                    else $(orig).trigger('click');
+                    toggle(false);
+                    setTimeout(function () {
+                        $(orig).trigger('hover:enter');
+                    }, 10);
                 });
                 li.addEventListener('hover:focus', function () {
                     Lampa.Controller.collectionSet(root);
