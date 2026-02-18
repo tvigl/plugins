@@ -120,6 +120,8 @@
                 margin: 0;
                 list-style: none;
                 overflow-y: auto;
+                flex: 1;
+                min-height: 0;
             }
 
             .side-menu__item {
@@ -205,16 +207,17 @@
                     top: 10px;
                     padding: 8px;
                     border-radius: 18px;
+                    max-height: calc(100vh - 40px);
                 }
                 .side-menu__logo-text {
-                    font-size: 1em;
+                    font-size: 1.05em;
                 }
                 .side-menu__time {
-                    font-size: 1.3em;
+                    font-size: 1.4em;
                 }
                 .side-menu__item {
-                    padding: 6px 10px;
-                    font-size: 0.9em;
+                    padding: 7px 11px;
+                    font-size: 1.05em;
                     gap: 10px;
                 }
             }
@@ -226,13 +229,15 @@
                     top: 5px;
                     padding: 6px;
                     border-radius: 15px;
+                    max-height: calc(100vh - 40px);
                 }
                 .side-menu__time {
-                    font-size: 1.2em;
+                    font-size: 1.4em;
                 }
                 .side-menu__item {
-                    padding: 5px 8px;
-                    gap: 8px;
+                    padding: 7px 11px;
+                    font-size: 1.1em;
+                    gap: 10px;
                 }
             }
         `;
