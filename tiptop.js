@@ -128,11 +128,11 @@
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                padding: 8px 12px;
+                padding: 9px 13px;
                 margin-bottom: 2px;
                 border-radius: 12px;
                 color: rgba(255,255,255,0.7);
-                font-size: 1em;
+                font-size: 1.1em;
                 font-weight: 500;
                 transition: all 0.2s ease;
                 cursor: pointer;
@@ -216,9 +216,9 @@
                     font-size: 1.4em;
                 }
                 .side-menu__item {
-                    padding: 7px 11px;
-                    font-size: 1.05em;
-                    gap: 10px;
+                    padding: 9px 13px;
+                    font-size: 1.15em;
+                    gap: 11px;
                 }
             }
 
@@ -235,9 +235,9 @@
                     font-size: 1.4em;
                 }
                 .side-menu__item {
-                    padding: 7px 11px;
-                    font-size: 1.1em;
-                    gap: 10px;
+                    padding: 9px 13px;
+                    font-size: 1.2em;
+                    gap: 11px;
                 }
             }
         `;
