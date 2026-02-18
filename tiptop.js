@@ -277,7 +277,6 @@
         document.body.appendChild(root);
         var observer = null;
         var mirror = new Map();
-        var poll = null;
         function build() {
             var lists = Array.from(document.querySelectorAll('.menu .menu__list'));
             if (!lists.length) return;
@@ -336,8 +335,6 @@
             });
             observer.observe(left, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
             build();
-            if (poll) clearInterval(poll);
-            poll = setInterval(build, 1000);
         }
         var currentIndex = -1;
         function focusItem(index) {
