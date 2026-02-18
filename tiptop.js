@@ -153,14 +153,14 @@
                 fill: currentColor;
             }
 
-            .side-menu__item.focus,
+            .side-menu__item.side-menu__item--focus,
             .side-menu__item:hover {
                 background: rgba(255, 255, 255, 0.08);
                 color: #fff;
                 box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03), 0 5px 15px rgba(0, 0, 0, 0.3);
             }
 
-            .side-menu__item.focus .side-menu__item-icon,
+            .side-menu__item.side-menu__item--focus .side-menu__item-icon,
             .side-menu__item:hover .side-menu__item-icon {
                 opacity: 1;
                 color: #2e9fff;
@@ -287,30 +287,38 @@
             if (currentIndex >= items.length) currentIndex = items.length - 1;
             if (currentIndex < 0 && items.length) currentIndex = 0;
             var idx = 0;
+            var sidePanelNames = ['поиск', 'фильтр', 'настройки'];
             items.forEach(function (orig) {
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
                 var title = t ? (t.textContent || '').trim() : '';
+                var lower = title.toLowerCase();
+                var is_side_panel = sidePanelNames.some(function (name) {
+                    return lower.indexOf(name.toLowerCase()) !== -1;
+                });
                 var li = document.createElement('li');
                 li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
                 if (orig.classList.contains('hide') || orig.classList.contains('disabled')) li.classList.add('disabled');
                 li.innerHTML = '<div class="side-menu__item-icon">' + (i ? i.innerHTML : '') + '</div><div class="side-menu__item-text">' + title + '</div>';
-                if (idx === currentIndex) li.classList.add('focus');
-                li.addEventListener('click', function () {
+                if (idx === currentIndex) li.classList.add('side-menu__item--focus');
+                function activate() {
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggle(false);
-                    $(orig).trigger('hover:enter');
-                });
-                li.addEventListener('hover:enter', function () {
-                    if (li.classList.contains('disabled')) return;
-                    $('.side-menu__item').removeClass('active');
-                    li.classList.add('active');
-                    toggle(false);
-                    $(orig).trigger('hover:enter');
-                });
+                    if (is_side_panel) {
+                        setTimeout(function () {
+                            $(orig).trigger('hover:enter');
+                        }, 10);
+                    } else {
+                        toggle(false);
+                        setTimeout(function () {
+                            $(orig).trigger('hover:enter');
+                        }, 10);
+                    }
+                }
+                li.addEventListener('click', activate);
+                li.addEventListener('hover:enter', activate);
                 li.addEventListener('hover:focus', function () {
                     Lampa.Controller.collectionSet(root);
                 });
@@ -349,9 +357,9 @@
             if (index < 0) index = 0;
             if (index >= items.length) index = items.length - 1;
             currentIndex = index;
-            items.forEach(function (el) { el.classList.remove('focus'); });
+            items.forEach(function (el) { el.classList.remove('side-menu__item--focus'); });
             var el = items[currentIndex];
-            el.classList.add('focus');
+            el.classList.add('side-menu__item--focus');
             if (el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
         }
         function toggle(show) {
@@ -359,13 +367,18 @@
                 root.classList.remove('side-menu--hidden');
                 overlay.classList.add('side-menu__overlay--show');
                 var items = Array.from(root.querySelectorAll('.side-menu__item'));
-                var start = 0;
-                items.forEach(function (el, i) {
-                    if (el.classList.contains('active') && start === 0) start = i;
-                });
-                setTimeout(function () {
-                    focusItem(start);
-                }, 50);
+                var start = currentIndex;
+                if (start < 0 || start >= items.length) {
+                    start = 0;
+                    items.forEach(function (el, i) {
+                        if (el.classList.contains('active') && start === 0) start = i;
+                    });
+                }
+                (function (idx) {
+                    setTimeout(function () {
+                        focusItem(idx);
+                    }, 50);
+                })(start);
             } else {
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
@@ -423,14 +436,25 @@
                     ev.stopPropagation();
                 }
             }
+            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22) — только блокируем скролл
+            else if (code === 39 || code === 22) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
             // LEFT: ArrowLeft (37) или Android DPAD_LEFT (21)
             else if (code === 37 || code === 21) {
                 toggle(false);
                 ev.preventDefault();
                 ev.stopPropagation();
             }
+        }, true);
+
+        window.addEventListener('keyup', function (ev) {
+            if (!root || root.classList.contains('side-menu--hidden')) return;
+            var code = ev.keyCode || ev.which;
+
             // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22)
-            else if (code === 39 || code === 22) {
+            if (code === 39 || code === 22) {
                 toggle(false);
                 ev.preventDefault();
                 ev.stopPropagation();
