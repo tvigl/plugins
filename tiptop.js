@@ -120,6 +120,8 @@
                 margin: 0;
                 list-style: none;
                 overflow-y: auto;
+                flex: 1;
+                min-height: 0;
             }
 
             .side-menu__item {
@@ -200,35 +202,15 @@
 
             @media screen and (max-width: 768px) {
                 .side-menu {
-                    width: 240px;
-                    left: 10px;
-                    top: 10px;
+                    width: 220px;
+                    left: 8px;
+                    top: 8px;
                     padding: 6px;
                     border-radius: 18px;
                 }
 
                 .side-menu__logo-text {
-                    font-size: 0.95em;
-                }
-
-                .side-menu__time {
-                    font-size: 1.3em;
-                }
-
-                .side-menu__item {
-                    padding: 5px 9px;
-                    font-size: 0.85em;
-                    gap: 8px;
-                }
-            }
-
-            @media screen and (max-width: 480px) {
-                .side-menu {
-                    width: 240px;
-                    left: 5px;
-                    top: 5px;
-                    padding: 6px;
-                    border-radius: 15px;
+                    font-size: 0.9em;
                 }
 
                 .side-menu__time {
@@ -237,7 +219,28 @@
 
                 .side-menu__item {
                     padding: 5px 8px;
-                    gap: 8px;
+                    font-size: 0.8em;
+                    gap: 7px;
+                }
+            }
+
+            @media screen and (max-width: 480px) {
+                .side-menu {
+                    width: 210px;
+                    left: 5px;
+                    top: 5px;
+                    padding: 5px;
+                    border-radius: 15px;
+                }
+
+                .side-menu__time {
+                    font-size: 1.1em;
+                }
+
+                .side-menu__item {
+                    padding: 4px 7px;
+                    font-size: 0.78em;
+                    gap: 6px;
                 }
             }
         `;
