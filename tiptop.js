@@ -341,10 +341,7 @@
             if (show) {
                 root.classList.remove('side-menu--hidden');
                 overlay.classList.add('side-menu__overlay--show');
-                Lampa.Controller.collectionSet(root);
-                var current = $('.side-menu__item.active').get(0) || $('.side-menu__item').get(0);
-                if (current) $(current).trigger('hover:focus');
-                Lampa.Controller.enable('custom_menu_overlay');
+                Lampa.Controller.toggle('custom_menu_overlay');
             } else {
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
