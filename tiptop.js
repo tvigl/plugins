@@ -207,7 +207,7 @@
                     top: 10px;
                     padding: 8px;
                     border-radius: 18px;
-                    max-height: calc(100vh - 40px);
+                    max-height: 70vh;
                 }
                 .side-menu__logo-text {
                     font-size: 1.05em;
@@ -229,7 +229,7 @@
                     top: 5px;
                     padding: 6px;
                     border-radius: 15px;
-                    max-height: calc(100vh - 40px);
+                    max-height: 60vh;
                 }
                 .side-menu__time {
                     font-size: 1.4em;
