@@ -404,6 +404,7 @@
             }
         });
 
+        var lastEnterFromMenu = false;
         window.addEventListener('keydown', function (ev) {
             if (!root || root.classList.contains('side-menu--hidden')) return;
             var code = ev.keyCode || ev.which;
@@ -425,6 +426,7 @@
             // ENTER / OK: Enter (13) или Android DPAD_CENTER (23)
             else if (code === 13 || code === 23) {
                 if (currentIndex >= 0 && currentIndex < items.length) {
+                    lastEnterFromMenu = true;
                     items[currentIndex].click();
                     ev.preventDefault();
                     ev.stopPropagation();
@@ -444,8 +446,19 @@
         }, true);
 
         window.addEventListener('keyup', function (ev) {
-            if (!root || root.classList.contains('side-menu--hidden')) return;
             var code = ev.keyCode || ev.which;
+
+            // ENTER / OK: блокируем отпускание после выбора, чтобы не закрывать правые панели
+            if (code === 13 || code === 23) {
+                if (lastEnterFromMenu) {
+                    lastEnterFromMenu = false;
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    return;
+                }
+            }
+
+            if (!root || root.classList.contains('side-menu--hidden')) return;
 
             // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22)
             if (code === 39 || code === 22) {
