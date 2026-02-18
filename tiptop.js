@@ -359,13 +359,18 @@
                 root.classList.remove('side-menu--hidden');
                 overlay.classList.add('side-menu__overlay--show');
                 var items = Array.from(root.querySelectorAll('.side-menu__item'));
-                var start = 0;
-                items.forEach(function (el, i) {
-                    if (el.classList.contains('active') && start === 0) start = i;
-                });
-                setTimeout(function () {
-                    focusItem(start);
-                }, 50);
+                var start = currentIndex;
+                if (start < 0 || start >= items.length) {
+                    start = 0;
+                    items.forEach(function (el, i) {
+                        if (el.classList.contains('active') && start === 0) start = i;
+                    });
+                }
+                (function (idx) {
+                    setTimeout(function () {
+                        focusItem(idx);
+                    }, 50);
+                })(start);
             } else {
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
