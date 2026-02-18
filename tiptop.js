@@ -291,6 +291,8 @@
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
                 var title = t ? (t.textContent || '').trim() : '';
+                var lower = title.toLowerCase();
+                var is_side_panel = lower === 'фильтр' || lower === 'каталог';
                 var li = document.createElement('li');
                 li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
@@ -301,7 +303,7 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggle(false);
+                    if (!is_side_panel) toggle(false);
                     setTimeout(function () {
                         $(orig).trigger('hover:enter');
                     }, 10);
@@ -310,7 +312,7 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    toggle(false);
+                    if (!is_side_panel) toggle(false);
                     setTimeout(function () {
                         $(orig).trigger('hover:enter');
                     }, 10);
