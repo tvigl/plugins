@@ -297,24 +297,18 @@
                 if (orig.classList.contains('hide') || orig.classList.contains('disabled')) li.classList.add('disabled');
                 li.innerHTML = '<div class="side-menu__item-icon">' + (i ? i.innerHTML : '') + '</div><div class="side-menu__item-text">' + title + '</div>';
                 if (idx === currentIndex) li.classList.add('side-menu__item--focus');
-                li.addEventListener('click', function () {
+                function activate() {
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     toggle(false);
                     setTimeout(function () {
-                        $(orig).trigger('hover:enter');
+                        if (typeof orig.click === 'function') orig.click();
+                        else $(orig).trigger('click');
                     }, 10);
-                });
-                li.addEventListener('hover:enter', function () {
-                    if (li.classList.contains('disabled')) return;
-                    $('.side-menu__item').removeClass('active');
-                    li.classList.add('active');
-                    toggle(false);
-                    setTimeout(function () {
-                        $(orig).trigger('hover:enter');
-                    }, 10);
-                });
+                }
+                li.addEventListener('click', activate);
+                li.addEventListener('hover:enter', activate);
                 li.addEventListener('hover:focus', function () {
                     Lampa.Controller.collectionSet(root);
                 });
