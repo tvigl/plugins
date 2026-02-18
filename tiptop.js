@@ -423,6 +423,11 @@
                     ev.stopPropagation();
                 }
             }
+            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22) — только блокируем скролл
+            else if (code === 39 || code === 22) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
             // LEFT: ArrowLeft (37) или Android DPAD_LEFT (21)
             else if (code === 37 || code === 21) {
                 toggle(false);
