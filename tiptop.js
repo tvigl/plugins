@@ -369,6 +369,9 @@
                     }, 50);
                 })(start);
             } else {
+                console.groupCollapsed('%c[TIPTOP DEBUG] toggle(false)', 'color:orange;font-weight:bold;');
+                console.trace();
+                console.groupEnd();
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
             }
@@ -392,9 +395,25 @@
             if (e.type === 'ready') {
                 var baseToggle = Lampa.Controller.toggle;
                 Lampa.Controller.toggle = function (name) {
+                    console.groupCollapsed('%c[TIPTOP DEBUG] Lampa.Controller.toggle', 'color:green;font-weight:bold;');
+                    console.log('name:', name);
+                    console.trace();
+                    console.groupEnd();
                     if (name === 'menu') toggle(true);
                     else baseToggle.apply(Lampa.Controller, arguments);
                 };
+                if (window.goclose && !window.__tiptop_goclose_wrapped__) {
+                    window.__tiptop_goclose_wrapped__ = true;
+                    var originalGoClose = window.goclose;
+                    window.goclose = function () {
+                        console.groupCollapsed('%c[TIPTOP DEBUG] goclose()', 'color:red;font-weight:bold;');
+                        console.log('this:', this);
+                        console.log('arguments:', arguments);
+                        console.trace();
+                        console.groupEnd();
+                        return originalGoClose.apply(this, arguments);
+                    };
+                }
                 observe();
             }
         });
