@@ -386,6 +386,26 @@
                 observe();
             }
         });
+
+        Lampa.Listener.follow('key', function (e) {
+            if (!root || root.classList.contains('side-menu--hidden')) return;
+            var code = e.code || (e.event && e.event.keyCode);
+            if (code === 38) {
+                Lampa.Controller.collectionSet(root);
+                Lampa.Select.prev();
+                if (e.event) {
+                    e.event.preventDefault();
+                    e.event.stopPropagation();
+                }
+            } else if (code === 40) {
+                Lampa.Controller.collectionSet(root);
+                Lampa.Select.next();
+                if (e.event) {
+                    e.event.preventDefault();
+                    e.event.stopPropagation();
+                }
+            }
+        });
         if (window.appready) observe();
     }
     (function init() {
