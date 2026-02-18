@@ -287,10 +287,15 @@
             if (currentIndex >= items.length) currentIndex = items.length - 1;
             if (currentIndex < 0 && items.length) currentIndex = 0;
             var idx = 0;
+            var sidePanelNames = ['сортировка', 'фильтр', 'фильтры', 'источники', 'подборки'];
             items.forEach(function (orig) {
                 var t = orig.querySelector('.menu__text');
                 var i = orig.querySelector('.menu__ico');
                 var title = t ? (t.textContent || '').trim() : '';
+                 var lower = title.toLowerCase();
+                 var is_side_panel = sidePanelNames.some(function (name) {
+                     return lower.indexOf(name) !== -1;
+                 });
                 var li = document.createElement('li');
                 li.className = 'side-menu__item selector';
                 if (orig.classList.contains('active')) li.classList.add('active');
@@ -302,10 +307,17 @@
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
                     setTimeout(function () {
-                        $(orig).trigger('hover:enter');
-                        setTimeout(function () {
-                            toggle(false);
-                        }, 80);
+                        if (is_side_panel) {
+                            $(orig).trigger('hover:focus');
+                            setTimeout(function () {
+                                toggle(false);
+                            }, 80);
+                        } else {
+                            $(orig).trigger('hover:enter');
+                            setTimeout(function () {
+                                toggle(false);
+                            }, 80);
+                        }
                     }, 10);
                 }
                 li.addEventListener('click', activate);
