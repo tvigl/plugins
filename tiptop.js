@@ -277,7 +277,6 @@
         document.body.appendChild(root);
         var observer = null;
         var mirror = new Map();
-        var panelProtectUntil = 0;
         function build() {
             var lists = Array.from(document.querySelectorAll('.menu .menu__list'));
             if (!lists.length) return;
@@ -302,13 +301,8 @@
                     if (li.classList.contains('disabled')) return;
                     $('.side-menu__item').removeClass('active');
                     li.classList.add('active');
-                    setTimeout(function () {
-                        panelProtectUntil = Date.now() + 3000;
-                        $(orig).trigger('hover:enter');
-                        setTimeout(function () {
-                            toggle(false);
-                        }, 80);
-                    }, 10);
+                    currentIndex = idx;
+                    $(orig).trigger('hover:enter');
                 }
                 li.addEventListener('click', activate);
                 li.addEventListener('hover:enter', activate);
@@ -371,9 +365,6 @@
                     }, 50);
                 })(start);
             } else {
-                console.groupCollapsed('%c[TIPTOP DEBUG] toggle(false)', 'color:orange;font-weight:bold;');
-                console.trace();
-                console.groupEnd();
                 root.classList.add('side-menu--hidden');
                 overlay.classList.remove('side-menu__overlay--show');
             }
@@ -397,32 +388,16 @@
             if (e.type === 'ready') {
                 var baseToggle = Lampa.Controller.toggle;
                 Lampa.Controller.toggle = function (name) {
-                    console.groupCollapsed('%c[TIPTOP DEBUG] Lampa.Controller.toggle', 'color:green;font-weight:bold;');
-                    console.log('name:', name);
-                    console.trace();
-                    console.groupEnd();
-                    var now = Date.now();
                     if (name === 'menu') {
-                        toggle(true);
-                    } else if (name === 'content' && now < panelProtectUntil) {
-                        console.log('[TIPTOP DEBUG] suppress timed Lampa.Controller.toggle("content")');
-                        return;
+                        if (root.classList.contains('side-menu--hidden')) {
+                            toggle(true);
+                        } else {
+                            toggle(false);
+                        }
                     } else {
                         baseToggle.apply(Lampa.Controller, arguments);
                     }
                 };
-                if (window.goclose && !window.__tiptop_goclose_wrapped__) {
-                    window.__tiptop_goclose_wrapped__ = true;
-                    var originalGoClose = window.goclose;
-                    window.goclose = function () {
-                        console.groupCollapsed('%c[TIPTOP DEBUG] goclose()', 'color:red;font-weight:bold;');
-                        console.log('this:', this);
-                        console.log('arguments:', arguments);
-                        console.trace();
-                        console.groupEnd();
-                        return originalGoClose.apply(this, arguments);
-                    };
-                }
                 observe();
             }
         });
@@ -432,45 +407,22 @@
             var code = ev.keyCode || ev.which;
             var items = Array.from(root.querySelectorAll('.side-menu__item'));
             if (!items.length) return;
-
-            // UP: ArrowUp (38) или Android DPAD_UP (19)
             if (code === 38 || code === 19) {
                 focusItem(currentIndex - 1);
                 ev.preventDefault();
                 ev.stopPropagation();
-            }
-            // DOWN: ArrowDown (40) или Android DPAD_DOWN (20)
-            else if (code === 40 || code === 20) {
+            } else if (code === 40 || code === 20) {
                 focusItem(currentIndex + 1);
                 ev.preventDefault();
                 ev.stopPropagation();
-            }
-            // ENTER / OK: Enter (13) или Android DPAD_CENTER (23)
-            else if (code === 13 || code === 23) {
+            } else if (code === 13 || code === 23) {
                 if (currentIndex >= 0 && currentIndex < items.length) {
                     items[currentIndex].click();
                     ev.preventDefault();
                     ev.stopPropagation();
                 }
-            }
-            // RIGHT: ArrowRight (39) или Android DPAD_RIGHT (22) — только блокируем скролл
-            else if (code === 39 || code === 22) {
-                ev.preventDefault();
-                ev.stopPropagation();
-            }
-            // LEFT: ArrowLeft (37) или Android DPAD_LEFT (21)
-            else if (code === 37 || code === 21) {
+            } else if (code === 37 || code === 21 || code === 27) {
                 toggle(false);
-                ev.preventDefault();
-                ev.stopPropagation();
-            }
-        }, true);
-
-        window.addEventListener('keyup', function (ev) {
-            if (!root || root.classList.contains('side-menu--hidden')) return;
-            var code = ev.keyCode || ev.which;
-
-            if (code === 39 || code === 22) {
                 ev.preventDefault();
                 ev.stopPropagation();
             }
