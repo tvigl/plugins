@@ -7,9 +7,89 @@
      * Опис: Добірки популярних дорам + китайська анімація (донхуа)
      */
 
+    // ────────────────────────────────────────────────
+    // Локализация
+    // ────────────────────────────────────────────────
+
+    var TRANSLATIONS = {
+        'ru': {
+            title: 'Дорама',
+            categories: {
+                popular_dramas: 'Популярные дорамы сейчас',
+                new_korean: 'Новые корейские дорамы',
+                best_rated: 'Лучшие дорамы (высокий рейтинг)',
+                top_korean: 'Топ корейских дорам',
+                romantic: 'Романтические дорамы',
+                historical_fantasy: 'Исторические и фэнтези дорамы',
+                chinese: 'Китайские дорамы (C-drama)',
+                japanese: 'Японские дорамы (J-drama)',
+                viki: 'Дорамы на Viki / Rakuten',
+                new_donghua: 'Новые китайские донхуа',
+                popular_donghua: 'Популярные китайские донхуа'
+            }
+        },
+        'uk': {
+            title: 'Дорама',
+            categories: {
+                popular_dramas: 'Популярні дорами зараз',
+                new_korean: 'Нові корейські дорами',
+                best_rated: 'Найкращі дорами (високий рейтинг)',
+                top_korean: 'Топ корейських дорам',
+                romantic: 'Романтичні дорами',
+                historical_fantasy: 'Історичні та фентезі дорами',
+                chinese: 'Китайські дорами (C-drama)',
+                japanese: 'Японські дорами (J-drama)',
+                viki: 'Дорами на Viki / Rakuten',
+                new_donghua: 'Нові китайські донхуа',
+                popular_donghua: 'Популярні китайські донхуа'
+            }
+        },
+        'en': {
+            title: 'Drama',
+            categories: {
+                popular_dramas: 'Popular Dramas Now',
+                new_korean: 'New Korean Dramas',
+                best_rated: 'Best Rated Dramas',
+                top_korean: 'Top Korean Dramas',
+                romantic: 'Romantic Dramas',
+                historical_fantasy: 'Historical & Fantasy Dramas',
+                chinese: 'Chinese Dramas (C-drama)',
+                japanese: 'Japanese Dramas (J-drama)',
+                viki: 'Dramas on Viki / Rakuten',
+                new_donghua: 'New Chinese Donghua',
+                popular_donghua: 'Popular Chinese Donghua'
+            }
+        }
+    };
+
+    function t(key) {
+        var lang = Lampa.Storage.get('language', 'uk');
+        var keys = key.split('.');
+        var translation = TRANSLATIONS[lang];
+        
+        for (var i = 0; i < keys.length; i++) {
+            if (translation && translation[keys[i]]) {
+                translation = translation[keys[i]];
+            } else {
+                // Fallback to Ukrainian if translation not found
+                translation = TRANSLATIONS['uk'];
+                for (var j = 0; j < keys.length; j++) {
+                    if (translation && translation[keys[j]]) {
+                        translation = translation[keys[j]];
+                    } else {
+                        return key; // Return key if no translation found
+                    }
+                }
+                break;
+            }
+        }
+        
+        return translation;
+    }
+
     var DORAMA_CONFIG = {
         'dorama': {
-            title: 'Дорама',
+            title: t('title'),
             icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93s3.06-7.44 7-7.93V17.93zm2-13.86c3.94.49 7 3.85 7 7.93s-3.06 7.44-7 7.93V4.07z"/></svg>',
             categories: [
                 // ────────────────────────────────────────────────
@@ -17,7 +97,7 @@
                 // ────────────────────────────────────────────────
 
                 {
-                    "title": "Популярні дорами зараз",
+                    "title": t('categories.popular_dramas'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ko|zh|ja",
@@ -29,7 +109,7 @@
                 },
 
                 {
-                    "title": "Нові корейські дорами",
+                    "title": t('categories.new_korean'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ko",
@@ -42,7 +122,7 @@
                 },
 
                 {
-                    "title": "Найкращі дорами (високий рейтинг)",
+                    "title": t('categories.best_rated'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ko|zh|ja",
@@ -55,7 +135,7 @@
                 },
 
                 {
-                    "title": "Топ корейських дорам",
+                    "title": t('categories.top_korean'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ko",
@@ -68,7 +148,7 @@
                 },
 
                 {
-                    "title": "Романтичні дорами",
+                    "title": t('categories.romantic'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ko|zh|ja",
@@ -79,7 +159,7 @@
                 },
 
                 {
-                    "title": "Історичні та фентезі дорами",
+                    "title": t('categories.historical_fantasy'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ko|zh|ja",
@@ -90,7 +170,7 @@
                 },
 
                 {
-                    "title": "Китайські дорами (C-drama)",
+                    "title": t('categories.chinese'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "zh",
@@ -102,7 +182,7 @@
                 },
 
                 {
-                    "title": "Японські дорами (J-drama)",
+                    "title": t('categories.japanese'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "ja",
@@ -113,7 +193,7 @@
                 },
 
                 {
-                    "title": "Дорами на Viki / Rakuten",
+                    "title": t('categories.viki'),
                     "url": "discover/tv",
                     "params": {
                         "with_watch_providers": "126",
@@ -128,7 +208,7 @@
                 // ────────────────────────────────────────────────
 
                 {
-                    "title": "Нові китайські донхуа",
+                    "title": t('categories.new_donghua'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "zh",
@@ -140,7 +220,7 @@
                 },
 
                 {
-                    "title": "Популярні китайські донхуа",
+                    "title": t('categories.popular_donghua'),
                     "url": "discover/tv",
                     "params": {
                         "with_original_language": "zh",
