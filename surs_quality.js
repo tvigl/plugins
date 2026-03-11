@@ -52,7 +52,7 @@
     var Q_CACHE_TIME = 72 * 60 * 60 * 1000; // Время кэша качества (72 часа)
     var QUALITY_CACHE = 'surs_quality_cache';
     var JACRED_PROTOCOL = 'https://';
-    var JACRED_URL = Lampa.Storage.get('jacred.xyz') || 'jacred.xyz'; // Адрес JacRed
+    var JACRED_URL = Lampa.Storage.get('jac.red') || 'jac.red'; // Адрес JacRed
     var PROXY_LIST = [
         'http://api.allorigins.win/raw?url=',
         'http://cors.bwa.workers.dev/'
