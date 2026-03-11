@@ -403,8 +403,8 @@
     var KP_CACHE = 'maxsm_ratings_kp_cache';
     var ID_MAPPING_CACHE = 'maxsm_ratings_id_mapping_cache';
     var QUALITY_CACHE = 'maxsm_ratings_quality_cache';
-    var OMDB_API_KEYS = (window.RATINGS_PLUGIN_TOKENS && window.RATINGS_PLUGIN_TOKENS.OMDB_API_KEYS) || ['63dd594']; // api ключи массивом
-    var KP_API_KEYS   = (window.RATINGS_PLUGIN_TOKENS && window.RATINGS_PLUGIN_TOKENS.KP_API_KEYS)   || ['4d596d4d-3790-4091-89cd-60ecc72f7007']; // api ключи массивом
+    var OMDB_API_KEYS = (window.RATINGS_PLUGIN_TOKENS && window.RATINGS_PLUGIN_TOKENS.OMDB_API_KEYS) || ['e25e5894']; // api ключи массивом
+    var KP_API_KEYS   = (window.RATINGS_PLUGIN_TOKENS && window.RATINGS_PLUGIN_TOKENS.KP_API_KEYS)   || ['4b4446ab-1334-4168-9117-81635abcee5f']; // api ключи массивом
     var PROXY_TIMEOUT = 5000; // Таймаут прокси
     var JACRED_PROTOCOL = 'https://'; // Протокол JacRed
     var JACRED_URL = 'jac.red';
