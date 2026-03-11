@@ -44,7 +44,7 @@
         // API интеграции
         API: {
             TMDB_URL: 'https://api.themoviedb.org/3',
-            JACRED_URL: 'https://jacred.xyz'
+            JACRED_URL: 'https://jac.red'
         },
         
         // Производительность
@@ -5021,11 +5021,11 @@ Lampa.SettingsApi.addParam({
         name: 'jacred_url',
         type: 'select',
         values: {
-            'jacred.xyz': 'jacred.xyz (по умолчанию)',
+            'jac.red': 'jac.red (по умолчанию)',
             'jacred.net': 'jacred.net',
             'custom': 'Ввести свой URL'
         },
-        default: 'jacred.xyz'
+        default: 'jac.red'
     },
     field: {
         name: '🌐 JacRed URL',
@@ -5622,7 +5622,7 @@ function applySourceFilter() {
 function applyMovieQuality() {
     var movieQuality = Lampa.Storage.get('movie_quality', 'off');
     if (movieQuality === 'on') {
-        var jacredUrl = Lampa.Storage.get('jacred_url', 'jacred.xyz');
+        var jacredUrl = Lampa.Storage.get('jacred_url', 'jac.red');
         if (!jacredUrl) {
             if (Lampa.Noty) {
                 Lampa.Noty.show('⚠️ Для работы качества фильмов нужен JacRed URL');
