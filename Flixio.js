@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    window.FLIXIO_STUDIOS_VER = '3.9';
+    window.FLIXIO_STUDIOS_VER = '4.0';
     window.FLIXIO_STUDIOS_LOADED = false;
     window.FLIXIO_STUDIOS_ERROR = null;
 
@@ -2840,12 +2840,24 @@
             if (isTvSeries && isBadgeEnabled('flixio_badge_seasons')) {
                 var seasonNumber = 1; // По умолчанию S1
                 
-                // Функция для обновления бейджа сезона
-                function updateSeasonBadge(seasonNum) {
+                // Функция для обновления бейджа сезона с информацией о сериях
+                function updateSeasonBadge(seasonNum, currentEpisode, totalEpisodes) {
+                    var badgeText;
+                    var isComplete = totalEpisodes > 0 && currentEpisode >= totalEpisodes;
+                    
+                    if (isComplete) {
+                        badgeText = "S" + seasonNum;
+                    } else if (totalEpisodes > 0) {
+                        badgeText = "S" + seasonNum + " " + currentEpisode + "/" + totalEpisodes;
+                    } else {
+                        badgeText = "S" + seasonNum;
+                    }
+                    
                     var seasonBadge = $('<div>', {
                         class: 'card__badge card__badge--custom card__badge--season',
-                        text: 'S' + seasonNum
+                        text: badgeText
                     });
+                    
                     view.append(seasonBadge);
                 }
                 
@@ -2856,19 +2868,22 @@
                 if (lastEpisode && lastEpisode.season_number && seasons && Array.isArray(seasons)) {
                     // Ищем сезон, соответствующий последнему выпущенному эпизоду
                     for (var i = 0; i < seasons.length; i++) {
-                        var season = seasons[i];
-                        if (season.season_number === lastEpisode.season_number && season.season_number > 0) {
+                        if (seasons[i].season_number === lastEpisode.season_number) {
                             seasonNumber = lastEpisode.season_number;
+                            var currentEpisode = lastEpisode.episode_number || 1;
+                            var totalEpisodes = seasons[i].episode_count || 0;
+                            updateSeasonBadge(seasonNumber, currentEpisode, totalEpisodes);
                             break;
                         }
                     }
-                    updateSeasonBadge(seasonNumber);
                 } else if (movie.season_number) {
                     seasonNumber = movie.season_number;
-                    updateSeasonBadge(seasonNumber);
+                    var currentEpisode = movie.episode_number || 1;
+                    var totalEpisodes = movie.episode_count || 0;
+                    updateSeasonBadge(seasonNumber, currentEpisode, totalEpisodes);
                 } else if (movie.number_of_seasons && movie.number_of_seasons > 0) {
                     seasonNumber = movie.number_of_seasons;
-                    updateSeasonBadge(seasonNumber);
+                    updateSeasonBadge(seasonNumber, 1, 0);
                 } else {
                     // Если данных нет в карточке, пытаемся получить из API
                     var seriesId = movie.id || movie.tmdb_id;
@@ -2879,19 +2894,23 @@
                                 var seasonData = data.seasons;
                                 
                                 for (var j = 0; j < seasonData.length; j++) {
-                                    var s = seasonData[j];
-                                    if (s.season_number === lastEp.season_number && s.season_number > 0) {
+                                    if (seasonData[j].season_number === lastEp.season_number) {
                                         seasonNumber = lastEp.season_number;
-                                        break;
+                                        var currentEpisode = lastEp.episode_number || 1;
+                                        var totalEpisodes = seasonData[j].episode_count || 0;
+                                        updateSeasonBadge(seasonNumber, currentEpisode, totalEpisodes);
+                                        return;
                                     }
                                 }
                             } else if (data && data.number_of_seasons) {
                                 seasonNumber = data.number_of_seasons;
+                                updateSeasonBadge(seasonNumber, 1, 0);
+                            } else {
+                                updateSeasonBadge(1, 1, 0);
                             }
-                            updateSeasonBadge(seasonNumber);
                         });
                     } else {
-                        updateSeasonBadge(seasonNumber);
+                        updateSeasonBadge(1, 1, 0);
                     }
                 }
             }
