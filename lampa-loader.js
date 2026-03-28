@@ -89,7 +89,7 @@
 
   var CONFIG = mergeConfig(DEFAULT_CONFIG, window.LAMPA_LOADER_CONFIG || {});
 
-  var LOADER_PRESETS = { off: 'Р’С‹РєР»', 3: '3', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10' };
+  var LOADER_PRESETS = { off: 'Выкл', 3: '3', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10' };
   var LOADER_PRESET_DEFAULT = '7';
   var BASE_DURATION_SEC = 7;
 
@@ -225,14 +225,14 @@
     '<div class="terminal-body">',
     '<div class="logo">LAMPA</div>',
     '<div class="status-lines">',
-    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЏРґСЂР°...</span></div>',
-    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Р—Р°РіСЂСѓР·РєР° РјРѕРґСѓР»РµР№...</span></div>',
-    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] РџРѕРґРєР»СЋС‡РµРЅРёРµ РїР»Р°РіРёРЅРѕРІ...</span></div>',
-    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ РґР°РЅРЅС‹С…...</span></div>',
-    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Р—Р°РїСѓСЃРє LAMPA...</span></div>',
+    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Инициализация ядра...</span></div>',
+    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Загрузка модулей...</span></div>',
+    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Подключение плагинов...</span></div>',
+    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Синхронизация данных...</span></div>',
+    '<div class="status-line"><span class="status-icon loading"></span><span class="status-text">[..] Запуск LAMPA...</span></div>',
     '</div>',
     '<div class="progress-container">',
-    '<div class="progress-label"><span>Р—РђР“Р РЈР—РљРђ РЎРРЎРўР•РњР«</span><span class="progress-percent">0%</span></div>',
+    '<div class="progress-label"><span>ЗАГРУЗКА СИСТЕМЫ</span><span class="progress-percent">0%</span></div>',
     '<div class="progress-bar"><div class="progress-fill"></div></div>',
     '</div>',
     '<div class="typing-container">',
@@ -246,11 +246,11 @@
   ].join('');
 
   var statusSteps = [
-    { text: '[OK] РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЏРґСЂР°...', status: 'success' },
-    { text: '[OK] Р—Р°РіСЂСѓР·РєР° РјРѕРґСѓР»РµР№...', status: 'success' },
-    { text: '[OK] РџРѕРґРєР»СЋС‡РµРЅРёРµ РїР»Р°РіРёРЅРѕРІ...', status: 'success' },
-    { text: '[OK] РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ РґР°РЅРЅС‹С…...', status: 'success' },
-    { text: '[OK] Р—Р°РїСѓСЃРє LAMPA...', status: 'success' }
+    { text: '[OK] Инициализация ядра...', status: 'success' },
+    { text: '[OK] Загрузка модулей...', status: 'success' },
+    { text: '[OK] Подключение плагинов...', status: 'success' },
+    { text: '[OK] Синхронизация данных...', status: 'success' },
+    { text: '[OK] Запуск LAMPA...', status: 'success' }
   ];
 
   var commands = [
