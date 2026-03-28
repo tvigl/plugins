@@ -865,7 +865,7 @@
     Lampa.SettingsApi.addComponent({
       component: 'loader',
       icon: icon,
-      name: 'Р—Р°РіСЂСѓР·С‡РёРє',
+      name: 'Загрузчик',
       after: 'tmdb'
     });
     Lampa.SettingsApi.addParam({
@@ -877,8 +877,8 @@
         default: LOADER_PRESET_DEFAULT
       },
       field: {
-        name: 'Р’СЂРµРјСЏ Р·Р°РіСЂСѓР·РєРё (СЃРµРє)',
-        description: 'РњРёРЅРёРјР°Р»СЊРЅРѕРµ РІСЂРµРјСЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЌРєСЂР°РЅР° Р·Р°РіСЂСѓР·РєРё'
+        name: 'Время загрузки (сек)',
+        description: 'Минимальное время отображения экрана загрузки'
       },
       onChange: function () {
         applyPresetFromStorage();
