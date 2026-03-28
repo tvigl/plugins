@@ -25,7 +25,7 @@
       resetThreshold: 0.975,
       initialDropOffset: -100,
       resizeDebounce: 100,
-      chars: 'г‚ўг‚¤г‚¦г‚Ёг‚Єг‚«г‚­г‚Їг‚±г‚іг‚µг‚·г‚№г‚»г‚Ѕг‚їгѓЃгѓ„гѓ†гѓ€гѓЉгѓ‹гѓЊгѓЌгѓЋгѓЏгѓ’гѓ•гѓгѓ›гѓћгѓџгѓ гѓЎгѓўгѓ¤гѓ¦гѓЁгѓ©гѓЄгѓ«гѓ¬гѓ­гѓЇгѓІгѓі0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()'
+      chars: 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()'
     },
     colors: ['#00ff00', '#0affef', '#ff00ff', '#ff6b00'],
     colorChangeInterval: 2500,
