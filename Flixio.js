@@ -5618,7 +5618,7 @@
                 var pageNum = page || 1;
                 
                 // Используем YouTube API для получения большего количества видео
-                var apiKey = 'AIzaSyAIo_p64MBiOmXtBg-AlbdGhonDYEP1LPI'; // Правильный YouTube Data API v3 ключ
+                var apiKey = 'AIzaSyCEJidZhNYFlXk6aFSdJzsolqj55dXadTM'; // Правильный YouTube Data API v3 ключ
                 return this.fetchWithYouTubeAPI(channel.id, apiKey, pageNum, oncomplite, onerror, cacheKey);
             },
             
