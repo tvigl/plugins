@@ -55,14 +55,17 @@
                     text-align: center !important;
                 }
                 
-                /* Скрываем только дефолтные элементы Lampa */
+                /* Скрываем только дефолтные элементы на главной */
                 .card__vote,
                 .card__rating,
                 .card__year,
                 .card__data,
                 .card__info,
-                .full__year,
-                .full__info {
+                .card .year,
+                .card .card__year,
+                .card__footer,
+                .card__bottom,
+                .card__meta {
                     display: none !important;
                 }
             </style>
