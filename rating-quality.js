@@ -57,7 +57,8 @@
                 
                 /* Скрываем только дефолтные элементы Lampa */
                 .card__vote,
-                .card__rating {
+                .card__rating,
+                .card__year {
                     display: none !important;
                 }
             </style>
