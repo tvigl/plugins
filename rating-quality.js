@@ -65,7 +65,9 @@
                 .card .card__year,
                 .card__footer,
                 .card__bottom,
-                .card__meta {
+                .card__meta,
+                .card__age,
+                .card__type {
                     display: none !important;
                 }
             </style>
