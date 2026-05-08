@@ -58,7 +58,11 @@
                 /* Скрываем только дефолтные элементы Lampa */
                 .card__vote,
                 .card__rating,
-                .card__year {
+                .card__year,
+                .card__data,
+                .card__info,
+                .full__year,
+                .full__info {
                     display: none !important;
                 }
             </style>
