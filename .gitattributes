@@ -1,0 +1,6 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Preserve the published byte representation of these legacy files.
+player.js -text
+ss_yandex_music.js -text
